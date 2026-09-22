@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/health', fn () => response()->json([
     'status' => 'ok',
-    'service' => 'otueke-booking-web',
+    'service' => '007resort-booking-web',
 ]))->name('health');
 
 /*
 | Phase 0 placeholder home page. Facility data, availability and bookings
-| will be loaded from the Otueke API booking engine in a later phase.
+| will be loaded from the 007 Resort & Spa API booking engine in a later phase.
 */
 Route::view('/', 'home')->name('home');

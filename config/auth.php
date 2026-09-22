@@ -60,7 +60,7 @@ return [
     */
 
     'providers' => [
-        // Identities live in the Otueke API, not in a local database. An
+        // Identities live in the 007 Resort & Spa API, not in a local database. An
         // API-backed user provider (tokens kept server-side in the session)
         // will replace this placeholder in a later phase. Do NOT point this
         // at a local "users" table.

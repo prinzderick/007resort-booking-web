@@ -29,14 +29,14 @@ chore(deps): bump laravel/framework
 ## Engineering rules
 
 1. **No business rules in PHP.** Validation that matters, pricing, stock, payments,
-   refunds, tickets, bookings, availability, memberships and order state live in the Otueke API. PHP
-   renders and forwards; it calls `/api/v1/...` through `OtuekeApiClient`.
+   refunds, tickets, bookings, availability, memberships and order state live in the 007 Resort & Spa API. PHP
+   renders and forwards; it calls `/api/v1/...` through `R007ApiClient`.
 2. **No business tables.** Do not add migrations or Eloquent models for business data.
    A read-only reporting connection requires an approved ADR.
 3. **Money** is received from the API as **decimal strings**. Never use float arithmetic
    (no `(float)`, `+`, `*` on amounts). Display as received or use `bcmath` / a money
    library if a computation is truly presentation-only.
-4. **Time.** Timestamps from the API are UTC. Convert to local time (`config('otueke.display_timezone')`)
+4. **Time.** Timestamps from the API are UTC. Convert to local time (`config('r007.display_timezone')`)
    only when displaying; send UTC back to the API.
 5. **Idempotency.** Mutating calls always carry an `Idempotency-Key`; when retrying the
    same user action, reuse the same key.

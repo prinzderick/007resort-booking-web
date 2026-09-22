@@ -26,7 +26,7 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 
-# --- Otueke additions ---
+# --- 007 Resort & Spa additions ---
 # Environment files (only the example template is committed)
 .env.*
 !.env.example

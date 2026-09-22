@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Services\OtuekeApi;
+namespace App\Services\R007Api;
 
 use Illuminate\Http\Client\Response;
 use RuntimeException;
 use Throwable;
 
 /**
- * Raised when the Otueke API returns an error (RFC 7807 problem details) or
- * cannot be reached. The API is the source of truth for business rules, so
- * callers should surface {@see $title}/{@see $detail} rather than re-implement
- * validation locally.
+ * Raised when the 007 Resort & Spa API returns an error (RFC 7807 problem
+ * details) or cannot be reached. The API is the source of truth for business
+ * rules, so callers should surface {@see $title}/{@see $detail} rather than
+ * re-implement validation locally.
  */
-class OtuekeApiException extends RuntimeException
+class R007ApiException extends RuntimeException
 {
     /**
      * @param  array<string, mixed>  $extensions  Additional problem members (e.g. errors, traceId).
@@ -43,7 +43,7 @@ class OtuekeApiException extends RuntimeException
 
         return new self(
             status: (int) ($body['status'] ?? $response->status()),
-            title: (string) ($body['title'] ?? $response->reason() ?: 'Otueke API error'),
+            title: (string) ($body['title'] ?? $response->reason() ?: '007 Resort & Spa API error'),
             detail: isset($body['detail']) ? (string) $body['detail'] : null,
             type: isset($body['type']) ? (string) $body['type'] : null,
             instance: isset($body['instance']) ? (string) $body['instance'] : null,
@@ -55,7 +55,7 @@ class OtuekeApiException extends RuntimeException
     {
         return new self(
             status: 0,
-            title: 'Otueke API unreachable',
+            title: '007 Resort & Spa API unreachable',
             detail: $previous->getMessage(),
             previous: $previous,
         );

@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Architecture guard: the Otueke API is the ONLY owner of the MySQL schema.
+ * Architecture guard: the 007 Resort & Spa API is the ONLY owner of the MySQL schema.
  * This application must not ship migrations or Eloquent models for business
  * data. Changing this requires an approved ADR.
  */
@@ -24,7 +24,7 @@ class NoBusinessTablesTest extends TestCase
             $this->assertStringNotContainsString(
                 'Schema::create',
                 (string) file_get_contents($file),
-                basename($file).' creates a table; business tables belong to the Otueke API.',
+                basename($file).' creates a table; business tables belong to the 007 Resort & Spa API.',
             );
         }
 
@@ -45,7 +45,7 @@ class NoBusinessTablesTest extends TestCase
             $this->assertDoesNotMatchRegularExpression(
                 '/extends\s+(\\\\?Illuminate\\\\Database\\\\Eloquent\\\\)?(Model|Authenticatable)\b/',
                 (string) file_get_contents($file->getPathname()),
-                $file->getPathname().' defines an Eloquent model; business data is owned by the Otueke API.',
+                $file->getPathname().' defines an Eloquent model; business data is owned by the 007 Resort & Spa API.',
             );
         }
     }

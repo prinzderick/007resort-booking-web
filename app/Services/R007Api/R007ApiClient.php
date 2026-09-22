@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\OtuekeApi;
+namespace App\Services\R007Api;
 
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Client\ConnectionException;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 /**
- * Thin HTTP client for the Otueke API (/api/v1/...).
+ * Thin HTTP client for the 007 Resort & Spa API (/api/v1/...).
  *
  * All business operations (payments, refunds, inventory, tickets, bookings,
  * memberships, order state, ...) MUST go through this client. This app never
@@ -21,18 +21,19 @@ use Illuminate\Support\Str;
  * - Every mutating request carries an Idempotency-Key so the API can safely
  *   de-duplicate retries. Pass an explicit key when retrying the same logical
  *   operation (e.g. a payment form re-submitted after a timeout).
- * - Error responses (RFC 7807 problem details) become OtuekeApiException.
+ * - Error responses (RFC 7807 problem details) become R007ApiException.
  * - Monetary amounts arrive as decimal strings: never cast them to float.
  *
- * NOTE: duplicated in otueke-admin-web and otueke-booking-web during Phase 0.
- * To be extracted into a shared private Composer package once stable.
+ * NOTE: duplicated in 007resort-admin-web and 007resort-booking-web during
+ * Phase 0. To be extracted into a shared private Composer package once
+ * stable.
  */
-class OtuekeApiClient
+class R007ApiClient
 {
     public const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 
     /**
-     * @param  array<string, mixed>  $config  The "otueke.api" config array.
+     * @param  array<string, mixed>  $config  The "r007.api" config array.
      */
     public function __construct(
         private readonly array $config,
@@ -104,11 +105,11 @@ class OtuekeApiClient
             /** @var Response $response */
             $response = $request->send($method, ltrim($path, '/'), $options);
         } catch (ConnectionException $e) {
-            throw OtuekeApiException::unreachable($e);
+            throw R007ApiException::unreachable($e);
         }
 
         if ($response->failed()) {
-            throw OtuekeApiException::fromResponse($response);
+            throw R007ApiException::fromResponse($response);
         }
 
         $json = $response->json();
@@ -121,7 +122,7 @@ class OtuekeApiClient
         $request = Http::baseUrl($this->baseUrl())
             ->withHeaders([
                 'Accept' => 'application/json, application/problem+json',
-                'X-Otueke-Client' => (string) ($this->config['client_id'] ?? ''),
+                'X-R007-Client' => (string) ($this->config['client_id'] ?? ''),
                 'X-Request-Id' => (string) Str::uuid(),
             ])
             ->timeout((int) ($this->config['timeout'] ?? 10))
@@ -138,7 +139,7 @@ class OtuekeApiClient
 
     protected function token(): ?string
     {
-        $key = (string) ($this->config['session_token_key'] ?? 'otueke.api_token');
+        $key = (string) ($this->config['session_token_key'] ?? 'r007.api_token');
         $token = $this->session?->get($key);
 
         return is_string($token) ? $token : null;

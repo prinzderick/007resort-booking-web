@@ -6,7 +6,7 @@
     <h1 class="text-2xl font-semibold">Welcome</h1>
     <p class="mt-2 text-stone-600">
         Explore our facilities and book online. This is a placeholder page: facility details,
-        live availability and booking will be served by the Otueke API booking engine
+        live availability and booking will be served by the 007 Resort & Spa API booking engine
         (the same engine used by Reception, so slots can never be double-booked).
     </p>
 
