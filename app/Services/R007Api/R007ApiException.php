@@ -61,6 +61,32 @@ class R007ApiException extends RuntimeException
         );
     }
 
+    /** Stable machine-readable problem code from the contract (e.g. slot_unavailable). */
+    public function code(): ?string
+    {
+        $code = $this->extensions['code'] ?? null;
+
+        return is_string($code) ? $code : null;
+    }
+
+    public function is(string ...$codes): bool
+    {
+        return in_array($this->code(), $codes, true);
+    }
+
+    /**
+     * True when the API could not serve the request because the node/site is
+     * unreachable, stale or has the capability switched off. The website shows
+     * a calm per-item notice instead of an error page.
+     */
+    public function isUnavailable(): bool
+    {
+        return $this->status === 0
+            || $this->status === 503
+            || $this->status === 504
+            || $this->is('offline_not_allowed', 'capability_disabled', 'provider_error');
+    }
+
     /**
      * Validation errors as returned by the API (field => messages), if any.
      *

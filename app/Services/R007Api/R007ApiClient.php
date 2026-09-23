@@ -51,11 +51,12 @@ class R007ApiClient
 
     /**
      * @param  array<string, mixed>  $data
+     * @param  array<string, string>  $headers  Extra headers (e.g. If-Match).
      * @return array<mixed>
      */
-    public function post(string $path, array $data = [], ?string $idempotencyKey = null): array
+    public function post(string $path, array $data = [], ?string $idempotencyKey = null, array $headers = []): array
     {
-        return $this->send('POST', $path, ['json' => $data], $idempotencyKey);
+        return $this->send('POST', $path, ['json' => $data], $idempotencyKey, $headers);
     }
 
     /**
@@ -84,6 +85,31 @@ class R007ApiClient
         return $this->send('DELETE', $path, [], $idempotencyKey);
     }
 
+    /**
+     * Follow cursor pagination ({items, nextCursor}) and return every item.
+     * Bounded so a misbehaving API cannot make a page render loop forever.
+     *
+     * @param  array<string, mixed>  $query
+     * @return list<array<string, mixed>>
+     */
+    public function all(string $path, array $query = [], int $maxPages = 10): array
+    {
+        $items = [];
+        $cursor = null;
+
+        for ($page = 0; $page < $maxPages; $page++) {
+            $body = $this->get($path, $cursor === null ? $query : $query + ['cursor' => $cursor]);
+            array_push($items, ...array_values((array) ($body['items'] ?? [])));
+            $cursor = $body['nextCursor'] ?? null;
+
+            if ($cursor === null || $cursor === '') {
+                break;
+            }
+        }
+
+        return $items;
+    }
+
     public function baseUrl(): string
     {
         return rtrim((string) $this->config['base_url'], '/').'/'.trim((string) ($this->config['prefix'] ?? '/api/v1'), '/');
@@ -91,11 +117,16 @@ class R007ApiClient
 
     /**
      * @param  array<string, mixed>  $options
+     * @param  array<string, string>  $headers
      * @return array<mixed>
      */
-    protected function send(string $method, string $path, array $options, ?string $idempotencyKey = null): array
+    protected function send(string $method, string $path, array $options, ?string $idempotencyKey = null, array $headers = []): array
     {
         $request = $this->pendingRequest();
+
+        if ($headers !== []) {
+            $request->withHeaders($headers);
+        }
 
         if ($method !== 'GET') {
             $request->withHeaders([self::IDEMPOTENCY_HEADER => $idempotencyKey ?? (string) Str::uuid()]);
@@ -128,7 +159,7 @@ class R007ApiClient
             ->timeout((int) ($this->config['timeout'] ?? 10))
             ->connectTimeout((int) ($this->config['connect_timeout'] ?? 3));
 
-        $token = $this->token();
+        $token = $this->token() ?? ($this->config['service_token'] ?? null);
 
         if ($token !== null && $token !== '') {
             $request->withToken($token);

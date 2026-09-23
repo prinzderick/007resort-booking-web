@@ -29,6 +29,11 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="R007_MOCK" value="false"/>
+        <env name="R007_API_BASE_URL" value="https://api.r007.test"/>
+        <env name="R007_API_PREFIX" value="/api/v1"/>
+        <env name="R007_API_SERVICE_TOKEN" value="svc-test-token"/>
+        <env name="SESSION_ENCRYPT" value="false"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
