@@ -34,10 +34,14 @@ class SiteService
 
         $facilities = [];
         foreach ((array) config('site.facilities') as $slug => $cfg) {
-            $api = $this->matchApiFacility($cfg['match'] ?? [], (array) ($remote['data']['facilities'] ?? []));
+            $all = (array) ($remote['data']['facilities'] ?? []);
+            $matches = $this->matchApiFacilities($cfg['match'] ?? [], $all);
+            $api = $matches[0] ?? null;
             $facilities[$slug] = $cfg + [
                 'slug' => $slug,
                 'id' => $api['id'] ?? null,
+                // every API facility behind this page: the matched top-level ones and all their descendants (Sports Arena > Lawn Tennis ...)
+                'ids' => $this->withDescendants(array_column($matches, 'id'), $all),
                 'hours' => $api['openingHours'] ?? null,
                 'online_available' => $remote['ok'] ? (bool) ($api['onlineBookable'] ?? ($api !== null)) : false,
                 'notice' => $api['onlineNotice'] ?? null,
@@ -60,7 +64,7 @@ class SiteService
     public function slugForFacilityId(string $facilityId): ?string
     {
         foreach ($this->site()['facilities'] as $slug => $f) {
-            if (($f['id'] ?? null) === $facilityId) {
+            if (in_array($facilityId, (array) ($f['ids'] ?? [$f['id'] ?? null]), true)) {
                 return $slug;
             }
         }
@@ -98,23 +102,62 @@ class SiteService
     }
 
     /**
+     * Every API facility whose kind/code matches, excluding ones whose parent also matches (children ride along via
+     * withDescendants), in API order.
+     *
+     * @param  list<string>  $match
+     * @param  list<array<string, mixed>>  $apiFacilities
+     * @return list<array<string, mixed>>
+     */
+    private function matchApiFacilities(array $match, array $apiFacilities): array
+    {
+        $hits = [];
+        foreach ($apiFacilities as $f) {
+            if ($this->matches($match, $f)) {
+                $hits[] = $f;
+            }
+        }
+        $ids = array_column($hits, 'id');
+
+        return array_values(array_filter($hits, fn ($f) => ! in_array($f['parentId'] ?? null, $ids, true)));
+    }
+
+    /**
+     * @param  list<string>  $ids
+     * @param  list<array<string, mixed>>  $apiFacilities
+     * @return list<string>
+     */
+    private function withDescendants(array $ids, array $apiFacilities): array
+    {
+        $out = $ids;
+        do {
+            $before = count($out);
+            foreach ($apiFacilities as $f) {
+                if (in_array($f['parentId'] ?? null, $out, true) && ! in_array($f['id'], $out, true)) {
+                    $out[] = $f['id'];
+                }
+            }
+        } while (count($out) !== $before);
+
+        return $out;
+    }
+
+    /**
      * @param  list<string>  $match
      * @param  list<array<string, mixed>>  $apiFacilities
      * @return array<string, mixed>|null
      */
-    private function matchApiFacility(array $match, array $apiFacilities): ?array
+    private function matches(array $match, array $f): bool
     {
-        foreach ($apiFacilities as $f) {
-            $haystack = [strtoupper((string) ($f['kind'] ?? '')), strtoupper((string) ($f['code'] ?? ''))];
-            foreach ($match as $needle) {
-                foreach ($haystack as $h) {
-                    if ($h !== '' && ($h === $needle || str_starts_with($h, $needle.'_') || str_starts_with($h, $needle))) {
-                        return $f;
-                    }
+        $haystack = [strtoupper((string) ($f['kind'] ?? '')), strtoupper((string) ($f['code'] ?? ''))];
+        foreach ($match as $needle) {
+            foreach ($haystack as $h) {
+                if ($h !== '' && ($h === $needle || str_starts_with($h, $needle.'_') || str_starts_with($h, $needle))) {
+                    return true;
                 }
             }
         }
 
-        return null;
+        return false;
     }
 }

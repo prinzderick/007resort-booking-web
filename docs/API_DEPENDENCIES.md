@@ -1,5 +1,13 @@
 # API dependencies of 007resort-booking-web
 
+> **Status: BUILT.** Every PROPOSED endpoint below now exists in `007resort-api` (PR prinzderick/007resort-api#13, module
+> `app/Domain/Customer`, see its `docs/CUSTOMER_PUBLIC_API.md` and `docs/openapi/v1.yaml`), and this site was driven end to end
+> against it with `R007_MOCK=false` (register -> verify -> hold a tennis court -> Paystack (dev sandbox) -> QR; pool tickets; membership).
+> Differences the site adapted to: `GET /public/site` facilities carry `parentId` (Sports Arena > Lawn Tennis/Football/Basketball) and
+> a page can span several API facilities (Male + Female salon) - `SiteService` now exposes `ids` and `BookingService::resources()`
+> merges them; `facilityId` for pool tickets is the facility the ticket grants access to (the API resolves the selling facility);
+> register answers a uniform 201 (no account enumeration); tokens: customer `r7c_`, service `r7s_` (`R007_API_SERVICE_TOKEN`).
+
 The site consumes the contract at `007resort-docs`/`api/openapi/v1.yaml` (Cloud node). The contract did
 **not yet contain** the customer-facing surface the website needs, so the endpoints below are
 **PROPOSED** and isolated behind `app/Services/Online/*` (one file to change per endpoint). The Mock API mode

@@ -15,17 +15,26 @@ class BookingService
 {
     public function __construct(private readonly R007ApiClient $api) {}
 
-    /** @return list<array<string, mixed>> */
-    public function resources(string $facilityId): array
+    /**
+     * @param  string|list<string>  $facilityIds  one API facility or every facility behind a page (e.g. Male + Female salon)
+     * @return list<array<string, mixed>>
+     */
+    public function resources(string|array $facilityIds): array
     {
-        return array_values(array_filter(
-            $this->api->all('bookings/resources', ['facilityId' => $facilityId]),
-            fn ($r) => ($r['active'] ?? true) !== false,
-        ));
+        $out = [];
+        foreach ((array) $facilityIds as $facilityId) {
+            foreach ($this->api->all('bookings/resources', ['facilityId' => $facilityId]) as $r) {
+                if (($r['active'] ?? true) !== false) {
+                    $out[$r['id']] = $r;
+                }
+            }
+        }
+
+        return array_values($out);
     }
 
     /** @return array<string, mixed>|null */
-    public function resource(string $facilityId, string $resourceId): ?array
+    public function resource(string|array $facilityId, string $resourceId): ?array
     {
         foreach ($this->resources($facilityId) as $r) {
             if (($r['id'] ?? null) === $resourceId) {

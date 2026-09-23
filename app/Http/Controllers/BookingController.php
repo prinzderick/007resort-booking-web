@@ -35,7 +35,7 @@ class BookingController extends Controller
 
         if ($notice === null) {
             try {
-                $resources = $this->bookings->resources($facility['id']);
+                $resources = $this->bookings->resources($facility['ids'] ?? [$facility['id']]);
             } catch (R007ApiException $e) {
                 $notice = $this->unavailableNotice($e, $facility);
             }
@@ -54,7 +54,7 @@ class BookingController extends Controller
 
         if ($notice === null) {
             try {
-                $resource = $this->bookings->resource($facility['id'], $resourceId);
+                $resource = $this->bookings->resource($facility['ids'] ?? [$facility['id']], $resourceId);
                 abort_if($resource === null, 404);
                 if (($resource['onlineAvailable'] ?? true) === false) {
                     $notice = $resource['onlineNotice'] ?? 'Online booking for this item is temporarily unavailable. Please call or visit reception.';
