@@ -42,6 +42,24 @@ return [
         // Session key under which the API-issued access token is stored
         // server-side. Tokens are never exposed to the browser.
         'session_token_key' => 'r007.api_token',
+
+        // Service credential of the "online" channel (this website). Used for
+        // public reads/holds when no customer is signed in. Secret: env only.
+        'service_token' => env('R007_API_SERVICE_TOKEN'),
+    ],
+
+    // Mock API mode: run the whole site without the backend. State lives in
+    // the cache store (never a business database). Development/demo only.
+    'mock' => (bool) env('R007_MOCK', false),
+
+    // Booking UX (presentation only: the API owns the real rules).
+    'booking' => [
+        // How many days ahead the date picker offers.
+        'horizon_days' => (int) env('R007_BOOKING_HORIZON_DAYS', 30),
+        // Used only if the API omits holdExpiresAt.
+        'fallback_hold_seconds' => 600,
+        // Pool ticket quantity guard-rails (UI hints; API validates).
+        'max_tickets_per_order' => 20,
     ],
 
 ];

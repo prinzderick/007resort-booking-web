@@ -10,8 +10,8 @@ class HomePageTest extends TestCase
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Swimming pool')
-            ->assertSee('Spa')
-            ->assertSee('Sports');
+            ->assertSee('Swimming Pool')
+            ->assertSee('Beauty Spa')
+            ->assertSee('Sports Arena');
     }
 }

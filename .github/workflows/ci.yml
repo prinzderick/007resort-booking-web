@@ -24,7 +24,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: mbstring, intl, bcmath, curl, dom, fileinfo, openssl, pdo, tokenizer, xml, ctype, json, zip
+          extensions: mbstring, intl, bcmath, curl, dom, fileinfo, openssl, pdo, tokenizer, xml, xmlwriter, ctype, json, zip
           coverage: none
           tools: composer:v2
 
