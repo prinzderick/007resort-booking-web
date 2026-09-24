@@ -73,7 +73,7 @@
     @if ($annOn)
         <div class="ann" data-ann="{{ substr(md5($ann['text']), 0, 8) }}" role="region" aria-label="Announcement">
             <span>{{ $ann['text'] }}</span>
-            @if (! empty($ann['link']))<a href="{{ $ann['link'] }}">See more</a>@endif
+            @if (! empty($ann['link']))<a href="{{ $ann['link'] }}">{{ match (true) { str_contains($ann['link'], 'event') => "See what's on", str_contains($ann['link'], 'member') => 'See membership plans', str_contains($ann['link'], 'pool') || str_contains($ann['link'], 'ticket') => 'Get pool tickets', str_contains($ann['link'], 'sport') || str_contains($ann['link'], 'book') => 'Book a court', default => 'Find out more' } }}</a>@endif
             <button type="button" aria-label="Dismiss announcement" data-ann-close>&times;</button>
         </div>
     @endif

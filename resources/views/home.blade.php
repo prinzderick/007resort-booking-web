@@ -180,7 +180,7 @@
         @include('partials.journal-rail', ['posts' => $posts])
 
         @if (count($faqs))
-            <section class="section section--paper2" aria-labelledby="faq-h">
+            <section class="section section--paper2 curve-top" aria-labelledby="faq-h">
                 <div class="wrap">
                     <div class="lead">
                         <div><span class="eyebrow">Questions</span><h2 id="faq-h" class="h-1 reveal">Good <i>to know.</i></h2><p style="margin-top:16px"><a class="link-arrow" href="{{ route('faq') }}">All questions <span aria-hidden="true">&rarr;</span></a></p></div>

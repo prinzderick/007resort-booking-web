@@ -11,6 +11,10 @@
     $open = $s['open'];
     $todayIso = now(config('r007.display_timezone'))->dayOfWeekIso;
     $embed = $c['mapEmbedUrl'] ?? null;
+    if (! $embed && ! empty($c['lat']) && ! empty($c['lng'])) {
+        $d = 0.012;
+        $embed = 'https://www.openstreetmap.org/export/embed.html?bbox='.($c['lng'] - $d).'%2C'.($c['lat'] - $d).'%2C'.($c['lng'] + $d).'%2C'.($c['lat'] + $d).'&layer=mapnik&marker='.$c['lat'].'%2C'.$c['lng'];
+    }
     $allowed = collect(config('cms.frame_hosts'))->contains(fn ($h) => str_starts_with((string) $embed, $h));
 @endphp
 
@@ -67,7 +71,8 @@
 
         @if ($embed && $allowed)
             <section class="section--tight"><div class="wrap"><div class="map"><iframe src="{{ $embed }}" title="Map to {{ $s['brand']['name'] }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-                @if (! empty($c['mapUrl']))<p style="margin-top:12px"><a class="link-arrow" href="{{ $c['mapUrl'] }}" rel="noopener">Open in maps <span aria-hidden="true">&rarr;</span></a></p>@endif</div></section>
+                @php $mapLink = $c['mapUrl'] ?? (! empty($c['lat']) ? 'https://www.openstreetmap.org/?mlat='.$c['lat'].'&mlon='.$c['lng'].'#map=15/'.$c['lat'].'/'.$c['lng'] : null); @endphp
+                @if ($mapLink)<p style="margin-top:12px"><a class="link-arrow" href="{{ $mapLink }}" rel="noopener">Open in maps <span aria-hidden="true">&rarr;</span></a></p>@endif</div></section>
         @elseif (! empty($c['mapUrl']))
             <section class="section--tight"><div class="wrap"><a class="btn btn--line" href="{{ $c['mapUrl'] }}" rel="noopener">Open in maps</a></div></section>
         @endif

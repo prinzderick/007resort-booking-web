@@ -143,6 +143,19 @@ class CmsSiteTest extends ApiTestCase
         $res->assertSee('nonce="'.$m[1].'"', false);
     }
 
+    public function test_error_pages_have_personality_and_render_standalone(): void
+    {
+        $this->assertStringContainsString('We dropped the ball', view('errors.500')->render());
+        $this->assertStringContainsString('warming up', view('errors.cms')->render());
+        $this->assertStringContainsString('That page expired', view('errors.419')->render());
+    }
+
+    public function test_contact_map_falls_back_to_coordinates_and_static_robots_file_is_gone(): void
+    {
+        $this->assertFileDoesNotExist(public_path('robots.txt')); // the dynamic /robots.txt (with the sitemap line) must win
+        $this->get('/contact')->assertSee('openstreetmap.org/export/embed.html', false)->assertSee('Open in maps');
+    }
+
     public function test_unknown_cms_page_is_a_friendly_404(): void
     {
         $this->get('/pages/does-not-exist')->assertNotFound()->assertSee('Out of bounds');
