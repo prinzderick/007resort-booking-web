@@ -88,8 +88,8 @@
 .section--white { background: var(--white); }
 .section--dark { background: #0f0d0b; color: var(--paper); }
 .section--leaf { background: var(--leaf); color: var(--paper); }
-.eyebrow { font: 600 12.5px var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--sun-btn); display: block; margin-bottom: 14px; }
-.section--dark .eyebrow, .section--leaf .eyebrow, .on-photo .eyebrow { color: var(--sun-soft); }
+.eyebrow { font: 600 12.5px var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: var(--sun-text); display: block; margin-bottom: 14px; }
+.section--dark .eyebrow, .section--leaf .eyebrow, .on-photo .eyebrow, .night .eyebrow, .mem .eyebrow { color: var(--sun-soft); }
 .h-display { font-size: clamp(50px, 9vw, 128px); line-height: 0.92; letter-spacing: -0.035em; }
 .h-1 { font-size: clamp(38px, 5.4vw, 76px); line-height: 1; }
 .h-2 { font-size: clamp(30px, 3.8vw, 52px); line-height: 1.04; }

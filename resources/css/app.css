@@ -3,6 +3,13 @@
  * One hand-written stylesheet (bundled by Vite from the partials below). No frameworks.
  * Warm paper + ink, ONE orange accent, forest green for membership/booking success.
  */
+/* Self-hosted fonts (woff2 first; browsers fetch only what they use). */
+@import '@fontsource/fraunces/latin-400.css';
+@import '@fontsource/fraunces/latin-400-italic.css';
+@import '@fontsource/fraunces/latin-600.css';
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
 @import './tokens.css';
 @import './base.css';
 @import './layout.css';

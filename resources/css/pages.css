@@ -2,13 +2,13 @@
 .event-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
 .event-aside { position: sticky; top: var(--stick-top); display: grid; gap: 16px; }
 .event-aside dl { display: grid; gap: 16px; }
-.event-aside dt { font: 600 12px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sun-btn); }
+.event-aside dt { font: 600 12px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sun-text); }
 .event-aside dd { margin: 2px 0 0; font-size: 17px; }
 @media (max-width: 900px) { .event-layout { grid-template-columns: minmax(0, 1fr); } .event-aside { position: static; } }
 .month-head { font: 600 14px var(--sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute); margin: 44px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
 .ev-row { display: grid; grid-template-columns: 84px 1fr auto; gap: 24px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: padding 0.4s var(--ease); }
 .ev-row:hover { padding-left: 12px; }
-.ev-row .dt { text-align: center; line-height: 1; } .ev-row .dt b { display: block; font: 600 44px var(--serif); } .ev-row .dt span { font: 600 12px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--sun-btn); }
+.ev-row .dt { text-align: center; line-height: 1; } .ev-row .dt b { display: block; font: 600 44px var(--serif); } .ev-row .dt span { font: 600 12px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--sun-text); }
 .ev-row h3 { font-size: 26px; } .ev-row p { color: var(--mute); font-size: 15px; margin-top: 4px; }
 .ev-row .ph { width: 150px; aspect-ratio: 4/3; border-radius: 12px; }
 @media (max-width: 700px) { .ev-row { grid-template-columns: 64px 1fr; } .ev-row .ph { display: none; } }

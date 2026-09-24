@@ -3,8 +3,9 @@
 Public property website and online booking / customer portal for the
 **007 Resort & Spa Integrated Facility Operations Platform**.
 
-> Status: **MVP.** Public site, sports/spa/salon booking, pool tickets, memberships, customer
-> accounts, booking history, QR tickets, Paystack checkout, and a Mock API mode. Contract gaps that
+> Status: **MVP + public site v2.** A full, CMS-driven public website (home, sports, pool, spa, dining, events, blog,
+> gallery, about, contact, FAQ, legal) with the booking flows inside it: sports/spa/salon booking, pool tickets,
+> memberships, customer accounts, booking history, QR tickets, Paystack checkout, newsletter, and a Mock API / fixture mode. Contract gaps that
 > depend on API modules not yet landed are listed in [docs/API_DEPENDENCIES.md](docs/API_DEPENDENCIES.md).
 
 ## Purpose
@@ -52,16 +53,81 @@ Property -> Facility -> Operating Point -> Terminal -> Staff -> Transaction
 
 ## What is in the site
 
+Every word and image on the public pages comes from the **CMS module of `007resort-api`** (managed in the admin);
+bookings, prices, availability and payments come from the booking API. Section headings and button labels are
+template microcopy in `resources/views`.
+
 | Area | Routes |
 | --- | --- |
-| Public | `/`, `/facilities/{slug}` (restaurant, indoor-club, beauty-spa, pool, sports-arena, bush-bar, salon, cafe, supermarket), `/contact`, `/sitemap.xml`, `/robots.txt` |
-| Sports / spa / salon booking | `/book/{slug}` (pick court/treatment) -> `/book/{slug}/{resource}?date=` (slot grid) -> hold -> `/checkout/{booking}` (hold countdown) -> Paystack -> `/payment/return` -> `/tickets/{id}` (QR) |
-| Pool tickets | `/pool` (adult/child counts) -> Paystack -> `/orders/{order}/tickets` (one QR per person) |
-| Memberships | `/memberships` -> Paystack -> account |
+| Home | `/` (hero slideshow, floating booking bar, highlights, stats, events, testimonials, gallery strip, membership block, journal, FAQ, subscribe) |
+| Sports / spa / dining | `/sports`, `/spa`, `/dining` (CMS page + live courts / treatments from the API), `/facilities/{slug}` |
+| Booking (sports, spa, salon) | `/book/{slug}` (pick court) -> `/book/{slug}/{resource}?date=&players=` (court tabs, date strip, slot grid, sticky summary) -> hold -> `/checkout/{booking}` (hold countdown) -> Paystack -> `/payment/return` -> `/tickets/{id}` (QR) |
+| Quick booking bar target | `/book-now?what=&date=&players=` (works without JS, redirects into the flows above) |
+| Pool tickets | `/pool` (date + quantity steppers) -> Paystack -> `/orders/{order}/tickets` (one QR per person) |
+| Memberships | `/memberships` (plans from the API) -> Paystack -> account |
+| Events | `/events` (month + type chips), `/events/{slug}?start=` (add-to-calendar), `/events/{slug}.ics` |
+| Journal | `/blog` (featured, category chips, search, pagination), `/blog/{slug}` (reading progress, related, share, subscribe) |
+| Gallery | `/gallery?album=` (masonry + lightbox, deep link `#photo=<id>`) |
+| Info | `/about`, `/contact` (form -> CMS, map, hours, WhatsApp), `/faq`, `/terms`, `/privacy`, `/cookies`, `/pages/{cms-slug}` |
+| Newsletter | `POST /newsletter`, `/newsletter/confirm?token=`, `/newsletter/unsubscribe?token=` (double opt-in, GET only previews) |
+| SEO | `/sitemap.xml` (CMS sitemap mapped to site URLs), `/robots.txt` |
+| Aliases | `/book` -> `/sports`, `/tickets` -> `/pool`, `/membership` -> `/memberships` (links editors use in the CMS) |
 | Customer | `/register`, `/verify`, `/login`, `/account`, `/account/bookings[/{id}]` with cancel/reschedule, ticket pages with SVG download and print |
 
 Everything shown or decided (availability, holds, prices, cancel/reschedule eligibility, payment outcome)
 comes from the API. This app has no booking, availability or payment logic and no database.
+
+## CMS content
+
+`App\Services\Cms\CmsClient` maps 1:1 to `GET/POST /api/v1/public/cms/*` (contract: `docs/CMS_API.md` in
+`007resort-api`). Three implementations:
+
+| Driver | When | Notes |
+| --- | --- | --- |
+| `fixtures` | `CMS_FIXTURES=true` (or `R007_MOCK=true`), tests | Sample content in `resources/cms-fixtures/*.php` in the exact API shapes; images in `public/stock/` (dev only, credits in `public/stock/CREDITS.md`) |
+| `http` (default) | production | `HttpCmsClient` behind `CachedCmsClient` |
+| cache | always with `http` | Fresh for `CMS_CACHE_TTL` (60 s), copy kept `CMS_STALE_TTL` (24 h) and served if the API is slow/down (stale-if-error), 15 s circuit breaker so pages do not wait on a dead API |
+
+If the CMS was never reachable and nothing is cached, content pages answer a friendly `503` (with `Retry-After`) that
+still links to booking; the home page falls back to a plain hero; booking/checkout/account keep working because they
+do not depend on CMS copy. Only booking actions show the "booking unavailable" banners.
+
+What the CMS drives: site settings (brand, contact, hours -> the "open now" pill computed in Africa/Lagos, social,
+SEO defaults/OG image, announcement bar, CTA labels, footer), home sections (`HERO_SLIDE`, `HIGHLIGHT`, `STAT`,
+`TESTIMONIAL`, `FAQ`, `PARTNER`, `CTA_BAND`), pages (`home`, `sports`, `pool`, `spa`, `dining`, `membership`, `events`,
+`blog`, `gallery`, `about`, `contact`, `faq`, `terms`, `privacy`, `cookies` and any other slug at `/pages/{slug}`),
+posts, events (recurrence expanded by the API), gallery albums (album slug `sports`/`pool`/`spa`/`dining`/`events`/`grounds`
+feeds the themed photo strips), subscribers and the contact inbox. Headlines can mark the accent word with
+`*asterisks*`; otherwise the last word is set in the italic accent.
+
+### Add a section / block
+
+1. New **home section type** from the API: render it in `resources/views/home.blade.php` from `$by['MY_TYPE']`
+   (see `PageController::home()` for how data is prepared), keep the partial next to the others in
+   `resources/views/partials/`.
+2. New **page**: create it in the admin with a slug; `/pages/{slug}` renders it (hero, subtitle, Markdown body).
+   For a route of its own add it to `routes/web.php` and to `config/site.php` `page_defaults` (title/subtitle fallback,
+   FAQ topic, event category, highlight category, album slug for the strips).
+3. Reveal animation: add class `reveal` (and `style="--i:N"` for stagger); rails: wrap items in `<x-rail>`;
+   count-up: `data-count`.
+
+## Front-end
+
+Design system in `resources/css/*.css` (tokens, base, layout, components, sections, pages, booking, motion), bundled
+by Vite into **one hand-written stylesheet** (no Tailwind/framework). Fraunces + Inter are self-hosted (`@fontsource`).
+JS is vanilla ES modules in `resources/js/modules` (~6 KB gz): header/drawer, scroll reveal + count-up, parallax, scroll-snap
+rails, hero slideshow, gallery + lightbox, forms, booking widgets (slot summary, steppers, hold countdown), subscribe
+(+ optional slide-in, dismissal remembered 30 days), misc (magnetic buttons, reading bar, mobile CTA). Everything is
+transform/opacity only, respects `prefers-reduced-motion`, and content is visible without JS (an inline, CSP-nonced
+snippet arms reveals only when JS runs, with a 4 s failsafe). Images use the media `variants` for `srcset`, lazy loading,
+the hero image is preloaded. CSP: `script-src 'self' 'nonce-...'`; images are allowed from this site and the API origin
+(`CMS_MEDIA_HOSTS` for a CDN). Cross-document view transitions can be switched off with `SITE_VIEW_TRANSITIONS=false`.
+
+```bash
+npm ci && npm run build        # production assets
+npm run dev                    # vite dev server
+python3 scripts/stock-variants.py <dir with manifest.json>   # regenerate dev stock variants + fixtures (needs cwebp)
+```
 
 ### Graceful degradation (site offline / stale)
 
@@ -109,6 +175,12 @@ npm ci && npm run build   # or `npm run dev`
 php artisan serve --port=8107   # http://localhost:8107
 ```
 
+### Fixture CMS + real booking API
+
+```bash
+CMS_FIXTURES=true R007_API_BASE_URL=http://127.0.0.1:8080 R007_API_SERVICE_TOKEN=... php artisan serve --port=8117
+```
+
 ### Mock API mode (no backend needed)
 
 ```bash
@@ -149,16 +221,23 @@ All configuration comes from the environment (see `.env.example` - placeholders 
 | `R007_API_CONNECT_TIMEOUT` | `3` | Connect timeout (seconds) |
 | `R007_API_CLIENT_ID` | `007resort-booking-web` | Public client identifier registered in the API (not a secret) |
 | `R007_API_SERVICE_TOKEN` | empty | **Secret.** Credential of the "online" channel for public reads when nobody is signed in |
+| `CMS_FIXTURES` | `false` | Serve bundled sample CMS content instead of calling the API (`CMS_DRIVER=fixtures|http` overrides) |
+| `CMS_API_PATH` | `public/cms` | Path of the CMS endpoints under `/api/v1` |
+| `CMS_CACHE_TTL` / `CMS_STALE_TTL` / `CMS_TIMEOUT` | `60` / `86400` / `4` | Seconds: fresh window, stale-if-error window, HTTP timeout |
+| `CMS_PAGE_MAX_AGE` | `60` | Browser `Cache-Control` max-age of public GET pages (signed-out only) |
+| `CMS_MEDIA_HOSTS` | empty | Extra image origins for the CSP (CDN) |
+| `CMS_SUBSCRIBE_POPUP` | `true` | Dismissible newsletter slide-in after engagement |
+| `SITE_VIEW_TRANSITIONS` | `true` | Cross-document view transitions (page fade) |
 | `R007_MOCK` | `false` | Mock API mode (dev/demo only; never in production) |
 | `R007_MOCK_OFFLINE_FACILITIES` | empty | Mock only: facility keys shown as paused |
 | `R007_BOOKING_HORIZON_DAYS` | `30` | How far ahead the date pickers go |
 | `R007_DISPLAY_TIMEZONE` | `Africa/Lagos` | Timezone used when rendering dates |
-| `SITE_PHONE`, `SITE_EMAIL`, `SITE_ADDRESS`, `SITE_MAP_URL` | placeholders | Fallback contact details (API `/public/site` wins) |
+| `SITE_PHONE`, `SITE_EMAIL`, `SITE_ADDRESS`, `SITE_MAP_URL` | placeholders | Fallback contact details when the CMS has none |
 | `TRUSTED_PROXIES` | `127.0.0.1` | Reverse proxy addresses whose `X-Forwarded-*` are trusted |
 | `SESSION_DRIVER` | `file` | Session store (holds the customer's API token server-side; `SESSION_ENCRYPT=true`) |
 | `CACHE_STORE` | `file` | Cache store (also used for idempotency locks; must support locks: file/redis) |
 
-See `config/r007.php` and `config/site.php` (static facility copy and the API-kind matching).
+See `config/r007.php`, `config/cms.php` and `config/site.php` (nav chrome, facility fallbacks and API-kind matching, page defaults).
 
 ## Deployment
 

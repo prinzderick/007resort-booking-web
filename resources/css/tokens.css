@@ -7,10 +7,11 @@
     --white: #fffdf9;
     --sun: #e4572e;       /* accent: large type, marks, decorative */
     --sun-btn: #c8431e;   /* accent: buttons + small text (AA on paper/white with white text) */
+    --sun-text: #b03a19;  /* accent for small text on light backgrounds (AA) */
     --sun-soft: #ffc9b8;
     --leaf: #1e4d3b;
     --leaf-2: #2a6650;
-    --mute: #6e675e;      /* AA on paper */
+    --mute: #5f5850;      /* AA on paper and paper-2 */
     --line: rgb(20 17 15 / 0.14);
     --ok: #1d7a4a;
     --bad: #b3261e;

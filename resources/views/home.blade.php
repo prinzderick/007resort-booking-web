@@ -136,7 +136,7 @@
                         @foreach ($by['STAT'] as $st)
                             @php $n = Text::firstNumber($st['value']); @endphp
                             <div class="stat reveal" style="--i:{{ $loop->index }}">
-                                <b>@if ($n)<span data-count="{{ $n['n'] }}" data-raw="{{ $n['raw'] }}" class="tnum">{{ $n['raw'] }}</span>@if ($n['rest'])<i>{{ $n['rest'] }}</i>@endif @else{{ $st['value'] }}@endif @if (! empty($st['suffix']))<i>{{ $st['suffix'] }}</i>@endif</b>
+                                <b>@if ($n)<span data-count="{{ $n['n'] }}" data-raw="{{ $n['raw'] }}" class="tnum">{{ $n['raw'] }}</span>@if ($n['rest'])<i @class(['sfx' => mb_strlen($n['rest']) > 1])>{{ $n['rest'] }}</i>@endif @else{{ $st['value'] }}@endif @if (! empty($st['suffix']))<i @class(['sfx' => mb_strlen($st['suffix']) > 1])>{{ $st['suffix'] }}</i>@endif</b>
                                 <span>{{ $st['label'] }}</span>
                             </div>
                         @endforeach

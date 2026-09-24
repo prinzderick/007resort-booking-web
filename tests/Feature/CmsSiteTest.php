@@ -112,6 +112,13 @@ class CmsSiteTest extends ApiTestCase
         $this->get('/book-now?what=sports-arena&date=not-a-date')->assertRedirect(route('book.resources', ['slug' => 'sports-arena']));
     }
 
+    public function test_cms_link_aliases_redirect_to_real_pages(): void
+    {
+        $this->get('/book')->assertRedirect('/sports')->assertStatus(301);
+        $this->get('/tickets')->assertRedirect('/pool');
+        $this->get('/membership')->assertRedirect('/memberships');
+    }
+
     public function test_themed_pages_show_live_courts_from_the_booking_api(): void
     {
         $this->get('/sports')->assertOk()->assertSee('Tennis Court 1')->assertSee('₦5,000')->assertSee('See times');

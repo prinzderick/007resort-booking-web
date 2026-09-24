@@ -46,7 +46,10 @@
         (function (d) { d.classList.add('js'); setTimeout(function () { if (!d.dataset.ready) { d.classList.remove('js'); } }, 4000); })(document.documentElement);
     </script>
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @fonts
+        @foreach (['fraunces/files/fraunces-latin-600-normal.woff2', 'inter/files/inter-latin-400-normal.woff2'] as $f)
+            @php try { $fontUrl = \Illuminate\Support\Facades\Vite::asset('node_modules/@fontsource/'.$f); } catch (\Throwable) { $fontUrl = null; } @endphp
+            @if ($fontUrl)<link rel="preload" href="{{ $fontUrl }}" as="font" type="font/woff2" crossorigin>@endif
+        @endforeach
         @stack('preload')
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif

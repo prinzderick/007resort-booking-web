@@ -13,7 +13,9 @@ export function initParallax() {
         visible.forEach((el) => {
             const f = parseFloat(el.dataset.parallax) || 0.15;
             const parent = el.parentElement.getBoundingClientRect();
-            const offset = (parent.top + parent.height / 2 - vh() / 2) * -f;
+            // stay inside the oversized image's spare room so an edge never shows
+            const room = Math.max(0, (el.offsetHeight - parent.height) / 2);
+            const offset = Math.max(-room, Math.min(room, (parent.top + parent.height / 2 - vh() / 2) * -f));
             el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
         });
     });

@@ -56,6 +56,10 @@ Route::middleware(['throttle:public', PublicCache::class])->group(function () {
     Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 
     Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
+    // Friendly aliases that CMS editors (and the CMS demo content) use for links: /book, /tickets, /membership.
+    Route::redirect('/book', '/sports', 301);
+    Route::redirect('/tickets', '/pool', 301);
+    Route::redirect('/membership', '/memberships', 301);
     Route::get('/pool', [TicketPurchaseController::class, 'form'])->name('pool');
 
     // Sports / spa / salon: browsing is public, holding needs an account.

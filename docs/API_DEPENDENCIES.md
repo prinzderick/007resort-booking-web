@@ -50,3 +50,13 @@ renames) them, the site works fully in mock mode and degrades calmly against a r
 - Not built (needs API/native work): Apple/Google Wallet passes (the ticket page is an installable-friendly,
   printable/downloadable QR page instead), email/SMS delivery of tickets (API-side), Turnstile/reCAPTCHA
   (honeypot + fill-time guard only).
+
+## CMS module (public site v2)
+
+The public website reads all of its content from `GET /api/v1/public/cms/*` and writes newsletter subscriptions and
+contact messages through `POST /api/v1/public/cms/{subscribers,subscribers/confirm/{token},subscribers/unsubscribe/{token},contact}`
+(contract: `docs/CMS_API.md` in `007resort-api`, PR prinzderick/007resort-api#19). Endpoints used: `site`, `home`, `pages`, `pages/{slug}`,
+`posts`, `posts/{slug}`, `post-categories`, `events`, `events/{slug}`, `gallery/albums`, `gallery/albums/{slug}`, `sitemap`.
+The service token needs scope `public.read` (and may POST to the four public write endpoints). The visitor's IP is
+forwarded as `X-Client-IP` so per-visitor rate limits work. Site email links point at `CMS_WEB_URL` + `/newsletter/confirm?token=`
+and `/newsletter/unsubscribe?token=` (set `CMS_WEB_URL` on the API to this site's origin).
