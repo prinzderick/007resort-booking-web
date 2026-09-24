@@ -45,12 +45,12 @@
         // Arms scroll-reveals only when JS runs; if the bundle has not marked itself ready shortly, everything is shown.
         (function (d) { d.classList.add('js'); setTimeout(function () { if (!d.dataset.ready) { d.classList.remove('js'); } }, 4000); })(document.documentElement);
     </script>
+    @stack('preload')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @foreach (['fraunces/files/fraunces-latin-600-normal.woff2', 'inter/files/inter-latin-400-normal.woff2'] as $f)
             @php try { $fontUrl = \Illuminate\Support\Facades\Vite::asset('node_modules/@fontsource/'.$f); } catch (\Throwable) { $fontUrl = null; } @endphp
             @if ($fontUrl)<link rel="preload" href="{{ $fontUrl }}" as="font" type="font/woff2" crossorigin>@endif
         @endforeach
-        @stack('preload')
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
     @if (config('site.view_transitions'))
