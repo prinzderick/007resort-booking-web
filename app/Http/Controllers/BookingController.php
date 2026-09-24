@@ -50,11 +50,13 @@ class BookingController extends Controller
         $day = $this->requestedDay($request);
         $resource = null;
         $slots = [];
+        $siblings = [];
         $notice = $this->facilityNotice($facility);
 
         if ($notice === null) {
             try {
-                $resource = $this->bookings->resource($facility['ids'] ?? [$facility['id']], $resourceId);
+                $siblings = $this->bookings->resources($facility['ids'] ?? [$facility['id']]);
+                $resource = collect($siblings)->firstWhere('id', $resourceId);
                 abort_if($resource === null, 404);
                 if (($resource['onlineAvailable'] ?? true) === false) {
                     $notice = $resource['onlineNotice'] ?? 'Online booking for this item is temporarily unavailable. Please call or visit reception.';
@@ -76,6 +78,7 @@ class BookingController extends Controller
             'day' => $day,
             'days' => $this->days(),
             'notice' => $notice,
+            'siblings' => $siblings,
         ]);
     }
 

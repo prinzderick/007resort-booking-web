@@ -73,8 +73,9 @@ class PublicSiteTest extends ApiTestCase
 
     public function test_contact_page_lists_hours(): void
     {
+        // Contact details and hours are CMS content now (fixtures in tests); facility pages still show the booking API's own hours.
         $this->fakeApi(['public/site' => Http::response($this->siteBody())]);
-        $this->get('/contact')->assertOk()->assertSee('1 Resort Road')->assertSee('Daily 08:00-22:00');
+        $this->get('/contact')->assertOk()->assertSee('Otueke')->assertSee('Monday')->assertSee('7am to 11pm');
     }
 
     public function test_seo_endpoints(): void

@@ -1,34 +1,42 @@
 @use('App\Support\Money')
+@use('App\Support\Text')
 @extends('layouts.app')
-@section('title', 'Membership plans')
-@section('description', 'Join 007 Resort & Spa as a member for priority access and member rates.')
+@section('title', Text::plain($cms['title']))
+@section('description', $cms['seo']['description'] ?? 'Join 007 Resort & Spa as a member for priority access and member rates.')
+@section('hero', '1')
 
 @section('content')
-    <h1 class="text-3xl font-semibold">Membership plans</h1>
-    <p class="mt-1 text-stone-600">Pick a plan and pay securely online. Your membership QR is available in your account as soon as payment is confirmed.</p>
+    @include('partials.page-hero', ['image' => $cms['hero'] ?? $cms['heroFallback'], 'eyebrow' => 'Membership', 'title' => $cms['title'], 'sub' => $cms['subtitle'], 'compact' => true, 'crumbs' => [['Home', route('home')], ['Membership']], 'ctas' => [['See plans', '#plans']]])
+    <div class="slide-over" style="margin-top:0;border-radius:0">
+        <section class="section" id="plans" style="padding-top:clamp(40px,6vw,80px)">
+            <div class="wrap">
+                <div class="sec-head"><div><span class="eyebrow">Plans</span><h2 class="h-1">Pick a <i>plan.</i></h2></div><p class="lede">Pay securely online. Your membership QR is available in your account as soon as payment is confirmed.</p></div>
+                @if ($notice)<x-notice type="warn">{{ $notice }}</x-notice>@endif
+                <div class="grid">
+                    @foreach ($plans as $p)
+                        <article class="plan reveal {{ $loop->index === 0 && count($plans) > 1 ? 'plan--feat' : '' }}" style="--i:{{ $loop->index }}">
+                            <h2 class="h-3">{{ $p['name'] }}</h2>
+                            <p class="price">{{ Money::format($p['price']) }}</p>
+                            <ul>
+                                <li>Valid for {{ $p['durationDays'] }} days</li>
+                                <li>{{ ($p['visitLimit'] ?? null) ? $p['visitLimit'].' visits' : 'Unlimited visits' }}</li>
+                            </ul>
+                            <form method="POST" action="{{ route('memberships.buy', $p['id']) }}" data-once>
+                                @csrf
+                                <x-idem />
+                                <button type="submit" data-busy="Redirecting to Paystack..." class="btn btn--block {{ $loop->index === 0 && count($plans) > 1 ? 'btn--light' : '' }}">Buy this plan</button>
+                            </form>
+                        </article>
+                    @endforeach
+                </div>
+                @if (! $notice && count($plans) === 0)<p class="empty">No plans are on sale online right now. Please ask at reception.</p>@endif
+            </div>
+        </section>
 
-    @if ($notice)
-        <x-notice type="warn" class="mt-6">{{ $notice }}</x-notice>
-    @endif
-
-    <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach ($plans as $p)
-            <article class="flex flex-col rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
-                <h2 class="text-lg font-semibold">{{ $p['name'] }}</h2>
-                <p class="mt-2 text-3xl font-semibold text-emerald-900">{{ Money::format($p['price']) }}</p>
-                <ul class="mt-3 flex-1 space-y-1 text-sm text-stone-600">
-                    <li>Valid for {{ $p['durationDays'] }} days</li>
-                    <li>{{ ($p['visitLimit'] ?? null) ? $p['visitLimit'].' visits' : 'Unlimited visits' }}</li>
-                </ul>
-                <form method="POST" action="{{ route('memberships.buy', $p['id']) }}" data-once class="mt-5">
-                    @csrf
-                    <x-idem />
-                    <button type="submit" data-busy="Redirecting to Paystack..." class="w-full rounded-lg bg-emerald-800 px-4 py-3 font-semibold text-white hover:bg-emerald-900 disabled:opacity-60">Buy this plan</button>
-                </form>
-            </article>
-        @endforeach
+        @if (trim($cms['bodyHtml'] ?? '') !== '')<section class="section section--paper2"><div class="wrap"><div class="narrow prose reveal">{!! $cms['bodyHtml'] !!}</div></div></section>@endif
+        @if (count($faqs))
+            <section class="section"><div class="wrap"><div class="lead"><div><span class="eyebrow">Questions</span><h2 class="h-1">Before you <i>join.</i></h2></div><div>@include('partials.faq', ['faqs' => $faqs, 'open' => true])</div></div></div></section>
+        @endif
+        <div style="height:40px"></div>
     </div>
-    @if (! $notice && count($plans) === 0)
-        <p class="mt-6 rounded-lg border border-stone-200 bg-white p-4 text-stone-600">No plans are on sale online right now. Please ask at reception.</p>
-    @endif
 @endsection

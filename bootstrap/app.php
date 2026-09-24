@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\SecurityHeaders;
+use App\Services\Cms\CmsUnavailableException;
 use App\Services\Online\CustomerService;
 use App\Services\R007Api\R007ApiException;
 use App\Support\ApiProblem;
@@ -28,7 +29,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Fallback rendering for API errors a controller did not handle itself.
         // Privacy: log status + stable code only, never payloads or identities.
-        $exceptions->dontReport(R007ApiException::class);
+        $exceptions->dontReport([R007ApiException::class, CmsUnavailableException::class]);
+        $exceptions->render(function (CmsUnavailableException $e, Request $request) {
+            return response()->view('errors.cms', [], 503, ['Retry-After' => '30']);
+        });
         $exceptions->render(function (R007ApiException $e, Request $request) {
             Log::warning('api error', ['status' => $e->status, 'code' => $e->code(), 'path' => $request->path()]);
 

@@ -1,0 +1,51 @@
+<?php
+
+use App\Services\Cms\Fixtures\Stock as S;
+
+/** Shape = GET /public/cms/home: flattened, enabled, ordered sections. `byType` is derived by the client. */
+$id = 0;
+$sec = function (string $type, array $f) use (&$id) {
+    $id++;
+
+    return ['id' => sprintf('sec-%02d', $id), 'type' => $type, 'sortOrder' => $id * 10] + $f;
+};
+$media = fn (string $k) => S::media($k);
+
+return [
+    $sec('HERO_SLIDE', ['headline' => 'Your weekend starts *here.*', 'subheadline' => 'Tennis at sunset, a long afternoon by the pool, then suya on the terrace. Book it all in two minutes and walk in with a QR code.', 'media' => $media('hero-01'), 'ctaLabel' => 'Book a court', 'ctaLink' => '/sports', 'alignment' => 'LEFT']),
+    $sec('HERO_SLIDE', ['headline' => 'Courts that stay *lit.*', 'subheadline' => 'Two tennis courts, a five-a-side pitch and a basketball court, floodlit until close. See live availability and hold your hour.', 'media' => $media('hero-03'), 'ctaLabel' => 'See the courts', 'ctaLink' => '/sports', 'alignment' => 'LEFT']),
+    $sec('HERO_SLIDE', ['headline' => 'Cool off, *properly.*', 'subheadline' => 'Loungers under the palms, a shallow end for the kids and a bar that comes to you. One QR ticket per person.', 'media' => $media('hero-02'), 'ctaLabel' => 'Pool day passes', 'ctaLink' => '/pool', 'alignment' => 'LEFT']),
+
+    $sec('HIGHLIGHT', ['title' => 'Courts that stay lit', 'blurb' => 'Two tennis courts, a five-a-side pitch and a basketball court, floodlit until close.', 'priceFrom' => 'Tennis and basketball from ₦8,000/hr', 'media' => $media('tennis-04'), 'link' => '/sports', 'category' => 'play']),
+    $sec('HIGHLIGHT', ['title' => 'Pool days', 'blurb' => 'Loungers under the palms and a shallow end for the kids. One QR ticket per person.', 'priceFrom' => 'Day passes and loungers from ₦2,000', 'media' => $media('pool-02'), 'link' => '/pool', 'category' => 'splash']),
+    $sec('HIGHLIGHT', ['title' => 'Grill deck', 'blurb' => 'Suya spiced in-house every morning and turned by hand over real charcoal.', 'priceFrom' => 'Suya, drinks, late kitchen', 'media' => $media('dining-02'), 'link' => '/dining', 'category' => 'feast']),
+    $sec('HIGHLIGHT', ['title' => 'The spa', 'blurb' => 'Hot stone massage, facials and body scrubs in quiet, candle-lit rooms.', 'priceFrom' => 'Massage and facials from ₦15,000', 'media' => $media('spa-01'), 'link' => '/spa', 'category' => 'reset']),
+    $sec('HIGHLIGHT', ['title' => 'Sunset doubles', 'blurb' => 'Saturday, 6pm on Courts 1 and 2. Bring a partner or we will pair you.', 'priceFrom' => 'From ₦8,000 a pair', 'media' => $media('tennis-02'), 'link' => '/events/sunset-doubles', 'category' => 'play']),
+    $sec('HIGHLIGHT', ['title' => 'Kids splash day', 'blurb' => 'Organised games in the shallow end with a lifeguard on every whistle.', 'priceFrom' => 'Child pass ₦2,000', 'media' => $media('pool-03'), 'link' => '/events/kids-splash-day', 'category' => 'splash']),
+    $sec('HIGHLIGHT', ['title' => 'Jollof and grilled fish', 'blurb' => 'Cooked to order at the restaurant and served on the terrace.', 'priceFrom' => 'Mains from ₦4,500', 'media' => $media('dining-04'), 'link' => '/dining', 'category' => 'feast']),
+    $sec('HIGHLIGHT', ['title' => 'Hot stone massage', 'blurb' => 'Ninety minutes, warm stones, and a robe and tea when you arrive.', 'priceFrom' => 'From ₦35,000', 'media' => $media('spa-02'), 'link' => '/spa', 'category' => 'reset']),
+
+    $sec('STAT', ['label' => 'lawn tennis courts, floodlit', 'value' => '2', 'suffix' => '', 'icon' => null]),
+    $sec('STAT', ['label' => 'five-a-side football pitch', 'value' => '1', 'suffix' => '', 'icon' => null]),
+    $sec('STAT', ['label' => 'places to play, eat and unwind', 'value' => '9', 'suffix' => '', 'icon' => null]),
+    $sec('STAT', ['label' => 'open every day, 7am to 11pm', 'value' => '16', 'suffix' => 'h', 'icon' => null]),
+
+    $sec('TESTIMONIAL', ['name' => 'Ebiere O.', 'role' => 'Weekly tennis, Yenagoa', 'quote' => 'Booked the court from my phone at lunch, walked in that evening with a QR code, and the lights were already on. Zero fuss.', 'rating' => 5, 'avatar' => null]),
+    $sec('TESTIMONIAL', ['name' => 'Preye T.', 'role' => 'Birthday group', 'quote' => 'The pool passes with a QR per person saved us at the gate. Eight of us in, no standing around.', 'rating' => 5, 'avatar' => null]),
+    $sec('TESTIMONIAL', ['name' => 'Ngozi A.', 'role' => 'Spa regular', 'quote' => 'Best massage I have had in the state. The robe and tea when you arrive is a nice touch.', 'rating' => 5, 'avatar' => null]),
+    $sec('TESTIMONIAL', ['name' => 'Timi B.', 'role' => 'Member', 'quote' => 'Match night on the big screen with suya on the deck. That is the whole plan for Saturdays now.', 'rating' => 4, 'avatar' => null]),
+
+    $sec('FAQ', ['question' => 'How long is my slot held while I pay?', 'answer' => 'Ten minutes. When you pick a court or treatment we hold it for you and show a countdown at checkout. If the timer runs out before you pay, the slot goes back on sale and nothing is charged.', 'answerHtml' => '<p>Ten minutes. When you pick a court or treatment we hold it for you and show a countdown at checkout. If the timer runs out before you pay, the slot goes back on sale and nothing is charged.</p>', 'topic' => 'Booking']),
+    $sec('FAQ', ['question' => 'Do I need an account to book?', 'answer' => 'Browsing availability is open to everyone. To hold a slot and pay you sign in or create a free account, so your tickets and receipts stay in one place.', 'answerHtml' => '<p>Browsing availability is open to everyone. To hold a slot and pay you sign in or create a free account, so your tickets and receipts stay in one place.</p>', 'topic' => 'Booking']),
+    $sec('FAQ', ['question' => 'Can I cancel or move a booking?', 'answer' => 'Yes, from My bookings. The cancellation window and any refund for that booking are shown before you confirm, because they depend on how close it is to your start time.', 'answerHtml' => '<p>Yes, from My bookings. The cancellation window and any refund for that booking are shown before you confirm, because they depend on how close it is to your start time.</p>', 'topic' => 'Booking']),
+    $sec('FAQ', ['question' => 'How do I get in with my ticket?', 'answer' => 'Every person gets a QR ticket on their phone. Show it at the gate or the sports store; staff scan it and you are in. A screenshot or a printout works too.', 'answerHtml' => '<p>Every person gets a QR ticket on their phone. Show it at the gate or the sports store; staff scan it and you are in. A screenshot or a printout works too.</p>', 'topic' => 'Tickets']),
+    $sec('FAQ', ['question' => 'Are pool passes for a specific day?', 'answer' => 'Yes. You choose the visit date when you buy, and each pass is valid for that day only, during opening hours.', 'answerHtml' => '<p>Yes. You choose the visit date when you buy, and each pass is valid for that day only, during opening hours.</p>', 'topic' => 'Tickets']),
+    $sec('FAQ', ['question' => 'How do I pay?', 'answer' => 'Card, bank transfer or USSD through Paystack. We never see or store your card details.', 'answerHtml' => '<p>Card, bank transfer or USSD through Paystack. We never see or store your card details.</p>', 'topic' => 'Payments']),
+    $sec('FAQ', ['question' => 'I was charged but did not get a ticket.', 'answer' => 'Open My bookings after a couple of minutes; confirmations can take a moment. If nothing appears, message us on WhatsApp with your payment reference and we will sort it out the same day.', 'answerHtml' => '<p>Open My bookings after a couple of minutes; confirmations can take a moment. If nothing appears, message us on WhatsApp with your payment reference and we will sort it out the same day.</p>', 'topic' => 'Payments']),
+    $sec('FAQ', ['question' => 'What are your opening hours?', 'answer' => 'Mostly 7am to 11pm daily; the current hours are always on the Contact page, along with the live open-now indicator.', 'answerHtml' => '<p>Mostly 7am to 11pm daily; the current hours are always on the Contact page, along with the live open-now indicator.</p>', 'topic' => 'Visiting']),
+    $sec('FAQ', ['question' => 'Can I bring my own racket or football?', 'answer' => 'Of course. If you would rather not carry it, rackets and balls can be collected from the Sports Store with your booking QR.', 'answerHtml' => '<p>Of course. If you would rather not carry it, rackets and balls can be collected from the Sports Store with your booking QR.</p>', 'topic' => 'Visiting']),
+    $sec('FAQ', ['question' => 'What do members get?', 'answer' => 'Priority court times, free pool days, member rates across the resort and a private booking line. The plans and prices on the Membership page are the live ones.', 'answerHtml' => '<p>Priority court times, free pool days, member rates across the resort and a private booking line. The plans and prices on the Membership page are the live ones.</p>', 'topic' => 'Membership']),
+
+    $sec('CTA_BAND', ['title' => 'Come every week. Pay less every time.', 'text' => 'Members get priority court times, free pool days and a private booking line.', 'ctaLabel' => 'See membership plans', 'ctaLink' => '/membership', 'media' => null]),
+    $sec('CTA_BAND', ['title' => 'Planning a celebration?', 'text' => 'Weddings, birthdays and corporate days on the terrace and in the event centre.', 'ctaLabel' => 'Talk to us', 'ctaLink' => '/contact', 'media' => null]),
+];

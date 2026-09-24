@@ -30,6 +30,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="R007_MOCK" value="false"/>
+        <env name="CMS_DRIVER" value="fixtures"/>
         <env name="R007_API_BASE_URL" value="https://api.r007.test"/>
         <env name="R007_API_PREFIX" value="/api/v1"/>
         <env name="R007_API_SERVICE_TOKEN" value="svc-test-token"/>
