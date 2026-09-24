@@ -37,7 +37,7 @@
 @push('modals')
     <div class="lb" data-lightbox role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
         <div class="lb-top"><span data-lb-count class="tnum"></span><button type="button" data-lb-close aria-label="Close viewer">&times;</button></div>
-        <div class="lb-stage"><button class="prev" type="button" data-lb-prev aria-label="Previous photo">&lsaquo;</button><img alt="" data-lb-img><button class="next" type="button" data-lb-next aria-label="Next photo">&rsaquo;</button></div>
+        <div class="lb-stage"><button class="prev" type="button" data-lb-prev aria-label="Previous photo">&lsaquo;</button><img alt="" data-lb-img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><button class="next" type="button" data-lb-next aria-label="Next photo">&rsaquo;</button></div>
         <div class="lb-cap" data-lb-cap aria-live="polite"></div>
     </div>
 @endpush

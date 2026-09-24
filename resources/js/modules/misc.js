@@ -1,6 +1,28 @@
 import { $, $$, raf, reduceMotion, finePointer } from './util.js';
 
+// A media variant that 404s must never leave a broken-image icon: fall back to the original URL once, then hide the image
+// (the wrapper keeps the dominant-colour placeholder). Error events do not bubble, hence the capture listener.
+function initImageFallback() {
+    document.addEventListener('error', (e) => {
+        const img = e.target;
+        if (!(img instanceof HTMLImageElement)) return;
+        const fb = img.dataset.fb;
+        if (fb && !img.dataset.fbTried && img.currentSrc !== fb) {
+            img.dataset.fbTried = '1';
+            img.removeAttribute('srcset');
+            img.removeAttribute('sizes');
+            img.src = fb;
+        } else {
+            img.style.visibility = 'hidden';
+        }
+    }, true);
+    // images that failed before this script ran
+    $$('img').forEach((img) => { if (img.complete && img.naturalWidth === 0 && img.currentSrc) img.dispatchEvent(new Event('error')); });
+}
+
 export function initMisc() {
+    initImageFallback();
+
     // magnetic buttons (fine pointers only)
     if (finePointer() && !reduceMotion()) {
         $$('[data-magnetic]').forEach((b) => {

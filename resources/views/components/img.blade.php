@@ -10,6 +10,7 @@
 @if ($m)
 <img src="{{ $src }}" @if ($srcset !== '') srcset="{{ $srcset }}" sizes="{{ $sizes }}" @endif alt="{{ $alt }}"
      @if (! empty($m['width'])) width="{{ $m['width'] }}" @endif @if (! empty($m['height'])) height="{{ $m['height'] }}" @endif
+     data-fb="{{ $m['url'] }}"
      @if ($eager) fetchpriority="high" decoding="async" @else loading="lazy" decoding="async" @endif
      @if ($bg || $pos) style="@if ($bg)background-color:{{ $bg }};@endif @if ($pos)object-position:{{ $pos }};@endif" @endif
      {{ $attributes }}>
