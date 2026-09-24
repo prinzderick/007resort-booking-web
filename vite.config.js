@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
@@ -9,13 +8,17 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
+                bunny('Fraunces', { weights: [400, 600], styles: ['normal', 'italic'] }),
+                bunny('Inter', { weights: [400, 500, 600] }),
             ],
         }),
-        tailwindcss(),
     ],
+    build: {
+        cssMinify: true,
+        rollupOptions: {
+            output: { manualChunks: undefined },
+        },
+    },
     server: {
         watch: {
             ignored: ['**/storage/framework/views/**'],

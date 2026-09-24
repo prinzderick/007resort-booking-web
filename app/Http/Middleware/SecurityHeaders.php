@@ -5,19 +5,25 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Baseline security headers + a request id for log correlation. Logging is
  * privacy-conscious: the id is a random UUID; no IPs, emails, names, tokens.
+ *
+ * The CSP uses a per-request nonce for the one tiny inline script (arms scroll-reveals only when JS runs) so
+ * `script-src` never needs 'unsafe-inline'.
  */
 class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
     {
         $id = (string) Str::uuid();
+        $nonce = base64_encode(random_bytes(16));
         Log::shareContext(['request_id' => $id]);
+        View::share('cspNonce', $nonce);
 
         $response = $next($request);
 
@@ -28,9 +34,12 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
         if (! config('app.debug')) {
+            $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins()])));
+            $frames = implode(' ', (array) config('cms.frame_hosts'));
             $response->headers->set('Content-Security-Policy',
-                "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ".
-                "font-src 'self' https://fonts.bunny.net; script-src 'self'; form-action 'self' https://checkout.paystack.com https://*.paystack.com; frame-ancestors 'self'");
+                "default-src 'self'; img-src 'self' data: {$img}; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ".
+                "font-src 'self' https://fonts.bunny.net; script-src 'self' 'nonce-{$nonce}'; connect-src 'self'; frame-src {$frames}; ".
+                "form-action 'self' https://checkout.paystack.com https://*.paystack.com; base-uri 'self'; frame-ancestors 'self'");
             if ($request->isSecure()) {
                 $response->headers->set('Strict-Transport-Security', 'max-age=31536000');
             }
@@ -41,5 +50,17 @@ class SecurityHeaders
         }
 
         return $response;
+    }
+
+    /** @return list<string> */
+    private function mediaOrigins(): array
+    {
+        $out = (array) config('cms.media_hosts');
+        $api = parse_url((string) config('r007.api.base_url'));
+        if (! empty($api['scheme']) && ! empty($api['host'])) {
+            $out[] = $api['scheme'].'://'.$api['host'].(isset($api['port']) ? ':'.$api['port'] : '');
+        }
+
+        return $out;
     }
 }

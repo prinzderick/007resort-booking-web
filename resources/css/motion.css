@@ -1,0 +1,27 @@
+/* ---------- motion: transform/opacity only. Content is visible without JS; .js (set inline) arms the reveals. ---------- */
+@keyframes kenburns { from { transform: scale(1.02) translate3d(0, 0, 0); } to { transform: scale(1.14) translate3d(-1.5%, -1%, 0); } }
+@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgb(74 222 128 / 0.55); } 70% { box-shadow: 0 0 0 9px rgb(74 222 128 / 0); } 100% { box-shadow: 0 0 0 0 rgb(74 222 128 / 0); } }
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-22px); } }
+@keyframes pagein { from { opacity: 0; } to { opacity: 1; } }
+
+.js .reveal { opacity: 0; transform: translate3d(0, 34px, 0); transition: opacity 0.9s var(--ease), transform 1.1s var(--ease); transition-delay: calc(var(--i, 0) * 90ms); will-change: opacity, transform; }
+.js .reveal.in { opacity: 1; transform: none; will-change: auto; }
+.js .reveal--left { transform: translate3d(-40px, 0, 0); } .js .reveal--scale { transform: scale(0.94); }
+.js .reveal--mask { clip-path: inset(0 0 100% 0); opacity: 1; transform: none; transition: clip-path 1.2s var(--ease); }
+.js .reveal--mask.in { clip-path: inset(0); }
+[data-parallax] { will-change: transform; }
+
+/* Page-to-page fade: cross-document view transitions are enabled from the layout (config site.view_transitions);
+   browsers without support just get this simple fade-in. */
+body { animation: pagein 0.5s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+    .js .reveal, .js .reveal--mask { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+    .hero-slide.is-active img, .page-hero .ph img, .marquee-track, .open-pill::before, .now-card b::before { animation: none !important; }
+    body { animation: none; }
+}

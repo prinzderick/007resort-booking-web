@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Online\ContentService;
 use App\Services\Online\CustomerService;
 use App\Services\Online\PaymentService;
 use App\Services\Online\SiteService;
@@ -20,6 +21,7 @@ class TicketPurchaseController extends Controller
         private readonly TicketService $tickets,
         private readonly PaymentService $payments,
         private readonly CustomerService $customers,
+        private readonly ContentService $content,
     ) {}
 
     public function form()
@@ -49,6 +51,8 @@ class TicketPurchaseController extends Controller
             'notice' => $notice,
             'dates' => array_map(fn ($i) => $today->addDays($i), range(0, min(13, (int) config('r007.booking.horizon_days')))),
             'max' => (int) config('r007.booking.max_tickets_per_order'),
+            'cms' => $this->content->page('pool'),
+            'strip' => $this->content->strip('pool', 8),
         ]);
     }
 

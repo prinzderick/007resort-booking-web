@@ -1,0 +1,36 @@
+:root {
+    /* colour */
+    --ink: #14110f;
+    --ink-2: #3b352f;
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --white: #fffdf9;
+    --sun: #e4572e;       /* accent: large type, marks, decorative */
+    --sun-btn: #c8431e;   /* accent: buttons + small text (AA on paper/white with white text) */
+    --sun-soft: #ffc9b8;
+    --leaf: #1e4d3b;
+    --leaf-2: #2a6650;
+    --mute: #6e675e;      /* AA on paper */
+    --line: rgb(20 17 15 / 0.14);
+    --ok: #1d7a4a;
+    --bad: #b3261e;
+    --warn-bg: #fff3d6;
+
+    /* type */
+    --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    /* scale */
+    --gutter: clamp(20px, 5vw, 72px);
+    --max: 1440px;
+    --r-sm: 10px;
+    --r: 18px;
+    --r-lg: 28px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --shadow: 0 10px 40px rgb(0 0 0 / 0.14);
+    --shadow-sm: 0 2px 10px rgb(20 17 15 / 0.08);
+    --hd-h: 76px;       /* height of the header bar itself */
+    --header-h: 76px;   /* offset for content under the fixed (overlay) header; 0 on pages with a solid, in-flow header */
+    --stick-top: 96px;  /* where sticky sidebars stop under the header */
+    color-scheme: light;
+}

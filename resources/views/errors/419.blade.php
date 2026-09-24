@@ -2,9 +2,9 @@
 @section('title', 'Page expired')
 @section('noindex', '1')
 @section('content')
-    <div class="mx-auto max-w-xl py-12 text-center">
-        <h1 class="text-2xl font-semibold">That page expired</h1>
-        <p class="mt-2 text-stone-600">For your security the form timed out. Nothing was submitted. Please go back, refresh, and try again.</p>
-        <a class="mt-6 inline-block rounded bg-emerald-800 px-4 py-2 font-medium text-white" href="{{ url()->previous() }}">Go back</a>
-    </div>
+<div class="page-pad"><div class="wrap"><div class="pay-result panel">
+    <h1>That page expired</h1>
+    <p class="lede" style="margin:0 auto">For your security the form timed out. Nothing was submitted. Please go back, refresh, and try again.</p>
+    <a class="btn btn--lg" style="margin-top:22px" href="{{ url()->previous() }}">Go back</a>
+</div></div></div>
 @endsection

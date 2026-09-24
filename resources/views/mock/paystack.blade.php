@@ -2,14 +2,14 @@
 @section('title', 'Mock Paystack')
 @section('noindex', '1')
 @section('content')
-    <div class="mx-auto max-w-md rounded-xl border-2 border-dashed border-amber-400 bg-white p-6">
-        <p class="text-xs font-bold uppercase tracking-widest text-amber-700">Mock API mode - not real Paystack</p>
-        <h1 class="mt-2 text-xl font-semibold">Pay {{ \App\Support\Money::format($payment['amount'] ?? null) }}</h1>
-        <p class="mt-1 text-sm text-stone-600">Reference {{ $reference }}</p>
-        <form method="POST" class="mt-5 grid gap-3">
-            @csrf
-            <button name="outcome" value="success" class="rounded-lg bg-emerald-800 px-4 py-3 font-semibold text-white">Simulate successful payment</button>
-            <button name="outcome" value="fail" class="rounded-lg border border-red-300 px-4 py-3 text-red-800">Simulate failed payment</button>
-        </form>
-    </div>
+<div class="page-pad"><div class="wrap"><div class="auth panel" style="border:2px dashed #e0a100">
+    <p class="eyebrow" style="color:#7a4b00">Mock API mode - not real Paystack</p>
+    <h1 class="h-2">Pay {{ \App\Support\Money::format($payment['amount'] ?? null) }}</h1>
+    <p style="color:var(--mute);margin-top:6px">Reference {{ $reference }}</p>
+    <form method="POST" class="stack" style="margin-top:22px">
+        @csrf
+        <button name="outcome" value="success" class="btn btn--lg btn--block">Simulate successful payment</button>
+        <button name="outcome" value="fail" class="btn btn--line btn--block">Simulate failed payment</button>
+    </form>
+</div></div></div>
 @endsection

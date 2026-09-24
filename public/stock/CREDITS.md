@@ -1,0 +1,65 @@
+# Stock photo credits (development fixtures only)
+
+Free-licence photos used only when CMS_FIXTURES=true. Production images come from CMS media.
+
+- hero-01-pool-golden-hour: Giuseppe Famiani (https://unsplash.com/photos/p_GlcvWVUso), Unsplash License
+- hero-02-sunset-infinity-pool-crowd: Cassie Gallegos (https://unsplash.com/photos/6wCWCPwmRJY), Unsplash License
+- hero-03-floodlit-tennis-night: AJ Alao (https://unsplash.com/photos/FChU6hernp8), Unsplash License
+- hero-04-resort-exterior-dusk: Zion C (https://unsplash.com/photos/4Y7DTHX1ins), Unsplash License
+- hero-05-terrace-loungers-umbrella: Ahmad Ajmi (https://unsplash.com/photos/t6Le7895iuk), Unsplash License
+- hero-06-pool-party-energy: Jed Villejo (https://unsplash.com/photos/tEnL33Z0-Ho), Unsplash License
+- tennis-01-racket-and-ball-clay: Valentin Balan (https://unsplash.com/photos/k0aVMMZwqtU), Unsplash License
+- tennis-02-clay-court-serve: Moises Alex (https://unsplash.com/photos/WqI-PbYugn4), Unsplash License
+- tennis-03-forehand-blue-court: Andrew Heald (https://unsplash.com/photos/C1bGTi-rSus), Unsplash License
+- tennis-04-clay-court-evening-player: Peyman Shojaei (https://unsplash.com/photos/us51mNdqaPk), Unsplash License
+- tennis-05-ball-on-blue-line: Mario Gogh (https://unsplash.com/photos/8xaMOOkKNsw), Unsplash License
+- basketball-01-palm-court-sunset-game: Ashwin Vaswani (https://unsplash.com/photos/ViJe3T1m5KE), Unsplash License
+- basketball-02-floodlit-court-night: MChe Lee (https://unsplash.com/photos/zmfYgYwRzjA), Unsplash License
+- basketball-03-colourful-court-game: Lukas Janssen (https://unsplash.com/photos/Y36pAJTt-CY), Unsplash License
+- basketball-04-night-hoop-city: Harry Gillen (https://unsplash.com/photos/NTSFZICrcTM), Unsplash License
+- football-01-stadium-night-match: Alex Simpson (https://unsplash.com/photos/DOicNPBVSHs), Unsplash License
+- football-02-floodlit-pitch-players: Abigail Keenan (https://unsplash.com/photos/8-s5QuUBtyM), Unsplash License
+- football-03-aerial-five-a-side-pitch: CloudVisual India (https://unsplash.com/photos/uUvgCRHudpM), Unsplash License
+- padel-01-badminton-smash: Muktasim Azlan (https://unsplash.com/photos/rjWfNR_AC5g), Unsplash License
+- padel-02-table-tennis-rally: Ilya Pavlov (https://unsplash.com/photos/dybZ3jXtYUo), Unsplash License
+- pool-01-sunset-loungers-palms: Tim Mossholder (https://unsplash.com/photos/5yWwAqTjP20), Unsplash License
+- pool-02-kids-playing-in-pool: Cor Dulce (https://unsplash.com/photos/lMMas1V5Z3w), Unsplash License
+- pool-03-loungers-by-palms: Christian Lambert (https://unsplash.com/photos/vmIWr0NnpCQ), Unsplash License
+- pool-04-swimmer-aerial: Briana Tozour (https://unsplash.com/photos/YsFgsZJ4az0), Unsplash License
+- pool-05-resort-dusk-aerial: kaleb tapp (https://unsplash.com/photos/J_uAMelx3qc), Unsplash License
+- pool-06-pool-party-dive: Jakob Owens (https://unsplash.com/photos/cL1m55GcwXE), Unsplash License
+- spa-01-hot-stone-massage: engin akyurt (https://unsplash.com/photos/SMwCQZWayj0), Unsplash License
+- spa-02-back-massage: Massage a Domicile (https://unsplash.com/photos/nMVUTY8_gGw), Unsplash License
+- spa-03-facial-mask-treatment: Rosa Rafael (https://unsplash.com/photos/Pe9IXUuC6QU), Unsplash License
+- spa-04-spa-candles: Sixteen Miles Out (https://unsplash.com/photos/bdVmIkx_gIs), Unsplash License
+- spa-05-robe-and-towel-tea: Vladimir Yelizarov (https://unsplash.com/photos/crnAlC9fcqE), Unsplash License
+- spa-06-sauna-steam: HUUM (https://unsplash.com/photos/IsDUT74YEp4), Unsplash License
+- dining-01-flame-grilled-meat: Emerson Vieira (https://unsplash.com/photos/Mq1LDuswX2o), Unsplash License
+- dining-02-grilled-skewers: OmAr Taha (https://unsplash.com/photos/UUIgQ38ghP8), Unsplash License
+- dining-03-jollof-rice-skewers: Keesha's Kitchen (https://unsplash.com/photos/woC24wGXsQ8), Unsplash License
+- dining-04-jollof-grilled-fish-spread: Keesha's Kitchen (https://unsplash.com/photos/PqG32DYCTM8), Unsplash License
+- dining-05-bar-cocktail: Tai's Captures (https://unsplash.com/photos/2EBTwzczg2A), Unsplash License
+- dining-06-terrace-string-lights-night: Bence Balla-Schottner (https://unsplash.com/photos/b34NWlh8G_M), Unsplash License
+- dining-07-friends-toast-party: OurWhisky Foundation (https://unsplash.com/photos/SdTKkcdz9mY), Unsplash License
+- dining-08-brunch-spread: Rachel Park (https://unsplash.com/photos/hrlvr2ZlUNk), Unsplash License
+- dining-09-chef-at-work: Travis Grossen (https://unsplash.com/photos/AXDTTuh-0UI), Unsplash License
+- events-01-dj-light-show: A J. (https://unsplash.com/photos/r3XvSBEQQLo), Unsplash License
+- events-02-confetti-crowd: Danny Howe (https://unsplash.com/photos/Hq9BwndSFAY), Unsplash License
+- events-03-match-night-big-screens: Amit Lahav (https://unsplash.com/photos/6I-HWjwn-hk), Unsplash License
+- events-04-friends-watching-match: Luciano Oliveira (https://unsplash.com/photos/86zZ7oZI1y0), Unsplash License
+- events-05-outdoor-yoga-sunset: Amauri Mejia (https://unsplash.com/photos/GvF7RkA-E9Q), Unsplash License
+- events-06-kids-circle-lawn: Jay Chen (https://unsplash.com/photos/mKbZ3zAdiB4), Unsplash License
+- events-07-festival-crowd-hands-up: Tim Toomey (https://unsplash.com/photos/pdcyXrcsL2k), Unsplash License
+- lifestyle-01-women-laughing-park: Andra C Taylor Jr (https://unsplash.com/photos/KfoNVMCFb5M), Unsplash License
+- lifestyle-02-family-portrait-sofa: Eyo Archibong (https://unsplash.com/photos/RJo9OowwG4g), Unsplash License
+- lifestyle-03-family-beach-play: Lawrence Crayton (https://unsplash.com/photos/cf1cN3ofKUM), Unsplash License
+- lifestyle-04-couple-walking-holding-hands: Roman Derrick Okello (https://unsplash.com/photos/Cfq5AOCxjms), Unsplash License
+- lifestyle-05-personal-trainer-session: Sergio Kian (https://unsplash.com/photos/G6svDyPVRrc), Unsplash License
+- lifestyle-06-trainer-push-up-coaching: Jonathan Borba (https://unsplash.com/photos/R0y_bEUjiOM), Unsplash License
+- gallery-01-palm-silhouettes-sunset: Prometey Sanchez Noskov (https://unsplash.com/photos/c6M7AoevSXE), Unsplash License
+- gallery-02-palm-avenue-pink-sky: Roberto Nickson (https://unsplash.com/photos/wbIw84HTI8w), Unsplash License
+- gallery-03-festoon-bulb-bokeh: Keenan Davidson (https://unsplash.com/photos/gpFAEiBchKI), Unsplash License
+- gallery-04-garden-lights-night: Lily Miller (https://unsplash.com/photos/T9DL0p3qpd0), Unsplash License
+- gallery-05-aerial-clay-court: Maurits Bausenhart (https://unsplash.com/photos/XtcZbSPVJ3A), Unsplash License
+- membership-01-membership-card-blue: Thalia Karr (https://unsplash.com/photos/V83aFY738OI), Unsplash License
+- membership-02-lounge-reception-desk: Dylan Calluy (https://unsplash.com/photos/8BYahZcwYgI), Unsplash License

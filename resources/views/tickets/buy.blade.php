@@ -1,55 +1,76 @@
 @use('App\Support\Money')
+@use('App\Support\Text')
 @extends('layouts.app')
-@section('title', 'Pool tickets')
-@section('description', 'Buy swimming pool day tickets online for adults and children. Each person gets an individual QR ticket.')
+@section('title', Text::plain($cms['title'] ?? 'Pool day passes'))
+@section('description', $cms['seo']['description'] ?? 'Buy swimming pool day tickets online for adults and children. Each person gets an individual QR ticket.')
+@section('hero', '1')
+
+@php $players = max(0, min((int) config('r007.booking.max_tickets_per_order'), (int) request('players', 0))); $pick = request('date'); $firstAdult = true; @endphp
 
 @section('content')
-    <nav aria-label="Breadcrumb" class="text-sm text-stone-500"><a class="hover:underline" href="{{ route('facility', 'pool') }}">Swimming Pool</a> / Tickets</nav>
-    <h1 class="mt-2 text-3xl font-semibold">Pool day tickets</h1>
-    <p class="mt-1 text-stone-600">Choose your visit date and how many adults and children. Every person receives their own QR ticket.</p>
+    @include('partials.page-hero', ['image' => $cms['hero'] ?? $cms['heroFallback'], 'eyebrow' => 'Pool and day passes', 'title' => $cms['title'], 'sub' => $cms['subtitle'], 'compact' => true, 'crumbs' => [['Home', route('home')], ['Pool day passes']],
+        'ctas' => [['Choose your date', '#tickets']]])
 
-    @if ($notice)
-        <x-notice type="warn" class="mt-6">{{ $notice }} <a class="underline" href="{{ route('contact') }}">Contact us</a></x-notice>
-    @else
-        @if (! app(\App\Services\Online\CustomerService::class)->check())
-            <x-notice type="info" class="mt-6">You will sign in or create an account before paying, so your tickets are saved in your account. <a class="underline" href="{{ route('login') }}">Sign in</a></x-notice>
-        @endif
-        <form method="POST" action="{{ route('pool.order') }}" class="mt-6 max-w-xl space-y-5 rounded-xl border border-stone-200 bg-white p-6" data-once data-ticket-estimate>
-            @csrf
-            <x-idem />
-            <div>
-                <label for="date" class="block text-sm font-medium">Visit date</label>
-                <select id="date" name="date" class="mt-1 block w-full rounded-lg border border-stone-300 px-3 py-2.5">
-                    @foreach ($dates as $d)
-                        <option value="{{ $d->format('Y-m-d') }}" @selected(old('date') === $d->format('Y-m-d'))>{{ $d->format('l j F Y') }}</option>
-                    @endforeach
-                </select>
-                @error('date')<p class="mt-1 text-sm text-red-700">{{ $message }}</p>@enderror
-            </div>
-
-            <fieldset>
-                <legend class="text-sm font-medium">Tickets</legend>
-                <ul class="mt-2 divide-y divide-stone-100">
-                    @foreach ($products as $p)
-                        <li class="flex items-center justify-between gap-4 py-3">
-                            <div>
-                                <label for="qty-{{ $p['id'] }}" class="font-medium">{{ $p['name'] }}</label>
-                                <p class="text-sm text-stone-600">{{ Money::format($p['price']) }} each</p>
+    <div class="slide-over" style="margin-top:0;border-radius:0">
+        <section class="section" id="tickets" style="padding-top:clamp(40px,6vw,80px)">
+            <div class="wrap book-layout" style="padding-block:0">
+                <div>
+                    @if ($notice)
+                        <x-notice type="warn">{{ $notice }} <a href="{{ route('contact') }}">Contact us</a></x-notice>
+                    @else
+                        @if (! app(\App\Services\Online\CustomerService::class)->check())
+                            <x-notice type="info">You will sign in or create an account before paying, so your tickets are saved in your account. <a href="{{ route('login') }}">Sign in</a></x-notice>
+                        @endif
+                        <form method="POST" action="{{ route('pool.order') }}" class="panel" data-once data-ticket-estimate>
+                            @csrf
+                            <x-idem />
+                            <div class="field">
+                                <label for="date">Visit date</label>
+                                <select id="date" name="date">
+                                    @foreach ($dates as $d)<option value="{{ $d->format('Y-m-d') }}" @selected((old('date') ?? $pick) === $d->format('Y-m-d'))>{{ $d->format('l j F Y') }}</option>@endforeach
+                                </select>
+                                @error('date')<p class="err">{{ $message }}</p>@enderror
                             </div>
-                            <input id="qty-{{ $p['id'] }}" name="qty[{{ $p['id'] }}]" type="number" inputmode="numeric" min="0" max="{{ $max }}" value="{{ old('qty.'.$p['id'], 0) }}"
-                                   data-unit-minor="{{ Money::minor($p['price']) }}" class="w-20 rounded-lg border border-stone-300 px-3 py-2 text-center text-base">
-                        </li>
-                    @endforeach
-                </ul>
-                @error('qty')<p class="mt-1 text-sm text-red-700">{{ $message }}</p>@enderror
-                @if (count($products) === 0)<p class="text-sm text-stone-600">No ticket types are on sale online right now.</p>@endif
-            </fieldset>
 
-            <p class="flex items-baseline justify-between border-t border-stone-100 pt-4">
-                <span class="text-sm text-stone-600">Estimated total <span class="text-xs">(final price is confirmed at checkout)</span></span>
-                <strong class="text-xl" data-estimate>{{ "\u{20A6}" }}0</strong>
-            </p>
-            <button type="submit" data-busy="Redirecting to Paystack..." class="w-full rounded-lg bg-emerald-800 px-4 py-3 font-semibold text-white hover:bg-emerald-900 disabled:opacity-60">Continue to payment</button>
-        </form>
-    @endif
+                            <fieldset style="border:0;padding:0;margin-top:26px">
+                                <legend class="step-label" style="margin:0 0 4px">Tickets</legend>
+                                @foreach ($products as $p)
+                                    @php $isAdult = $loop->first; @endphp
+                                    <div class="ticket-line">
+                                        <div><label for="qty-{{ $p['id'] }}"><b>{{ $p['name'] }}</b></label><span class="p">{{ Money::format($p['price']) }} each</span></div>
+                                        <span class="qty" data-qty>
+                                            <button type="button" aria-label="Fewer {{ $p['name'] }}" data-qty-dec>&minus;</button>
+                                            <input id="qty-{{ $p['id'] }}" name="qty[{{ $p['id'] }}]" type="number" inputmode="numeric" min="0" max="{{ $max }}" value="{{ old('qty.'.$p['id'], $isAdult ? $players : 0) }}" data-unit-minor="{{ Money::minor($p['price']) }}">
+                                            <button type="button" aria-label="More {{ $p['name'] }}" data-qty-inc>+</button>
+                                        </span>
+                                    </div>
+                                @endforeach
+                                @error('qty')<p class="err">{{ $message }}</p>@enderror
+                                @if (count($products) === 0)<p class="empty">No ticket types are on sale online right now.</p>@endif
+                            </fieldset>
+
+                            <p class="total">
+                                <span>Estimated total <small style="color:var(--mute)">(final price is confirmed at checkout)</small></span>
+                                <b data-estimate>{{ "\u{20A6}" }}0</b>
+                            </p>
+                            <button type="submit" data-busy="Redirecting to Paystack..." class="btn btn--lg btn--block" style="margin-top:18px">Continue to payment <span class="arr" aria-hidden="true">&rarr;</span></button>
+                        </form>
+                    @endif
+                </div>
+                <aside class="book-side">
+                    <div class="summary">
+                        <h2>How it works</h2>
+                        <ol class="stack" style="padding-left:20px;font-size:15px;color:var(--ink-2)">
+                            <li>Pick your date and how many of you are coming.</li>
+                            <li>Pay securely with Paystack.</li>
+                            <li>Everyone gets their own QR ticket to show at the gate.</li>
+                        </ol>
+                    </div>
+                    @if (trim($cms['bodyHtml'] ?? '') !== '')<div class="prose" style="font-size:15px">{!! $cms['bodyHtml'] !!}</div>@endif
+                </aside>
+            </div>
+        </section>
+        @include('partials.photo-strip', ['items' => $strip, 'title' => 'The pool'])
+        <div style="height:60px"></div>
+    </div>
 @endsection

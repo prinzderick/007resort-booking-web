@@ -14,6 +14,22 @@
 */
 
 return [
+    'name' => env('SITE_NAME', '007 Resort & Spa'),
+
+    // Cross-document view transitions (smooth page-to-page fade in supporting browsers).
+    'view_transitions' => filter_var(env('SITE_VIEW_TRANSITIONS', true), FILTER_VALIDATE_BOOL),
+
+    // Navigation chrome (labels of the site's own routes). Page copy itself comes from the CMS.
+    'nav' => [
+        ['label' => 'Sports', 'href' => '/sports', 'hint' => 'Courts and pitch'],
+        ['label' => 'Pool', 'href' => '/pool', 'hint' => 'Day passes'],
+        ['label' => 'Spa', 'href' => '/spa', 'hint' => 'Treatments'],
+        ['label' => 'Dining', 'href' => '/dining', 'hint' => 'Grill deck and bar'],
+        ['label' => 'Events', 'href' => '/events', 'hint' => "What's on"],
+        ['label' => 'Membership', 'href' => '/memberships', 'hint' => 'Plans'],
+        ['label' => 'Journal', 'href' => '/blog', 'hint' => 'Stories'],
+    ],
+
     'contact' => [
         'phone' => env('SITE_PHONE', '+234 000 000 0000'),
         'email' => env('SITE_EMAIL', 'hello@example.com'),
@@ -21,6 +37,24 @@ return [
         'map_url' => env('SITE_MAP_URL'),
         'whatsapp' => env('SITE_WHATSAPP'),
     ],
+
+    // Built-in fallbacks for CMS pages that editors have not created yet (title/subtitle only; everything else is CMS).
+    'page_defaults' => [
+        'sports' => ['title' => 'Sports', 'subtitle' => 'Book a court or pitch.', 'faq' => 'Booking', 'events' => 'SPORT', 'highlights' => 'play', 'album' => 'sports'],
+        'pool' => ['title' => 'Pool day passes', 'subtitle' => 'Buy passes for the whole group.', 'faq' => 'Tickets', 'events' => null, 'highlights' => 'splash', 'album' => 'pool'],
+        'spa' => ['title' => 'Spa and treatments', 'subtitle' => 'Book a treatment.', 'faq' => 'Booking', 'events' => 'WELLNESS', 'highlights' => 'reset', 'album' => 'spa'],
+        'dining' => ['title' => 'Dining', 'subtitle' => 'Restaurant, grill deck and bar.', 'faq' => 'Visiting', 'events' => 'FOOD', 'highlights' => 'feast', 'album' => 'dining'],
+        'membership' => ['title' => 'Membership', 'subtitle' => 'Pick a plan.', 'faq' => 'Membership', 'events' => null, 'highlights' => null, 'album' => null],
+        'events' => ['title' => "What's on", 'subtitle' => 'Events at the resort.'],
+        'blog' => ['title' => 'Journal', 'subtitle' => 'Stories and guides.'],
+        'gallery' => ['title' => 'Gallery', 'subtitle' => 'Photos of the resort.'],
+        'about' => ['title' => 'About us', 'subtitle' => ''],
+        'contact' => ['title' => 'Contact', 'subtitle' => 'Get in touch.'],
+        'faq' => ['title' => 'Questions', 'subtitle' => 'Good to know.'],
+    ],
+
+    // facility page slug -> CMS gallery album slug used for its photo strip
+    'facility_albums' => ['sports-arena' => 'sports', 'pool' => 'pool', 'beauty-spa' => 'spa', 'salon' => 'spa', 'restaurant' => 'dining', 'bush-bar' => 'events', 'cafe' => 'dining', 'indoor-club' => 'events', 'supermarket' => 'grounds'],
 
     'default_hours' => 'Daily, 08:00 - 22:00',
 
@@ -59,6 +93,8 @@ return [
             'tagline' => 'Tennis, football and more, by the hour.',
             'description' => 'Pick a court or pitch, see live availability and reserve it in minutes. Rentals are available at the sports store.',
             'match' => ['SPORTS', 'SPORTS_ARENA', 'COURT'],
+            // Informational only (not sold through the hold): rentals collected at the Sports Store with the booking QR.
+            'addons' => [['name' => 'Racket hire', 'note' => 'Sports Store, pay on arrival'], ['name' => 'Balls and bibs', 'note' => 'Sports Store, pay on arrival']],
             'flow' => 'slots',
             'noun' => 'court',
         ],

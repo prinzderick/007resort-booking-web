@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Online\ContentService;
 use App\Services\Online\CustomerService;
 use App\Services\Online\MembershipService;
 use App\Services\Online\PaymentService;
@@ -16,6 +17,7 @@ class MembershipController extends Controller
         private readonly MembershipService $memberships,
         private readonly PaymentService $payments,
         private readonly CustomerService $customers,
+        private readonly ContentService $content,
     ) {}
 
     public function index()
@@ -32,7 +34,11 @@ class MembershipController extends Controller
             $notice = 'Membership plans are temporarily unavailable online. Please ask at reception.';
         }
 
-        return view('memberships.index', compact('plans', 'notice'));
+        return view('memberships.index', [
+            'plans' => $plans, 'notice' => $notice,
+            'cms' => $this->content->page('membership'),
+            'faqs' => $this->content->faqs('Membership', 3),
+        ]);
     }
 
     public function buy(Request $request, string $planId)

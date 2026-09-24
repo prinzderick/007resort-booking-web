@@ -1,0 +1,1997 @@
+{
+ "hero-01": {
+  "id": "hero-01-pool-golden-hour",
+  "url": "/stock/hero-01-pool-golden-hour-1600.webp",
+  "alt": "Turquoise swimming pool beside a curved terrace as the sun sets over the ocean under a moody orange sky",
+  "width": 1600,
+  "height": 1200,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-01-pool-golden-hour-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-01-pool-golden-hour-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-01-pool-golden-hour-1600.webp"
+   }
+  ],
+  "dominantColor": "#61848c",
+  "credit": "Photo: Giuseppe Famiani / Unsplash",
+  "tags": [
+   "pool",
+   "sunset",
+   "golden hour",
+   "terrace"
+  ],
+  "category": "hero"
+ },
+ "hero-02": {
+  "id": "hero-02-sunset-infinity-pool-crowd",
+  "url": "/stock/hero-02-sunset-infinity-pool-crowd-1600.webp",
+  "alt": "Guests relaxing on a wooden deck beside an infinity pool under string lights as a pink and purple sunset fades over the sea",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-02-sunset-infinity-pool-crowd-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-02-sunset-infinity-pool-crowd-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-02-sunset-infinity-pool-crowd-1600.webp"
+   }
+  ],
+  "dominantColor": "#836f81",
+  "credit": "Photo: Cassie Gallegos / Unsplash",
+  "tags": [
+   "pool",
+   "sunset",
+   "string lights",
+   "guests",
+   "evening"
+  ],
+  "category": "hero"
+ },
+ "hero-03": {
+  "id": "hero-03-floodlit-tennis-night",
+  "url": "/stock/hero-03-floodlit-tennis-night-1600.webp",
+  "alt": "Two players on a floodlit clay tennis court at night with bright stadium lights and lush surroundings",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-03-floodlit-tennis-night-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-03-floodlit-tennis-night-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-03-floodlit-tennis-night-1600.webp"
+   }
+  ],
+  "dominantColor": "#52473c",
+  "credit": "Photo: AJ Alao / Unsplash",
+  "tags": [
+   "tennis",
+   "night",
+   "floodlights",
+   "court"
+  ],
+  "category": "hero"
+ },
+ "hero-04": {
+  "id": "hero-04-resort-exterior-dusk",
+  "url": "/stock/hero-04-resort-exterior-dusk-1600.webp",
+  "alt": "Resort hotel wing glowing with warm balcony lights above a landscaped pool at blue-hour dusk",
+  "width": 1600,
+  "height": 1200,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-04-resort-exterior-dusk-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-04-resort-exterior-dusk-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-04-resort-exterior-dusk-1600.webp"
+   }
+  ],
+  "dominantColor": "#48495e",
+  "credit": "Photo: Zion C / Unsplash",
+  "tags": [
+   "resort",
+   "exterior",
+   "dusk",
+   "pool",
+   "architecture"
+  ],
+  "category": "hero"
+ },
+ "hero-05": {
+  "id": "hero-05-terrace-loungers-umbrella",
+  "url": "/stock/hero-05-terrace-loungers-umbrella-1600.webp",
+  "alt": "Stone-built resort terrace with wooden sun loungers, an umbrella and a pool at golden hour",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-05-terrace-loungers-umbrella-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-05-terrace-loungers-umbrella-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-05-terrace-loungers-umbrella-1600.webp"
+   }
+  ],
+  "dominantColor": "#7e6e68",
+  "credit": "Photo: Ahmad Ajmi / Unsplash",
+  "tags": [
+   "terrace",
+   "loungers",
+   "exterior",
+   "resort"
+  ],
+  "category": "hero"
+ },
+ "hero-06": {
+  "id": "hero-06-pool-party-energy",
+  "url": "/stock/hero-06-pool-party-energy-1600.webp",
+  "alt": "Crowd of people jumping and cheering at a lively pool party among palm trees at dusk",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-06-pool-party-energy-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-06-pool-party-energy-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-06-pool-party-energy-1600.webp"
+   }
+  ],
+  "dominantColor": "#4f5b53",
+  "credit": "Photo: Jed Villejo / Unsplash",
+  "tags": [
+   "pool party",
+   "crowd",
+   "energy",
+   "palms"
+  ],
+  "category": "hero"
+ },
+ "tennis-01": {
+  "id": "tennis-01-racket-and-ball-clay",
+  "url": "/stock/tennis-01-racket-and-ball-clay-1600.webp",
+  "alt": "Close-up of white sneakers beside a yellow racket and tennis ball on an orange clay court",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-01-racket-and-ball-clay-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-01-racket-and-ball-clay-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/tennis-01-racket-and-ball-clay-1600.webp"
+   }
+  ],
+  "dominantColor": "#8e7149",
+  "credit": "Photo: Valentin Balan / Unsplash",
+  "tags": [
+   "tennis",
+   "racket",
+   "ball",
+   "clay"
+  ],
+  "category": "tennis"
+ },
+ "tennis-02": {
+  "id": "tennis-02-clay-court-serve",
+  "url": "/stock/tennis-02-clay-court-serve-1600.webp",
+  "alt": "Overhead view of a tennis player serving on a warm orange clay court with long shadows",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-02-clay-court-serve-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-02-clay-court-serve-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/tennis-02-clay-court-serve-1600.webp"
+   }
+  ],
+  "dominantColor": "#c2652b",
+  "credit": "Photo: Moises Alex / Unsplash",
+  "tags": [
+   "tennis",
+   "clay",
+   "aerial",
+   "player"
+  ],
+  "category": "tennis"
+ },
+ "tennis-03": {
+  "id": "tennis-03-forehand-blue-court",
+  "url": "/stock/tennis-03-forehand-blue-court-1600.webp",
+  "alt": "Player mid-swing on a blue and green hard tennis court seen from behind",
+  "width": 1600,
+  "height": 1044,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-03-forehand-blue-court-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-03-forehand-blue-court-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/tennis-03-forehand-blue-court-1600.webp"
+   }
+  ],
+  "dominantColor": "#306e6f",
+  "credit": "Photo: Andrew Heald / Unsplash",
+  "tags": [
+   "tennis",
+   "player",
+   "action",
+   "hard court"
+  ],
+  "category": "tennis"
+ },
+ "tennis-04": {
+  "id": "tennis-04-clay-court-evening-player",
+  "url": "/stock/tennis-04-clay-court-evening-player-1600.webp",
+  "alt": "Woman holding a racquet on a dark orange clay court under evening light",
+  "width": 1600,
+  "height": 2000,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-04-clay-court-evening-player-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-04-clay-court-evening-player-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/tennis-04-clay-court-evening-player-1600.webp"
+   }
+  ],
+  "dominantColor": "#6d4027",
+  "credit": "Photo: Peyman Shojaei / Unsplash",
+  "tags": [
+   "tennis",
+   "evening",
+   "clay",
+   "woman"
+  ],
+  "category": "tennis"
+ },
+ "tennis-05": {
+  "id": "tennis-05-ball-on-blue-line",
+  "url": "/stock/tennis-05-ball-on-blue-line-960.webp",
+  "alt": "Yellow tennis ball resting on the white line of a blue hard court",
+  "width": 960,
+  "height": 1280,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-05-ball-on-blue-line-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-05-ball-on-blue-line-960.webp"
+   }
+  ],
+  "dominantColor": "#165269",
+  "credit": "Photo: Mario Gogh / Unsplash",
+  "tags": [
+   "tennis",
+   "ball",
+   "detail",
+   "blue"
+  ],
+  "category": "tennis"
+ },
+ "basketball-01": {
+  "id": "basketball-01-palm-court-sunset-game",
+  "url": "/stock/basketball-01-palm-court-sunset-game-1600.webp",
+  "alt": "Group playing basketball on an outdoor court under palm trees at sunset",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/basketball-01-palm-court-sunset-game-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/basketball-01-palm-court-sunset-game-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/basketball-01-palm-court-sunset-game-1600.webp"
+   }
+  ],
+  "dominantColor": "#80776c",
+  "credit": "Photo: Ashwin Vaswani / Unsplash",
+  "tags": [
+   "basketball",
+   "sunset",
+   "palms",
+   "outdoor"
+  ],
+  "category": "basketball"
+ },
+ "basketball-02": {
+  "id": "basketball-02-floodlit-court-night",
+  "url": "/stock/basketball-02-floodlit-court-night-1600.webp",
+  "alt": "Two people playing basketball on an outdoor court lit by a floodlight at night with city lights behind",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/basketball-02-floodlit-court-night-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/basketball-02-floodlit-court-night-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/basketball-02-floodlit-court-night-1600.webp"
+   }
+  ],
+  "dominantColor": "#202315",
+  "credit": "Photo: MChe Lee / Unsplash",
+  "tags": [
+   "basketball",
+   "night",
+   "floodlit",
+   "court"
+  ],
+  "category": "basketball"
+ },
+ "basketball-03": {
+  "id": "basketball-03-colourful-court-game",
+  "url": "/stock/basketball-03-colourful-court-game-1600.webp",
+  "alt": "Young men playing a fast game of basketball on a bright blue outdoor court with mountains behind",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/basketball-03-colourful-court-game-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/basketball-03-colourful-court-game-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/basketball-03-colourful-court-game-1600.webp"
+   }
+  ],
+  "dominantColor": "#4c7591",
+  "credit": "Photo: Lukas Janssen / Unsplash",
+  "tags": [
+   "basketball",
+   "players",
+   "daylight",
+   "court"
+  ],
+  "category": "basketball"
+ },
+ "basketball-04": {
+  "id": "basketball-04-night-hoop-city",
+  "url": "/stock/basketball-04-night-hoop-city-960.webp",
+  "alt": "Player reaching for the hoop at dusk with city towers glowing behind",
+  "width": 960,
+  "height": 1441,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/basketball-04-night-hoop-city-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/basketball-04-night-hoop-city-960.webp"
+   }
+  ],
+  "dominantColor": "#3b3a41",
+  "credit": "Photo: Harry Gillen / Unsplash",
+  "tags": [
+   "basketball",
+   "night",
+   "city",
+   "hoop"
+  ],
+  "category": "basketball"
+ },
+ "football-01": {
+  "id": "football-01-stadium-night-match",
+  "url": "/stock/football-01-stadium-night-match-1600.webp",
+  "alt": "Floodlit football stadium at night with a match in progress",
+  "width": 1600,
+  "height": 1072,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/football-01-stadium-night-match-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/football-01-stadium-night-match-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/football-01-stadium-night-match-1600.webp"
+   }
+  ],
+  "dominantColor": "#214933",
+  "credit": "Photo: Alex Simpson / Unsplash",
+  "tags": [
+   "football",
+   "stadium",
+   "night",
+   "floodlights"
+  ],
+  "category": "football"
+ },
+ "football-02": {
+  "id": "football-02-floodlit-pitch-players",
+  "url": "/stock/football-02-floodlit-pitch-players-1600.webp",
+  "alt": "Small-sided football game played under a single floodlight on a dark pitch",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/football-02-floodlit-pitch-players-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/football-02-floodlit-pitch-players-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/football-02-floodlit-pitch-players-1600.webp"
+   }
+  ],
+  "dominantColor": "#173133",
+  "credit": "Photo: Abigail Keenan / Unsplash",
+  "tags": [
+   "football",
+   "five-a-side",
+   "night",
+   "floodlight"
+  ],
+  "category": "football"
+ },
+ "football-03": {
+  "id": "football-03-aerial-five-a-side-pitch",
+  "url": "/stock/football-03-aerial-five-a-side-pitch-1600.webp",
+  "alt": "Aerial view of a glowing five-a-side pitch surrounded by dark buildings at night",
+  "width": 1600,
+  "height": 1165,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/football-03-aerial-five-a-side-pitch-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/football-03-aerial-five-a-side-pitch-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/football-03-aerial-five-a-side-pitch-1600.webp"
+   }
+  ],
+  "dominantColor": "#272318",
+  "credit": "Photo: CloudVisual India / Unsplash",
+  "tags": [
+   "football",
+   "aerial",
+   "night",
+   "pitch"
+  ],
+  "category": "football"
+ },
+ "padel-01": {
+  "id": "padel-01-badminton-smash",
+  "url": "/stock/padel-01-badminton-smash-1600.webp",
+  "alt": "Badminton player leaping to smash a shuttlecock on an indoor green court",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/padel-01-badminton-smash-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/padel-01-badminton-smash-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/padel-01-badminton-smash-1600.webp"
+   }
+  ],
+  "dominantColor": "#152f33",
+  "credit": "Photo: Muktasim Azlan / Unsplash",
+  "tags": [
+   "badminton",
+   "indoor",
+   "action"
+  ],
+  "category": "padel"
+ },
+ "padel-02": {
+  "id": "padel-02-table-tennis-rally",
+  "url": "/stock/padel-02-table-tennis-rally-1600.webp",
+  "alt": "Two men playing a friendly table tennis rally in a bright room",
+  "width": 1600,
+  "height": 1068,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/padel-02-table-tennis-rally-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/padel-02-table-tennis-rally-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/padel-02-table-tennis-rally-1600.webp"
+   }
+  ],
+  "dominantColor": "#a4928a",
+  "credit": "Photo: Ilya Pavlov / Unsplash",
+  "tags": [
+   "table tennis",
+   "indoor",
+   "friends"
+  ],
+  "category": "padel"
+ },
+ "pool-01": {
+  "id": "pool-01-sunset-loungers-palms",
+  "url": "/stock/pool-01-sunset-loungers-palms-960.webp",
+  "alt": "Resort pool with lounge chairs and umbrellas silhouetted by palms against an orange sunset",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-01-sunset-loungers-palms-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-01-sunset-loungers-palms-960.webp"
+   }
+  ],
+  "dominantColor": "#917d69",
+  "credit": "Photo: Tim Mossholder / Unsplash",
+  "tags": [
+   "pool",
+   "sunset",
+   "loungers",
+   "palms"
+  ],
+  "category": "pool"
+ },
+ "pool-02": {
+  "id": "pool-02-kids-playing-in-pool",
+  "url": "/stock/pool-02-kids-playing-in-pool-1600.webp",
+  "alt": "Two young children playing together in sparkling shallow pool water",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-02-kids-playing-in-pool-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-02-kids-playing-in-pool-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-02-kids-playing-in-pool-1600.webp"
+   }
+  ],
+  "dominantColor": "#95bfd8",
+  "credit": "Photo: Cor Dulce / Unsplash",
+  "tags": [
+   "pool",
+   "kids",
+   "family",
+   "splash"
+  ],
+  "category": "pool"
+ },
+ "pool-03": {
+  "id": "pool-03-loungers-by-palms",
+  "url": "/stock/pool-03-loungers-by-palms-1600.webp",
+  "alt": "Wooden loungers beside a resort pool framed by tall palm trees and a hotel building",
+  "width": 1600,
+  "height": 2000,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-03-loungers-by-palms-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-03-loungers-by-palms-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-03-loungers-by-palms-1600.webp"
+   }
+  ],
+  "dominantColor": "#888a87",
+  "credit": "Photo: Christian Lambert / Unsplash",
+  "tags": [
+   "pool",
+   "loungers",
+   "palms",
+   "resort"
+  ],
+  "category": "pool"
+ },
+ "pool-04": {
+  "id": "pool-04-swimmer-aerial",
+  "url": "/stock/pool-04-swimmer-aerial-1600.webp",
+  "alt": "Aerial view of a woman swimming in a turquoise pool beside a striped float",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-04-swimmer-aerial-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-04-swimmer-aerial-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-04-swimmer-aerial-1600.webp"
+   }
+  ],
+  "dominantColor": "#92c0bb",
+  "credit": "Photo: Briana Tozour / Unsplash",
+  "tags": [
+   "pool",
+   "swimming",
+   "aerial",
+   "turquoise"
+  ],
+  "category": "pool"
+ },
+ "pool-05": {
+  "id": "pool-05-resort-dusk-aerial",
+  "url": "/stock/pool-05-resort-dusk-aerial-1600.webp",
+  "alt": "Elevated dusk view of a resort building and lit pool area beside a golf course",
+  "width": 1600,
+  "height": 1068,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-05-resort-dusk-aerial-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-05-resort-dusk-aerial-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-05-resort-dusk-aerial-1600.webp"
+   }
+  ],
+  "dominantColor": "#6b695e",
+  "credit": "Photo: kaleb tapp / Unsplash",
+  "tags": [
+   "resort",
+   "dusk",
+   "pool",
+   "aerial"
+  ],
+  "category": "pool"
+ },
+ "pool-06": {
+  "id": "pool-06-pool-party-dive",
+  "url": "/stock/pool-06-pool-party-dive-1600.webp",
+  "alt": "Man diving into a turquoise pool over a pink flamingo float at a lively pool party",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-06-pool-party-dive-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-06-pool-party-dive-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-06-pool-party-dive-1600.webp"
+   }
+  ],
+  "dominantColor": "#4b826c",
+  "credit": "Photo: Jakob Owens / Unsplash",
+  "tags": [
+   "pool party",
+   "dive",
+   "summer",
+   "energy"
+  ],
+  "category": "pool"
+ },
+ "spa-01": {
+  "id": "spa-01-hot-stone-massage",
+  "url": "/stock/spa-01-hot-stone-massage-1600.webp",
+  "alt": "Person receiving a hot stone massage with smooth black stones along the spine and white orchids",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-massage-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-massage-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-massage-1600.webp"
+   }
+  ],
+  "dominantColor": "#ad8668",
+  "credit": "Photo: engin akyurt / Unsplash",
+  "tags": [
+   "spa",
+   "hot stones",
+   "massage",
+   "flowers"
+  ],
+  "category": "spa"
+ },
+ "spa-02": {
+  "id": "spa-02-back-massage",
+  "url": "/stock/spa-02-back-massage-960.webp",
+  "alt": "Therapist's hands giving a firm back massage with warm oil",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-02-back-massage-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-02-back-massage-960.webp"
+   }
+  ],
+  "dominantColor": "#9c664c",
+  "credit": "Photo: Massage a Domicile / Unsplash",
+  "tags": [
+   "spa",
+   "massage",
+   "hands",
+   "treatment"
+  ],
+  "category": "spa"
+ },
+ "spa-03": {
+  "id": "spa-03-facial-mask-treatment",
+  "url": "/stock/spa-03-facial-mask-treatment-1600.webp",
+  "alt": "Woman with a headband smiling while a beautician applies a clay facial mask",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-mask-treatment-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-mask-treatment-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-mask-treatment-1600.webp"
+   }
+  ],
+  "dominantColor": "#938674",
+  "credit": "Photo: Rosa Rafael / Unsplash",
+  "tags": [
+   "spa",
+   "facial",
+   "skincare",
+   "treatment"
+  ],
+  "category": "spa"
+ },
+ "spa-04": {
+  "id": "spa-04-spa-candles",
+  "url": "/stock/spa-04-spa-candles-1600.webp",
+  "alt": "Warm glowing pillar candles on a wooden table with dried leaves",
+  "width": 1600,
+  "height": 1143,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-04-spa-candles-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-04-spa-candles-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-04-spa-candles-1600.webp"
+   }
+  ],
+  "dominantColor": "#a77c59",
+  "credit": "Photo: Sixteen Miles Out / Unsplash",
+  "tags": [
+   "spa",
+   "candles",
+   "ambience",
+   "warm"
+  ],
+  "category": "spa"
+ },
+ "spa-05": {
+  "id": "spa-05-robe-and-towel-tea",
+  "url": "/stock/spa-05-robe-and-towel-tea-960.webp",
+  "alt": "Smiling woman in a white robe and hair towel holding a cup of tea",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-05-robe-and-towel-tea-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-05-robe-and-towel-tea-960.webp"
+   }
+  ],
+  "dominantColor": "#b7ada6",
+  "credit": "Photo: Vladimir Yelizarov / Unsplash",
+  "tags": [
+   "spa",
+   "robe",
+   "towel",
+   "relaxation"
+  ],
+  "category": "spa"
+ },
+ "spa-06": {
+  "id": "spa-06-sauna-steam",
+  "url": "/stock/spa-06-sauna-steam-960.webp",
+  "alt": "Steam rising from hot stones in a wooden sauna heater",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-06-sauna-steam-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-06-sauna-steam-960.webp"
+   }
+  ],
+  "dominantColor": "#817162",
+  "credit": "Photo: HUUM / Unsplash",
+  "tags": [
+   "spa",
+   "sauna",
+   "steam",
+   "wood"
+  ],
+  "category": "spa"
+ },
+ "dining-01": {
+  "id": "dining-01-flame-grilled-meat",
+  "url": "/stock/dining-01-flame-grilled-meat-1600.webp",
+  "alt": "Meat searing over glowing flames on a charcoal grill",
+  "width": 1600,
+  "height": 900,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-01-flame-grilled-meat-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-01-flame-grilled-meat-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/dining-01-flame-grilled-meat-1600.webp"
+   }
+  ],
+  "dominantColor": "#643a2e",
+  "credit": "Photo: Emerson Vieira / Unsplash",
+  "tags": [
+   "grill",
+   "bbq",
+   "flames",
+   "meat"
+  ],
+  "category": "dining"
+ },
+ "dining-02": {
+  "id": "dining-02-grilled-skewers",
+  "url": "/stock/dining-02-grilled-skewers-960.webp",
+  "alt": "Skewers of marinated meat cooking over glowing coals on an outdoor grill",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-02-grilled-skewers-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-02-grilled-skewers-960.webp"
+   }
+  ],
+  "dominantColor": "#64594d",
+  "credit": "Photo: OmAr Taha / Unsplash",
+  "tags": [
+   "grill",
+   "skewers",
+   "suya",
+   "evening"
+  ],
+  "category": "dining"
+ },
+ "dining-03": {
+  "id": "dining-03-jollof-rice-skewers",
+  "url": "/stock/dining-03-jollof-rice-skewers-1600.webp",
+  "alt": "Skewers of grilled chicken and peppers on a dish of jollof-style rice beside African print fabric",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-03-jollof-rice-skewers-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-03-jollof-rice-skewers-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/dining-03-jollof-rice-skewers-1600.webp"
+   }
+  ],
+  "dominantColor": "#a37158",
+  "credit": "Photo: Keesha's Kitchen / Unsplash",
+  "tags": [
+   "jollof",
+   "skewers",
+   "african food",
+   "rice"
+  ],
+  "category": "dining"
+ },
+ "dining-04": {
+  "id": "dining-04-jollof-grilled-fish-spread",
+  "url": "/stock/dining-04-jollof-grilled-fish-spread-1600.webp",
+  "alt": "Jollof rice, grilled fish, skewers and fresh vegetables laid out together",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-04-jollof-grilled-fish-spread-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-04-jollof-grilled-fish-spread-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/dining-04-jollof-grilled-fish-spread-1600.webp"
+   }
+  ],
+  "dominantColor": "#c79e79",
+  "credit": "Photo: Keesha's Kitchen / Unsplash",
+  "tags": [
+   "jollof",
+   "fish",
+   "skewers",
+   "african food"
+  ],
+  "category": "dining"
+ },
+ "dining-05": {
+  "id": "dining-05-bar-cocktail",
+  "url": "/stock/dining-05-bar-cocktail-960.webp",
+  "alt": "Ruby cocktail with a lime garnish on a bar counter with warm bokeh lights",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-05-bar-cocktail-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-05-bar-cocktail-960.webp"
+   }
+  ],
+  "dominantColor": "#6b4a2a",
+  "credit": "Photo: Tai's Captures / Unsplash",
+  "tags": [
+   "cocktail",
+   "bar",
+   "evening"
+  ],
+  "category": "dining"
+ },
+ "dining-06": {
+  "id": "dining-06-terrace-string-lights-night",
+  "url": "/stock/dining-06-terrace-string-lights-night-1600.webp",
+  "alt": "Outdoor terrace at night with festoon string lights and tables",
+  "width": 1600,
+  "height": 1280,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-06-terrace-string-lights-night-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-06-terrace-string-lights-night-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/dining-06-terrace-string-lights-night-1600.webp"
+   }
+  ],
+  "dominantColor": "#0c1723",
+  "credit": "Photo: Bence Balla-Schottner / Unsplash",
+  "tags": [
+   "terrace",
+   "night",
+   "string lights",
+   "bar"
+  ],
+  "category": "dining"
+ },
+ "dining-07": {
+  "id": "dining-07-friends-toast-party",
+  "url": "/stock/dining-07-friends-toast-party-960.webp",
+  "alt": "Friends raising glasses in a toast beneath balloons at a celebration",
+  "width": 960,
+  "height": 1280,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-07-friends-toast-party-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-07-friends-toast-party-960.webp"
+   }
+  ],
+  "dominantColor": "#49322d",
+  "credit": "Photo: OurWhisky Foundation / Unsplash",
+  "tags": [
+   "toast",
+   "friends",
+   "celebration",
+   "drinks"
+  ],
+  "category": "dining"
+ },
+ "dining-08": {
+  "id": "dining-08-brunch-spread",
+  "url": "/stock/dining-08-brunch-spread-1600.webp",
+  "alt": "Overhead brunch table of waffles, eggs, fresh fruit and juice",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-08-brunch-spread-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-08-brunch-spread-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/dining-08-brunch-spread-1600.webp"
+   }
+  ],
+  "dominantColor": "#b19a7f",
+  "credit": "Photo: Rachel Park / Unsplash",
+  "tags": [
+   "breakfast",
+   "brunch",
+   "food",
+   "flat lay"
+  ],
+  "category": "dining"
+ },
+ "dining-09": {
+  "id": "dining-09-chef-at-work",
+  "url": "/stock/dining-09-chef-at-work-960.webp",
+  "alt": "Chef in a tall white hat and red apron preparing food at a griddle",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/dining-09-chef-at-work-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/dining-09-chef-at-work-960.webp"
+   }
+  ],
+  "dominantColor": "#846a58",
+  "credit": "Photo: Travis Grossen / Unsplash",
+  "tags": [
+   "chef",
+   "kitchen",
+   "cooking"
+  ],
+  "category": "dining"
+ },
+ "events-01": {
+  "id": "events-01-dj-light-show",
+  "url": "/stock/events-01-dj-light-show-1600.webp",
+  "alt": "DJ silhouetted behind beams of pink and white stage lights above a cheering crowd",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-01-dj-light-show-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-01-dj-light-show-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-01-dj-light-show-1600.webp"
+   }
+  ],
+  "dominantColor": "#a8335e",
+  "credit": "Photo: A J. / Unsplash",
+  "tags": [
+   "dj",
+   "party",
+   "lights",
+   "crowd"
+  ],
+  "category": "events"
+ },
+ "events-02": {
+  "id": "events-02-confetti-crowd",
+  "url": "/stock/events-02-confetti-crowd-1600.webp",
+  "alt": "Huge crowd with confetti falling in front of a bright stage",
+  "width": 1600,
+  "height": 1068,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-02-confetti-crowd-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-02-confetti-crowd-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-02-confetti-crowd-1600.webp"
+   }
+  ],
+  "dominantColor": "#4f4241",
+  "credit": "Photo: Danny Howe / Unsplash",
+  "tags": [
+   "crowd",
+   "confetti",
+   "concert",
+   "energy"
+  ],
+  "category": "events"
+ },
+ "events-03": {
+  "id": "events-03-match-night-big-screens",
+  "url": "/stock/events-03-match-night-big-screens-1600.webp",
+  "alt": "Guests at a bar counter watching sport on a wall of large screens",
+  "width": 1600,
+  "height": 1164,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-03-match-night-big-screens-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-03-match-night-big-screens-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-03-match-night-big-screens-1600.webp"
+   }
+  ],
+  "dominantColor": "#453c32",
+  "credit": "Photo: Amit Lahav / Unsplash",
+  "tags": [
+   "match night",
+   "big screen",
+   "bar",
+   "sport"
+  ],
+  "category": "events"
+ },
+ "events-04": {
+  "id": "events-04-friends-watching-match",
+  "url": "/stock/events-04-friends-watching-match-1600.webp",
+  "alt": "Group of friends watching a football match on a television in a dim room",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-04-friends-watching-match-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-04-friends-watching-match-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-04-friends-watching-match-1600.webp"
+   }
+  ],
+  "dominantColor": "#2a3020",
+  "credit": "Photo: Luciano Oliveira / Unsplash",
+  "tags": [
+   "match night",
+   "tv",
+   "friends",
+   "football"
+  ],
+  "category": "events"
+ },
+ "events-05": {
+  "id": "events-05-outdoor-yoga-sunset",
+  "url": "/stock/events-05-outdoor-yoga-sunset-960.webp",
+  "alt": "Group doing yoga on mats on a lawn as the low sun filters through trees",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-05-outdoor-yoga-sunset-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-05-outdoor-yoga-sunset-960.webp"
+   }
+  ],
+  "dominantColor": "#a7a694",
+  "credit": "Photo: Amauri Mejia / Unsplash",
+  "tags": [
+   "yoga",
+   "wellness",
+   "outdoor",
+   "class"
+  ],
+  "category": "events"
+ },
+ "events-06": {
+  "id": "events-06-kids-circle-lawn",
+  "url": "/stock/events-06-kids-circle-lawn-1600.webp",
+  "alt": "Children holding hands in a circle playing on a sunny park lawn",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-06-kids-circle-lawn-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-06-kids-circle-lawn-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-06-kids-circle-lawn-1600.webp"
+   }
+  ],
+  "dominantColor": "#8a9e6a",
+  "credit": "Photo: Jay Chen / Unsplash",
+  "tags": [
+   "kids",
+   "play",
+   "lawn",
+   "family"
+  ],
+  "category": "events"
+ },
+ "events-07": {
+  "id": "events-07-festival-crowd-hands-up",
+  "url": "/stock/events-07-festival-crowd-hands-up-1600.webp",
+  "alt": "Festival crowd with hands raised and smiling faces in the sun",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-07-festival-crowd-hands-up-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-07-festival-crowd-hands-up-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-07-festival-crowd-hands-up-1600.webp"
+   }
+  ],
+  "dominantColor": "#7b7870",
+  "credit": "Photo: Tim Toomey / Unsplash",
+  "tags": [
+   "outdoor concert",
+   "crowd",
+   "festival"
+  ],
+  "category": "events"
+ },
+ "lifestyle-01": {
+  "id": "lifestyle-01-women-laughing-park",
+  "url": "/stock/lifestyle-01-women-laughing-park-1600.webp",
+  "alt": "Women in colourful outfits laughing together on a lawn",
+  "width": 1600,
+  "height": 1239,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-01-women-laughing-park-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-01-women-laughing-park-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-01-women-laughing-park-1600.webp"
+   }
+  ],
+  "dominantColor": "#71725d",
+  "credit": "Photo: Andra C Taylor Jr / Unsplash",
+  "tags": [
+   "friends",
+   "laughing",
+   "women",
+   "joy"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-02": {
+  "id": "lifestyle-02-family-portrait-sofa",
+  "url": "/stock/lifestyle-02-family-portrait-sofa-1600.webp",
+  "alt": "Smiling family with two young children sitting together on a sofa",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-02-family-portrait-sofa-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-02-family-portrait-sofa-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-02-family-portrait-sofa-1600.webp"
+   }
+  ],
+  "dominantColor": "#ac8f89",
+  "credit": "Photo: Eyo Archibong / Unsplash",
+  "tags": [
+   "family",
+   "children",
+   "portrait",
+   "home"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-03": {
+  "id": "lifestyle-03-family-beach-play",
+  "url": "/stock/lifestyle-03-family-beach-play-1600.webp",
+  "alt": "Father carrying a baby on his shoulders while mother laughs on a beach",
+  "width": 1600,
+  "height": 1373,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-03-family-beach-play-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-03-family-beach-play-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-03-family-beach-play-1600.webp"
+   }
+  ],
+  "dominantColor": "#aeb5ba",
+  "credit": "Photo: Lawrence Crayton / Unsplash",
+  "tags": [
+   "family",
+   "beach",
+   "baby",
+   "outdoor"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-04": {
+  "id": "lifestyle-04-couple-walking-holding-hands",
+  "url": "/stock/lifestyle-04-couple-walking-holding-hands-960.webp",
+  "alt": "Couple in gingham and denim walking hand in hand on a red dirt path",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-04-couple-walking-holding-hands-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-04-couple-walking-holding-hands-960.webp"
+   }
+  ],
+  "dominantColor": "#ae9171",
+  "credit": "Photo: Roman Derrick Okello / Unsplash",
+  "tags": [
+   "couple",
+   "walking",
+   "outdoor",
+   "warm"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-05": {
+  "id": "lifestyle-05-personal-trainer-session",
+  "url": "/stock/lifestyle-05-personal-trainer-session-1600.webp",
+  "alt": "Personal trainer coaching a woman on a gym machine",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-personal-trainer-session-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-personal-trainer-session-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-personal-trainer-session-1600.webp"
+   }
+  ],
+  "dominantColor": "#333a39",
+  "credit": "Photo: Sergio Kian / Unsplash",
+  "tags": [
+   "coaching",
+   "gym",
+   "fitness",
+   "trainer"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-06": {
+  "id": "lifestyle-06-trainer-push-up-coaching",
+  "url": "/stock/lifestyle-06-trainer-push-up-coaching-1600.webp",
+  "alt": "Trainer guiding a man through push-ups on grips in a warm-toned gym",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-push-up-coaching-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-push-up-coaching-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-push-up-coaching-1600.webp"
+   }
+  ],
+  "dominantColor": "#55432d",
+  "credit": "Photo: Jonathan Borba / Unsplash",
+  "tags": [
+   "coaching",
+   "fitness",
+   "gym",
+   "push-ups"
+  ],
+  "category": "lifestyle"
+ },
+ "gallery-01": {
+  "id": "gallery-01-palm-silhouettes-sunset",
+  "url": "/stock/gallery-01-palm-silhouettes-sunset-1600.webp",
+  "alt": "Palm silhouettes against an orange and magenta sunset sky",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/gallery-01-palm-silhouettes-sunset-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/gallery-01-palm-silhouettes-sunset-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/gallery-01-palm-silhouettes-sunset-1600.webp"
+   }
+  ],
+  "dominantColor": "#995042",
+  "credit": "Photo: Prometey Sanchez Noskov / Unsplash",
+  "tags": [
+   "palms",
+   "sunset",
+   "silhouette",
+   "tropical"
+  ],
+  "category": "gallery"
+ },
+ "gallery-02": {
+  "id": "gallery-02-palm-avenue-pink-sky",
+  "url": "/stock/gallery-02-palm-avenue-pink-sky-960.webp",
+  "alt": "Tall palms lining a street under a pink and teal cloudy sky",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/gallery-02-palm-avenue-pink-sky-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/gallery-02-palm-avenue-pink-sky-960.webp"
+   }
+  ],
+  "dominantColor": "#585563",
+  "credit": "Photo: Roberto Nickson / Unsplash",
+  "tags": [
+   "palms",
+   "sky",
+   "pink",
+   "tropical"
+  ],
+  "category": "gallery"
+ },
+ "gallery-03": {
+  "id": "gallery-03-festoon-bulb-bokeh",
+  "url": "/stock/gallery-03-festoon-bulb-bokeh-1600.webp",
+  "alt": "Glowing festoon bulbs on a string against a black night background",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/gallery-03-festoon-bulb-bokeh-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/gallery-03-festoon-bulb-bokeh-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/gallery-03-festoon-bulb-bokeh-1600.webp"
+   }
+  ],
+  "dominantColor": "#2a2316",
+  "credit": "Photo: Keenan Davidson / Unsplash",
+  "tags": [
+   "lights",
+   "night",
+   "bokeh",
+   "warm"
+  ],
+  "category": "gallery"
+ },
+ "gallery-04": {
+  "id": "gallery-04-garden-lights-night",
+  "url": "/stock/gallery-04-garden-lights-night-1600.webp",
+  "alt": "Park garden with tree trunks wrapped in fairy lights at night",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/gallery-04-garden-lights-night-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/gallery-04-garden-lights-night-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/gallery-04-garden-lights-night-1600.webp"
+   }
+  ],
+  "dominantColor": "#201d13",
+  "credit": "Photo: Lily Miller / Unsplash",
+  "tags": [
+   "lights",
+   "garden",
+   "night",
+   "ambience"
+  ],
+  "category": "gallery"
+ },
+ "gallery-05": {
+  "id": "gallery-05-aerial-clay-court",
+  "url": "/stock/gallery-05-aerial-clay-court-960.webp",
+  "alt": "Aerial view of a terracotta clay tennis court with white lines and tree shadows",
+  "width": 960,
+  "height": 1707,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/gallery-05-aerial-clay-court-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/gallery-05-aerial-clay-court-960.webp"
+   }
+  ],
+  "dominantColor": "#79361a",
+  "credit": "Photo: Maurits Bausenhart / Unsplash",
+  "tags": [
+   "tennis",
+   "clay",
+   "aerial",
+   "court"
+  ],
+  "category": "gallery"
+ },
+ "membership-01": {
+  "id": "membership-01-membership-card-blue",
+  "url": "/stock/membership-01-membership-card-blue-960.webp",
+  "alt": "Hand holding a plain blue membership card against a warm beige backdrop",
+  "width": 960,
+  "height": 1280,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/membership-01-membership-card-blue-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/membership-01-membership-card-blue-960.webp"
+   }
+  ],
+  "dominantColor": "#cdbbb0",
+  "credit": "Photo: Thalia Karr / Unsplash",
+  "tags": [
+   "membership",
+   "card",
+   "loyalty"
+  ],
+  "category": "membership"
+ },
+ "membership-02": {
+  "id": "membership-02-lounge-reception-desk",
+  "url": "/stock/membership-02-lounge-reception-desk-1600.webp",
+  "alt": "Black marble reception desk with gold trim in a stylish hotel lounge",
+  "width": 1600,
+  "height": 2000,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/membership-02-lounge-reception-desk-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/membership-02-lounge-reception-desk-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/membership-02-lounge-reception-desk-1600.webp"
+   }
+  ],
+  "dominantColor": "#6d4d30",
+  "credit": "Photo: Dylan Calluy / Unsplash",
+  "tags": [
+   "membership",
+   "reception",
+   "lounge",
+   "luxury"
+  ],
+  "category": "membership"
+ }
+}
