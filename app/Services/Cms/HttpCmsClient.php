@@ -158,9 +158,9 @@ class HttpCmsClient implements CmsClient
     public function previewConfirmation(string $token): array
     {
         try {
-            return (array) ($this->read('subscribers/confirm/'.rawurlencode($token)) ?? []);
-        } catch (CmsUnavailableException $e) {
-            throw $e;
+            return $this->writeResult($this->request()->get('subscribers/confirm/'.rawurlencode($token)));
+        } catch (ConnectionException $e) {
+            throw new CmsUnavailableException('CMS unreachable', 0, $e);
         }
     }
 
