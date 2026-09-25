@@ -22,7 +22,7 @@ class GuestCheckoutTest extends ApiTestCase
 
     private const REF = 'GC-7K3M9X2Q';
 
-    private const TOKEN = 'r7o_9f8e7d6c5b4a39281706f5e4d3c2b1a0xYz';
+    private const TOKEN = 'r7o_fake_order_token_for_tests_only';
 
     private const ORDER = '0192f6a0-0000-7000-8000-000000000601';
 

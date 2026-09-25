@@ -1,0 +1,3 @@
+# Fake order access token used only by tests/Feature/GuestCheckoutTest.php (no real secret).
+40d47d0e69a87e4d10b835a131c683a716908d36:tests/Feature/GuestCheckoutTest.php:generic-api-key:25
+f4b0a0bd953c4a7ca03c7b67b327c686fdbc247c:tests/Feature/GuestCheckoutTest.php:generic-api-key:25
