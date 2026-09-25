@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\FakeProviderController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\MockPaystackController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentReturnController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\SignInMethodsController;
+use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\SocialProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPurchaseController;
 use App\Http\Middleware\PublicCache;
@@ -86,6 +90,20 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login')->name('login.store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// ---- Social sign-up / sign-in (Google, Facebook). OAuth code flow runs on this site; the API is called server-to-server ----
+Route::middleware('throttle:social')->prefix('auth')->group(function () {
+    Route::get('/{provider}/redirect', [SocialAuthController::class, 'redirect'])->where('provider', '[a-z]{2,20}')->name('social.redirect');
+    Route::get('/{provider}/callback', [SocialAuthController::class, 'callback'])->where('provider', '[a-z]{2,20}')->name('social.callback');
+    Route::get('/fake/{provider}/authorize', [FakeProviderController::class, 'authorize'])->where('provider', '[a-z]{2,20}')->name('social.fake');
+
+    Route::get('/consent', [SocialAuthController::class, 'consent'])->name('social.consent');
+    Route::post('/consent', [SocialAuthController::class, 'consentStore'])->name('social.consent.store');
+    Route::post('/cancel', [SocialAuthController::class, 'cancel'])->name('social.cancel');
+    Route::get('/link', [SocialAuthController::class, 'link'])->name('social.link');
+    Route::post('/link', [SocialAuthController::class, 'linkStore'])->middleware('throttle:social-code')->name('social.link.store');
+    Route::post('/link/resend', [SocialAuthController::class, 'linkResend'])->middleware('throttle:social-code')->name('social.link.resend');
+});
+
 // ---- Signed-in customer: holds, payments, tickets, history ----
 Route::middleware(RequireCustomer::class)->group(function () {
     Route::post('/book/{slug}/{resourceId}/hold', [BookingController::class, 'hold'])->middleware('throttle:booking')->where('slug', '[a-z\-]+')->name('book.hold');
@@ -103,7 +121,15 @@ Route::middleware(RequireCustomer::class)->group(function () {
     Route::get('/tickets/{id}/download', [TicketController::class, 'download'])->name('tickets.download');
     Route::get('/orders/{orderId}/tickets', [TicketController::class, 'order'])->name('tickets.order');
 
+    Route::get('/auth/complete', [SocialProfileController::class, 'show'])->name('social.complete');
+    Route::post('/auth/complete', [SocialProfileController::class, 'store'])->middleware('throttle:social')->name('social.complete.store');
+    Route::post('/auth/complete/verify', [SocialProfileController::class, 'verify'])->middleware('throttle:social-code')->name('social.complete.verify');
+    Route::post('/auth/complete/resend', [SocialProfileController::class, 'resend'])->middleware('throttle:social-code')->name('social.complete.resend');
+    Route::post('/auth/complete/skip', [SocialProfileController::class, 'skip'])->name('social.complete.skip');
+
     Route::get('/account', [AccountController::class, 'dashboard'])->name('account');
+    Route::post('/account/sign-in/{identityId}/disconnect', [SignInMethodsController::class, 'disconnect'])->middleware('throttle:social')->name('account.signin.disconnect');
+    Route::post('/account/sign-in/password', [SignInMethodsController::class, 'password'])->middleware('throttle:social-code')->name('account.signin.password');
     Route::get('/account/bookings', [AccountController::class, 'bookings'])->name('account.bookings');
     Route::get('/account/bookings/{bookingId}', [AccountController::class, 'show'])->name('account.bookings.show');
     Route::post('/account/bookings/{bookingId}/cancel', [AccountController::class, 'cancel'])->middleware('throttle:booking')->name('account.bookings.cancel');

@@ -29,6 +29,17 @@ class CustomerService
         return $result;
     }
 
+    /**
+     * Sign in with an API session payload obtained another way (social login). Uses exactly the same storage and
+     * session-id rotation as the password login above.
+     *
+     * @param  array<string, mixed>  $result  {accessToken, customer}
+     */
+    public function signInFromApi(array $result): void
+    {
+        $this->store($result);
+    }
+
     public function verify(string $email, string $code): array
     {
         $result = $this->api->post('customer/auth/verify', ['email' => $email, 'code' => $code]);

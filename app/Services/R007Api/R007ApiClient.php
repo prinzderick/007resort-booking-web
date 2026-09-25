@@ -110,6 +110,29 @@ class R007ApiClient
         return $items;
     }
 
+    private bool $serviceOnly = false;
+
+    /**
+     * Run calls with the website's SERVICE token even when a customer is signed in (social endpoints are
+     * server-to-server and reject a customer bearer). Pass the customer's own token as an `X-Customer-Token`
+     * header where the contract asks for it.
+     *
+     * @template T
+     *
+     * @param  callable(self): T  $fn
+     * @return T
+     */
+    public function asService(callable $fn): mixed
+    {
+        $previous = $this->serviceOnly;
+        $this->serviceOnly = true;
+        try {
+            return $fn($this);
+        } finally {
+            $this->serviceOnly = $previous;
+        }
+    }
+
     public function baseUrl(): string
     {
         return rtrim((string) $this->config['base_url'], '/').'/'.trim((string) ($this->config['prefix'] ?? '/api/v1'), '/');
@@ -170,6 +193,9 @@ class R007ApiClient
 
     protected function token(): ?string
     {
+        if ($this->serviceOnly) {
+            return null;
+        }
         $key = (string) ($this->config['session_token_key'] ?? 'r007.api_token');
         $token = $this->session?->get($key);
 

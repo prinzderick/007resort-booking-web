@@ -13,6 +13,10 @@
         <form method="POST" action="{{ route('logout') }}">@csrf<button class="btn btn--line btn--sm">Sign out</button></form>
     </div>
 
+    @if (empty($user['email']))
+        <x-notice type="warn" style="margin-top:24px">Add and verify your email address to pay for bookings and tickets. <a href="{{ route('social.complete') }}">Add my email</a></x-notice>
+    @endif
+
     @if ($unavailable)
         <x-notice type="warn" style="margin-top:24px">Your bookings are temporarily unavailable to load. Please try again in a few minutes.</x-notice>
     @endif
@@ -27,6 +31,10 @@
             @endforelse
         </ul>
     </section>
+
+    @if ($signin !== null)
+        @include('account.partials.sign-in-methods')
+    @endif
 
     <section style="margin-top:44px" aria-labelledby="mem-h">
         <h2 id="mem-h" class="h-2" style="margin-bottom:16px">Memberships</h2>

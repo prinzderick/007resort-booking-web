@@ -36,6 +36,7 @@ class MockR007ApiClient extends R007ApiClient
     protected function send(string $method, string $path, array $options, ?string $idempotencyKey = null, array $headers = []): array
     {
         $this->s = MockState::get();
+        $this->seedDemoCustomer();
         $this->reqHeaders = $headers;
         $path = trim($path, '/');
 
@@ -67,6 +68,16 @@ class MockR007ApiClient extends R007ApiClient
             $r === 'POST customer/auth/verify/resend' => [],
             $r === 'POST customer/auth/logout' => [],
             $r === 'GET customer/me' => $this->me(),
+            $r === 'PATCH customer/me' => $this->patchMe($j),
+            $r === 'GET public/customers/social/providers' => ['providers' => [['id' => 'google', 'enabled' => true, 'idTokenVerification' => false, 'emailTrusted' => true], ['id' => 'facebook', 'enabled' => true, 'idTokenVerification' => false, 'emailTrusted' => false]]],
+            $r === 'POST public/customers/social/login' => $this->socialLogin($j),
+            $r === 'POST public/customers/social/link/confirm' => $this->socialConfirm($j),
+            $r === 'POST customer/me/social/link' => $this->socialLink($j),
+            $r === 'GET customer/me/identities' => $this->identities(),
+            (bool) preg_match('#^DELETE customer/me/identities/([^/]+)$#', $r, $x) => $this->unlink($x[1]),
+            $r === 'POST customer/me/password' => $this->setPassword($j),
+            $r === 'POST customer/me/email' => $this->requestEmail($j),
+            $r === 'POST customer/me/email/verify' => $this->verifyEmail($j),
             $r === 'GET bookings/resources' => $this->page($this->resources($q['facilityId'] ?? null)),
             (bool) preg_match('#^GET bookings/resources/([^/]+)/availability$#', $r, $x) => $this->availability($x[1], $q),
             $r === 'POST bookings/hold' => $this->hold($j),
@@ -197,7 +208,7 @@ class MockR007ApiClient extends R007ApiClient
     private function register(array $j): array
     {
         foreach ($this->s['customers'] as $c) {
-            if (strtolower($c['email']) === strtolower($j['email'])) {
+            if (strtolower((string) $c['email']) === strtolower($j['email'])) {
                 $this->problem(422, 'validation_failed', 'Validation failed', null, ['email' => ['This email is already registered.']]);
             }
         }
@@ -211,7 +222,7 @@ class MockR007ApiClient extends R007ApiClient
     private function findByEmail(string $email): ?array
     {
         foreach ($this->s['customers'] as $c) {
-            if (strtolower($c['email']) === strtolower($email)) {
+            if (strtolower((string) $c['email']) === strtolower($email)) {
                 return $c;
             }
         }
@@ -256,6 +267,199 @@ class MockR007ApiClient extends R007ApiClient
         $c['verified'] = true;
 
         return $this->session($c);
+    }
+
+    // ---- social sign-in (mirrors docs/CUSTOMER_SOCIAL_LOGIN.md closely enough to demo every screen) ----------------
+    // Mock rules: Google emails are trusted, Facebook emails are not; codes are always 123456.
+
+    private function seedDemoCustomer(): void
+    {
+        if ($this->findByEmail('demo@007resort.test') === null) {
+            $id = '0192f6a0-0000-7000-8000-0000000d3a00';
+            $this->s['customers'][$id] = ['id' => $id, 'name' => 'Demo Guest', 'email' => 'demo@007resort.test', 'phone' => null, 'password' => 'DemoPass-12345', 'verified' => false, 'identities' => []];
+        }
+    }
+
+    private function socialSession(array $c, array $flags): array
+    {
+        $out = $this->session($c);
+        $missing = $c['email'] === null ? ['email'] : [];
+
+        return $out + $flags + ['missing' => $missing, 'needsProfileCompletion' => $missing !== [], 'recommended' => $c['phone'] ? [] : ['phone'], 'emailSuggestion' => null];
+    }
+
+    private function socialLogin(array $j): array
+    {
+        $prov = (string) ($j['provider'] ?? '');
+        $pid = (string) ($j['providerUserId'] ?? '');
+        if ($pid === '' || ! in_array($prov, ['google', 'facebook'], true)) {
+            $this->problem(422, 'validation_failed', 'Validation failed');
+        }
+        $email = isset($j['email']) ? strtolower((string) $j['email']) : null;
+        $trusted = $prov === 'google' && ($j['emailVerified'] ?? false) === true && $email !== null;
+
+        foreach ($this->s['customers'] as $id => $c) {
+            foreach ($c['identities'] ?? [] as $k => $i) {
+                if ($i['provider'] === $prov && $i['providerUserId'] === $pid) {
+                    $this->s['customers'][$id]['identities'][$k]['avatarUrl'] = $j['avatarUrl'] ?? $i['avatarUrl'];
+
+                    return $this->socialSession($this->s['customers'][$id], ['isNewCustomer' => false, 'linkedExisting' => false]);
+                }
+            }
+        }
+
+        if ($trusted && ($c = $this->findByEmail($email))) {
+            if ($c['verified'] || $c['password'] === null) {
+                $this->s['customers'][$c['id']]['verified'] = true;
+                $this->addIdentity($c['id'], $j);
+
+                return $this->socialSession($this->s['customers'][$c['id']], ['isNewCustomer' => false, 'linkedExisting' => true]);
+            }
+            $this->s['pendingLinks'][$email] = $j;
+            $this->problem(409, 'account_link_requires_confirmation', 'Link requires confirmation', null, [], ['meta' => ['confirmation' => ['method' => 'email_code', 'maskedEmail' => substr($email, 0, 1).'***@'.explode('@', $email)[1], 'expiresInSeconds' => 1800]]]);
+        }
+
+        if (($j['termsAccepted'] ?? false) !== true) {
+            $this->problem(422, 'terms_not_accepted', 'Terms not accepted');
+        }
+        $name = $j['name'] ?? trim(($j['givenName'] ?? '').' '.($j['familyName'] ?? ''));
+        $name = $name !== '' ? $name : ($email ? explode('@', $email)[0] : '');
+        if ($name === '' && $email === null) {
+            $this->problem(422, 'profile_insufficient', 'Profile insufficient');
+        }
+        $id = (string) Str::uuid();
+        $this->s['customers'][$id] = ['id' => $id, 'name' => $name, 'email' => $trusted ? $email : null, 'phone' => null, 'password' => null, 'verified' => $trusted, 'identities' => []];
+        $this->addIdentity($id, $j);
+        $out = $this->socialSession($this->s['customers'][$id], ['isNewCustomer' => true, 'linkedExisting' => false]);
+        $out['emailSuggestion'] = ! $trusted ? $email : null;
+
+        return $out;
+    }
+
+    private function addIdentity(string $customerId, array $j): void
+    {
+        $this->s['customers'][$customerId]['identities'][] = [
+            'id' => (string) Str::uuid(), 'provider' => $j['provider'], 'providerUserId' => (string) $j['providerUserId'], 'email' => $j['email'] ?? null,
+            'emailVerified' => ($j['emailVerified'] ?? false) === true, 'avatarUrl' => $j['avatarUrl'] ?? null, 'linkedAt' => now()->utc()->format('Y-m-d\TH:i:s\Z'), 'lastLoginAt' => null,
+        ];
+    }
+
+    private function socialConfirm(array $j): array
+    {
+        $email = strtolower((string) ($j['email'] ?? ''));
+        $pending = $this->s['pendingLinks'][$email] ?? null;
+        $c = $this->findByEmail($email);
+        if (! $pending || ! $c || ($j['code'] ?? '') !== '123456') {
+            $this->problem(422, 'invalid_link_confirmation', 'Invalid confirmation');
+        }
+        unset($this->s['pendingLinks'][$email]);
+        $this->s['customers'][$c['id']]['verified'] = true;
+        $this->s['customers'][$c['id']]['password'] = null;
+        $this->addIdentity($c['id'], $pending);
+
+        return $this->socialSession($this->s['customers'][$c['id']], ['isNewCustomer' => false, 'linkedExisting' => true]);
+    }
+
+    private function socialLink(array $j): array
+    {
+        $tok = $this->reqHeaders['X-Customer-Token'] ?? null;
+        $cid = $tok ? ($this->s['tokens'][$tok] ?? null) : null;
+        if (! $cid) {
+            $this->problem(401, 'unauthenticated', 'Sign in required');
+        }
+        foreach ($this->s['customers'] as $c) {
+            foreach ($c['identities'] ?? [] as $i) {
+                if ($i['provider'] === $j['provider'] && $i['providerUserId'] === (string) $j['providerUserId']) {
+                    $c['id'] === $cid ? null : $this->problem(409, 'identity_already_linked', 'Already linked');
+
+                    return ['identity' => $i];
+                }
+                if ($c['id'] === $cid && $i['provider'] === $j['provider']) {
+                    $this->problem(409, 'identity_conflict', 'Identity conflict');
+                }
+            }
+        }
+        $this->addIdentity($cid, $j);
+
+        return ['identity' => end($this->s['customers'][$cid]['identities'])];
+    }
+
+    private function identities(): array
+    {
+        $c = $this->s['customers'][$this->requireCustomer()];
+        $n = count($c['identities'] ?? []);
+
+        return ['items' => array_values($c['identities'] ?? []), 'hasPassword' => $c['password'] !== null, 'canUnlink' => $n > 1 || ($n === 1 && $c['password'] !== null && $c['verified'])];
+    }
+
+    private function unlink(string $id): array
+    {
+        $cid = $this->requireCustomer();
+        $c = $this->s['customers'][$cid];
+        $exists = collect($c['identities'] ?? [])->contains(fn ($i) => $i['id'] === $id);
+        if (! $exists) {
+            $this->problem(404, 'not_found', 'Not found');
+        }
+        if (! $this->identities()['canUnlink']) {
+            $this->problem(409, 'last_login_method', 'Last login method');
+        }
+        $this->s['customers'][$cid]['identities'] = array_values(array_filter($c['identities'], fn ($i) => $i['id'] !== $id));
+
+        return [];
+    }
+
+    private function setPassword(array $j): array
+    {
+        $cid = $this->requireCustomer();
+        $c = $this->s['customers'][$cid];
+        if ($c['password'] !== null && ($j['currentPassword'] ?? null) !== $c['password']) {
+            $this->problem(422, 'invalid_current_password', 'Invalid current password');
+        }
+        if ($c['password'] === null && ! $c['verified']) {
+            $this->problem(409, 'email_not_verified', 'Email not verified');
+        }
+        $this->s['customers'][$cid]['password'] = $j['password'];
+
+        return [];
+    }
+
+    private function patchMe(array $j): array
+    {
+        $cid = $this->requireCustomer();
+        foreach (['name', 'phone'] as $f) {
+            if (array_key_exists($f, $j)) {
+                $this->s['customers'][$cid][$f] = $j[$f];
+            }
+        }
+
+        return $this->profile($this->s['customers'][$cid]);
+    }
+
+    private function requestEmail(array $j): array
+    {
+        $cid = $this->requireCustomer();
+        $e = strtolower((string) $j['email']);
+        $other = $this->findByEmail($e);
+        if ($other && $other['id'] !== $cid) {
+            $this->problem(409, 'email_in_use', 'Email in use');
+        }
+        $this->s['customers'][$cid]['pendingEmail'] = $e;
+
+        return [];
+    }
+
+    private function verifyEmail(array $j): array
+    {
+        $cid = $this->requireCustomer();
+        $c = $this->s['customers'][$cid];
+        if (empty($c['pendingEmail']) || ($j['code'] ?? '') !== '123456') {
+            $this->problem(422, 'invalid_verification', 'Invalid verification');
+        }
+        $this->s['customers'][$cid]['email'] = $c['pendingEmail'];
+        $this->s['customers'][$cid]['verified'] = true;
+        unset($this->s['customers'][$cid]['pendingEmail']);
+
+        return $this->profile($this->s['customers'][$cid]);
     }
 
     private function customerId(): ?string
@@ -608,9 +812,9 @@ class MockR007ApiClient extends R007ApiClient
         return $this->fromMinor($this->minor($a) + $this->minor($b));
     }
 
-    private function problem(int $status, string $code, string $title, ?string $detail = null, array $errors = []): never
+    private function problem(int $status, string $code, string $title, ?string $detail = null, array $errors = [], array $extra = []): never
     {
         MockState::put($this->s);
-        throw new R007ApiException($status, $title, $detail, extensions: ['code' => $code] + ($errors ? ['errors' => $errors] : []));
+        throw new R007ApiException($status, $title, $detail, extensions: ['code' => $code] + ($errors ? ['errors' => $errors] : []) + $extra);
     }
 }

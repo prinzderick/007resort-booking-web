@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Avatar;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,7 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
         if (! config('app.debug')) {
-            $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins()])));
+            $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins(), ...Avatar::cspOrigins()])));
             $frames = implode(' ', (array) config('cms.frame_hosts'));
             $response->headers->set('Content-Security-Policy',
                 "default-src 'self'; img-src 'self' data: {$img}; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ".
