@@ -1,0 +1,56 @@
+/* ---------- social sign-in: provider buttons, "or" divider, consent / link / complete screens, sign-in methods ---------- */
+.oauth { display: grid; gap: 10px; }
+.btn-social {
+    position: relative; display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 12px 18px;
+    border-radius: 99px; font: 600 15.5px/1.2 var(--sans); text-decoration: none; border: 1.5px solid transparent; cursor: pointer;
+    transition: box-shadow 0.25s, transform 0.25s var(--ease), background-color 0.2s, border-color 0.2s;
+}
+.btn-social:active { transform: scale(0.98); }
+.btn-social:focus-visible { outline: 3px solid var(--sun-btn); outline-offset: 3px; }
+.btn-social__mark { display: grid; place-items: center; width: 24px; height: 24px; flex: none; }
+.btn-social--google { background: #fff; color: #1f1f1f; border-color: #747775; }
+.btn-social--google:hover { background: #f8faff; border-color: #1f1f1f; box-shadow: 0 6px 18px rgb(20 17 15 / 0.12); }
+.btn-social--facebook { background: #1877f2; color: #fff; border-color: #1877f2; }
+.btn-social--facebook:hover { background: #166fe5; box-shadow: 0 6px 18px rgb(24 119 242 / 0.35); }
+.btn-social__spin { display: none; width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid currentColor; border-right-color: transparent; animation: social-spin 0.8s linear infinite; }
+.btn-social.is-loading { pointer-events: none; opacity: 0.85; }
+.btn-social.is-loading .btn-social__mark { display: none; }
+.btn-social.is-loading .btn-social__spin { display: block; }
+@keyframes social-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .btn-social__spin { animation-duration: 2.4s; } .btn-social { transition: none; } }
+
+.or { display: flex; align-items: center; gap: 14px; color: var(--mute); font-size: 13px; letter-spacing: 0.04em; margin: 4px 0; }
+.or::before, .or::after { content: ''; height: 1px; background: var(--line); flex: 1; }
+
+.who { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--white); border-radius: var(--r); box-shadow: var(--shadow-sm); }
+.who__name { font: 600 20px var(--serif); }
+.who__sub { font-size: 14px; color: var(--mute); overflow-wrap: anywhere; }
+
+.check { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.45; cursor: pointer; }
+.check input { flex: none; width: 22px; height: 22px; margin-top: 1px; accent-color: var(--sun-btn); cursor: pointer; }
+.check a { font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.check em { display: block; font-style: normal; color: var(--mute); font-size: 13.5px; }
+.err { font-size: 13.5px; color: var(--bad); font-weight: 500; }
+
+.link-btn { background: none; border: 0; padding: 6px 0; font: 500 14.5px var(--sans); color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.link-btn:hover { color: var(--sun-text); }
+.inline-actions { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 14px; color: var(--mute); }
+.inline-actions form { margin: 0; }
+.field .code-input { font: 600 28px/1 var(--sans); letter-spacing: 0.35em; text-align: center; font-variant-numeric: tabular-nums; }
+
+.avatar { position: relative; display: inline-grid; place-items: center; flex: none; width: var(--s, 44px); height: var(--s, 44px); border-radius: 50%; overflow: hidden; background: var(--leaf); color: var(--paper); }
+.avatar__ini { font: 600 calc(var(--s, 44px) * 0.38) var(--sans); letter-spacing: 0.02em; }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.method { justify-content: space-between; }
+.method__who { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.method__who > div { min-width: 0; }
+.method__sub { font-size: 14px; color: var(--mute); overflow-wrap: anywhere; }
+.method__icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--paper-2); flex: none; }
+.method .status { margin-left: 6px; vertical-align: 1px; }
+.connect { margin-top: 18px; max-width: 420px; }
+.connect__h { font: 600 12px var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 10px; }
+.pw > summary { cursor: pointer; font-weight: 600; }
+.pw[open] > summary { margin-bottom: 4px; }
+.plain { list-style: none; padding: 0; margin: 0; }
+@media (max-width: 520px) { .method .btn { width: 100%; } .method { align-items: stretch; } .method > form { width: 100%; } }
