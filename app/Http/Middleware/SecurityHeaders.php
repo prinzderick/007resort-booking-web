@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Turnstile;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,15 +31,18 @@ class SecurityHeaders
         $response->headers->set('X-Request-Id', $id);
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
-        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        if (! $response->headers->has('Referrer-Policy')) {
+            $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        }
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
         if (! config('app.debug')) {
+            $turnstile = Turnstile::enabled() ? ' https://challenges.cloudflare.com' : '';
             $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins()])));
             $frames = implode(' ', (array) config('cms.frame_hosts'));
             $response->headers->set('Content-Security-Policy',
                 "default-src 'self'; img-src 'self' data: {$img}; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ".
-                "font-src 'self' https://fonts.bunny.net; script-src 'self' 'nonce-{$nonce}'; connect-src 'self'; frame-src {$frames}; ".
+                "font-src 'self' https://fonts.bunny.net; script-src 'self' 'nonce-{$nonce}'{$turnstile}; connect-src 'self'; frame-src {$frames}{$turnstile}; ".
                 "form-action 'self' https://checkout.paystack.com https://*.paystack.com; base-uri 'self'; frame-ancestors 'self'");
             if ($request->isSecure()) {
                 $response->headers->set('Strict-Transport-Security', 'max-age=31536000');

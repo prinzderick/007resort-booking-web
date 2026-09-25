@@ -86,6 +86,7 @@ class MockR007ApiClient extends R007ApiClient
             (bool) preg_match('#^GET memberships/([^/]+)$#', $r, $x) => $this->s['memberships'][$x[1]] ?? $this->problem(404, 'not_found', 'Not found'),
             $r === 'POST payments/paystack/initialize' => $this->paystackInit($j),
             (bool) preg_match('#^GET payments/paystack/verify/(.+)$#', $r, $x) => $this->s['payments'][rawurldecode($x[1])] ?? $this->problem(404, 'not_found', 'Unknown payment reference'),
+            str_starts_with($p, 'guest/') => $this->guestRoute($m, $p, $q, $j),
             default => $this->problem(404, 'not_found', 'Mock API: no such endpoint', $r),
         };
     }
@@ -279,7 +280,8 @@ class MockR007ApiClient extends R007ApiClient
 
     private function hold(array $j): array
     {
-        $cid = $this->requireCustomer();
+        // Signed-in customers hold under their account; anyone else holds as a guest (service credential).
+        $cid = $this->customerId() ?? 'guest';
         $r = $this->resource($j['resourceId']);
         $start = CarbonImmutable::parse($j['start']);
         if ($this->isTaken($r['id'], $start) || crc32($r['id'].$start->setTimezone(config('r007.display_timezone'))->format('c')) % 7 === 0) {
@@ -517,7 +519,9 @@ class MockR007ApiClient extends R007ApiClient
 
     private function paystackInit(array $j): array
     {
-        $this->requireCustomer();
+        if (empty($j['_guest'])) {
+            $this->requireCustomer();
+        }
         $expected = match (true) {
             isset($j['bookingId']) => $this->s['bookings'][$j['bookingId']]['total'] ?? null,
             isset($j['orderIds']) => $this->s['orders'][$j['orderIds'][0]]['total'] ?? null,
@@ -537,7 +541,7 @@ class MockR007ApiClient extends R007ApiClient
         $id = (string) Str::uuid();
         $this->s['payments'][$ref] = [
             'id' => $id, 'reference' => $ref, 'providerReference' => $ref, 'provider' => 'PAYSTACK', 'status' => 'AUTHORIZING', 'amount' => $j['amount'],
-            'currency' => 'NGN', 'subject' => array_intersect_key($j, array_flip(['bookingId', 'orderIds', 'membershipId'])), 'callbackUrl' => $j['callbackUrl'] ?? null,
+            'currency' => 'NGN', 'subject' => array_intersect_key($j, array_flip(['bookingId', 'orderIds', 'membershipId', 'guestOrder'])), 'callbackUrl' => $j['callbackUrl'] ?? null,
         ];
         MockState::put($this->s);
 
@@ -556,6 +560,12 @@ class MockR007ApiClient extends R007ApiClient
         $this->s['payments'][$reference] = $p;
         if ($status === 'CAPTURED') {
             $sub = $p['subject'];
+            if (isset($sub['guestOrder'])) {
+                MockState::put($this->s);
+                $this->settleGuestOrder($reference);
+
+                return $p;
+            }
             if (isset($sub['orderIds'])) {
                 $o = $this->s['orders'][$sub['orderIds'][0]];
                 if ($o['status'] !== 'PAID') {
@@ -576,6 +586,285 @@ class MockR007ApiClient extends R007ApiClient
         MockState::put($this->s);
 
         return $p;
+    }
+
+    // ---- guest checkout (no account) -------------------------------------
+
+    private function guestRoute(string $m, string $p, array $q, array $j): array
+    {
+        $this->s['gorders'] ??= [];
+        $r = "$m $p";
+
+        return match (true) {
+            (bool) preg_match('#^GET guest/holds/([^/]+)$#', $r, $x) => $this->publicBooking($this->guestHold($x[1])),
+            (bool) preg_match('#^POST guest/holds/([^/]+)/release$#', $r, $x) => $this->guestRelease($x[1]),
+            $r === 'POST guest/checkout/booking' => $this->guestStartBooking($j),
+            $r === 'POST guest/checkout/tickets' => $this->guestStartTickets($j),
+            $r === 'POST guest/checkout/membership' => $this->guestStartMembership($j),
+            $r === 'POST guest/orders/lookup' => $this->guestLookup($j),
+            (bool) preg_match('#^GET guest/orders/([^/]+)$#', $r, $x) => $this->guestOrderView($this->guestOrder($x[1])),
+            (bool) preg_match('#^POST guest/orders/([^/]+)/pay$#', $r, $x) => $this->guestRetry($this->guestOrder($x[1]), $j),
+            (bool) preg_match('#^POST guest/orders/([^/]+)/resend$#', $r, $x) => $this->guestResend($this->guestOrder($x[1])),
+            (bool) preg_match('#^POST guest/orders/([^/]+)/cancel$#', $r, $x) => $this->guestCancel($this->guestOrder($x[1])),
+            default => $this->problem(404, 'not_found', 'Mock API: no such endpoint', $r),
+        };
+    }
+
+    private function guestHold(string $id): array
+    {
+        $b = $this->s['bookings'][$id] ?? null;
+        if (! $b || $b['customerId'] !== 'guest') {
+            $this->problem(404, 'not_found', 'Booking not found');
+        }
+        if ($b['status'] === 'HELD' && CarbonImmutable::parse($b['holdExpiresAt'])->isPast()) {
+            $b['status'] = 'EXPIRED';
+            $this->s['bookings'][$id] = $b;
+        }
+        unset($b['customer']);
+
+        return $b;
+    }
+
+    private function guestRelease(string $id): array
+    {
+        $b = $this->guestHold($id);
+        if ($b['status'] === 'HELD') {
+            $b['status'] = 'CANCELLED';
+            $this->s['bookings'][$id] = $b;
+        }
+
+        return $this->publicBooking($b);
+    }
+
+    /** @return array<string, string> */
+    private function guestIdentity(array $j): array
+    {
+        $g = (array) ($j['guest'] ?? []);
+        foreach (['name', 'email', 'phone'] as $f) {
+            if (blank($g[$f] ?? null)) {
+                $this->problem(422, 'validation_failed', 'Validation failed', null, ["guest.$f" => ['Required.']]);
+            }
+        }
+
+        return $g;
+    }
+
+    private function newGuestOrder(string $kind, array $subject, string $total, array $guest, string $callbackUrl): array
+    {
+        $ref = '007-'.strtoupper(Str::random(7));
+        $token = rtrim(strtr(base64_encode(random_bytes(30)), '+/', '-_'), '=');
+        $this->s['gorders'][$ref] = [
+            'reference' => $ref, 'token' => $token, 'kind' => $kind, 'subject' => $subject, 'total' => $total, 'guest' => $guest,
+            'status' => 'PENDING_PAYMENT', 'createdAt' => now()->utc()->format('Y-m-d\TH:i:s\Z'), 'emailSent' => false, 'payments' => [],
+        ];
+
+        return $this->guestPayment($ref, $callbackUrl) + ['reference' => $ref, 'accessToken' => $token];
+    }
+
+    private function guestPayment(string $ref, string $callbackUrl): array
+    {
+        $o = $this->s['gorders'][$ref];
+        $init = $this->paystackInit(['_guest' => true, 'amount' => $o['total'], 'callbackUrl' => $callbackUrl, 'guestOrder' => $ref] + $o['subject']);
+        $this->s['gorders'][$ref]['payments'][] = $init['reference'];
+        MockState::put($this->s);
+
+        return ['payment' => ['reference' => $init['reference'], 'authorizationUrl' => $init['authorizationUrl']]];
+    }
+
+    private function guestStartBooking(array $j): array
+    {
+        $guest = $this->guestIdentity($j);
+        $b = $this->guestHold((string) ($j['bookingId'] ?? ''));
+        if ($b['status'] !== 'HELD') {
+            $this->problem(409, 'hold_expired', 'Hold expired');
+        }
+        $this->s['bookings'][$b['id']]['customer'] = ['name' => $guest['name'], 'email' => $guest['email'], 'phone' => $guest['phone']];
+
+        return $this->newGuestOrder('booking', ['bookingId' => $b['id']], $b['total'], $guest, (string) ($j['callbackUrl'] ?? ''));
+    }
+
+    private function guestStartTickets(array $j): array
+    {
+        $guest = $this->guestIdentity($j);
+        $prices = array_column($this->ticketProducts(), 'price', 'id');
+        $names = array_column($this->ticketProducts(), 'name', 'id');
+        $total = '0.0000';
+        $tickets = [];
+        foreach ((array) ($j['lines'] ?? []) as $l) {
+            $price = $prices[$l['productId']] ?? $this->problem(422, 'validation_failed', 'Unknown ticket type');
+            $total = $this->add($total, $this->mul($price, (int) $l['quantity']));
+            for ($i = 0; $i < (int) $l['quantity']; $i++) {
+                $tickets[] = $names[$l['productId']];
+            }
+        }
+        $id = (string) Str::uuid();
+        $this->s['orders'][$id] = ['id' => $id, 'status' => 'PENDING_PAYMENT', 'total' => $total, 'visitDate' => $j['visitDate'], 'tickets' => $tickets, 'customerId' => 'guest', 'facilityId' => $j['facilityId']];
+
+        return $this->newGuestOrder('tickets', ['orderIds' => [$id]], $total, $guest, (string) ($j['callbackUrl'] ?? ''));
+    }
+
+    private function guestStartMembership(array $j): array
+    {
+        $guest = $this->guestIdentity($j);
+        $plan = collect($this->plans())->firstWhere('id', $j['planId'] ?? null) ?? $this->problem(404, 'not_found', 'Plan not found');
+        $id = (string) Str::uuid();
+        $this->s['memberships'][$id] = [
+            'id' => $id, 'number' => 'M-'.strtoupper(Str::random(6)), 'planId' => $plan['id'], 'planName' => $plan['name'], 'holderName' => $guest['name'],
+            'status' => 'PENDING_PAYMENT', 'validFrom' => now()->utc()->format('Y-m-d\TH:i:s\Z'), 'validUntil' => now()->addDays($plan['durationDays'])->utc()->format('Y-m-d\TH:i:s\Z'),
+            'visitsUsed' => 0, 'visitLimit' => $plan['visitLimit'], 'qrToken' => 'mock.m.'.Str::random(20), 'customerId' => 'guest', 'price' => $plan['price'],
+        ];
+
+        return $this->newGuestOrder('membership', ['membershipId' => $id], $plan['price'], $guest, (string) ($j['callbackUrl'] ?? ''));
+    }
+
+    private function guestOrder(string $ref): array
+    {
+        $o = $this->s['gorders'][$ref] ?? null;
+        $presented = (string) ($this->reqHeaders['X-Order-Token'] ?? '');
+        if (! $o || $presented === '' || ! hash_equals($o['token'], $presented)) {
+            $this->problem(403, 'permission_denied', 'Forbidden');
+        }
+
+        return $o;
+    }
+
+    private function guestLookup(array $j): array
+    {
+        $o = $this->s['gorders'][strtoupper((string) ($j['reference'] ?? ''))] ?? null;
+        $contact = strtolower(trim((string) ($j['contact'] ?? '')));
+        $digits = preg_replace('/\D/', '', $contact);
+        $ok = $o && $contact !== '' && (
+            $contact === strtolower($o['guest']['email'])
+            || ($digits !== '' && str_ends_with(preg_replace('/\D/', '', $o['guest']['phone']), ltrim($digits, '0')))
+        );
+        if (! $ok) {
+            $this->problem(404, 'not_found', 'Not found');
+        }
+
+        return ['reference' => $o['reference'], 'accessToken' => $o['token']];
+    }
+
+    private function settleGuestOrder(string $paymentReference): void
+    {
+        $this->s['gorders'] ??= [];
+        foreach ($this->s['gorders'] as $ref => $o) {
+            if (! in_array($paymentReference, $o['payments'], true) || $o['status'] === 'PAID') {
+                continue;
+            }
+            $o['status'] = 'PAID';
+            $guest = $o['guest'];
+            $sub = $o['subject'];
+            if (isset($sub['bookingId'])) {
+                $b = $this->s['bookings'][$sub['bookingId']];
+                if ($b['status'] === 'EXPIRED') {
+                    $o['status'] = 'PAID_HOLD_LOST';
+                } else {
+                    $eid = (string) Str::uuid();
+                    $b['status'] = 'CONFIRMED';
+                    $b['amountPaid'] = $b['total'];
+                    $b['entitlementId'] = $eid;
+                    $b['rowVersion']++;
+                    $this->s['bookings'][$b['id']] = $b;
+                    $this->s['entitlements'][$eid] = $this->makeEntitlement($eid, $b['resourceName'].' - '.CarbonImmutable::parse($b['start'])->setTimezone(config('r007.display_timezone'))->format('D j M, H:i'), $b['facilityId'], $b['start'], $b['end'], $guest['name'], 'guest:'.$ref, ['bookingId' => $b['id']]);
+                }
+            } elseif (isset($sub['orderIds'])) {
+                $ord = $this->s['orders'][$sub['orderIds'][0]];
+                $ord['status'] = 'PAID';
+                $visit = CarbonImmutable::parse($ord['visitDate'], config('r007.display_timezone'));
+                foreach ($ord['tickets'] as $i => $name) {
+                    $eid = (string) Str::uuid();
+                    $this->s['entitlements'][$eid] = $this->makeEntitlement($eid, $name, $ord['facilityId'], $visit->utc()->format('Y-m-d\TH:i:s\Z'), $visit->endOfDay()->utc()->format('Y-m-d\TH:i:s\Z'), $i === 0 ? $guest['name'] : null, 'guest:'.$ref, ['orderId' => $ord['id']]);
+                }
+                $this->s['orders'][$ord['id']] = $ord;
+            } elseif (isset($sub['membershipId'])) {
+                $this->s['memberships'][$sub['membershipId']]['status'] = 'ACTIVE';
+            }
+            $o['emailSent'] = filter_var(env('R007_MOCK_EMAIL', false), FILTER_VALIDATE_BOOL);
+            $this->s['gorders'][$ref] = $o;
+        }
+        MockState::put($this->s);
+    }
+
+    /** @return array<string, mixed> */
+    private function guestOrderView(array $o): array
+    {
+        $sub = $o['subject'];
+        $view = [
+            'reference' => $o['reference'], 'kind' => $o['kind'], 'status' => $o['status'], 'total' => $o['total'], 'currency' => 'NGN',
+            'guest' => $o['guest'], 'createdAt' => $o['createdAt'], 'tickets' => [], 'payment' => ['status' => $o['status'] === 'PENDING_PAYMENT' ? 'PENDING' : 'CAPTURED'],
+            'delivery' => ['available' => (bool) filter_var(env('R007_MOCK_EMAIL', false), FILTER_VALIDATE_BOOL), 'emailSent' => (bool) $o['emailSent']],
+        ];
+        if (isset($sub['bookingId'])) {
+            $b = $this->publicBooking($this->guestHold($sub['bookingId']));
+            if ($view['status'] === 'PENDING_PAYMENT' && $b['status'] === 'EXPIRED') {
+                $view['status'] = 'EXPIRED';
+            } elseif ($view['status'] === 'PENDING_PAYMENT' && $b['status'] === 'CANCELLED') {
+                $view['status'] = 'CANCELLED';
+            } elseif ($view['status'] === 'PAID' && $b['status'] === 'CANCELLED') {
+                $view['status'] = 'CANCELLED';
+            }
+            $view += [
+                'title' => $b['resourceName'], 'start' => $b['start'], 'end' => $b['end'], 'quantity' => $b['quantity'], 'facilityId' => $b['facilityId'],
+                'resourceId' => $b['resourceId'], 'bookingId' => $b['id'], 'holdExpiresAt' => $b['status'] === 'HELD' ? $b['holdExpiresAt'] : null,
+                'policy' => $b['policy'],
+            ];
+        } elseif (isset($sub['orderIds'])) {
+            $ord = $this->s['orders'][$sub['orderIds'][0]];
+            $view += ['title' => 'Pool day passes', 'visitDate' => $ord['visitDate'], 'quantity' => count($ord['tickets']), 'facilityId' => $ord['facilityId']];
+        } else {
+            $m = $this->s['memberships'][$sub['membershipId']];
+            $view += ['title' => $m['planName'].' membership', 'start' => $m['validFrom'], 'end' => $m['validUntil'], 'quantity' => 1];
+            if ($m['status'] === 'ACTIVE') {
+                $view['tickets'][] = ['id' => $m['id'], 'qrToken' => $m['qrToken'], 'name' => $m['planName'].' membership', 'holderName' => $m['holderName'], 'validFrom' => $m['validFrom'], 'validUntil' => $m['validUntil'], 'status' => 'ACTIVE'];
+            }
+        }
+        foreach ($this->s['entitlements'] as $e) {
+            if (($e['customerId'] ?? null) === 'guest:'.$o['reference']) {
+                $item = $e['items'][0] ?? [];
+                $view['tickets'][] = ['id' => $e['id'], 'qrToken' => $e['qrToken'], 'name' => $item['name'] ?? 'Ticket', 'holderName' => $e['holderName'], 'validFrom' => $item['validFrom'] ?? null, 'validUntil' => $item['validUntil'] ?? null, 'status' => $e['status']];
+            }
+        }
+
+        return $view;
+    }
+
+    private function guestRetry(array $o, array $j): array
+    {
+        if ($o['status'] !== 'PENDING_PAYMENT') {
+            $this->problem(409, 'order_state_invalid', 'Order is not awaiting payment');
+        }
+        if (isset($o['subject']['bookingId']) && $this->guestHold($o['subject']['bookingId'])['status'] !== 'HELD') {
+            $this->problem(409, 'hold_expired', 'Hold expired');
+        }
+
+        return $this->guestPayment($o['reference'], (string) ($j['callbackUrl'] ?? '')) + ['reference' => $o['reference']];
+    }
+
+    private function guestResend(array $o): array
+    {
+        $on = (bool) filter_var(env('R007_MOCK_EMAIL', false), FILTER_VALIDATE_BOOL);
+        if ($on) {
+            $this->s['gorders'][$o['reference']]['emailSent'] = true;
+        }
+
+        return ['available' => $on, 'emailSent' => $on];
+    }
+
+    private function guestCancel(array $o): array
+    {
+        if (! isset($o['subject']['bookingId'])) {
+            $this->problem(409, 'order_state_invalid', 'Cannot cancel', 'Tickets and memberships cannot be cancelled online.');
+        }
+        $id = $o['subject']['bookingId'];
+        $b = $this->guestHold($id);
+        if ($b['status'] === 'CONFIRMED' && CarbonImmutable::parse($b['start'])->lte(now()->addHours(24))) {
+            $this->problem(409, 'order_state_invalid', 'Cannot cancel', 'The cancellation window closed 24 hours before the start time.');
+        }
+        $b['status'] = 'CANCELLED';
+        $b['rowVersion']++;
+        $this->s['bookings'][$id] = $b;
+
+        return $this->guestOrderView($o);
     }
 
     // ---- utils -----------------------------------------------------------

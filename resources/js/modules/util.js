@@ -5,6 +5,7 @@ export const finePointer = () => window.matchMedia('(hover: hover) and (pointer:
 export const store = {
     get(k) { try { return window.localStorage.getItem(k); } catch { return null; } },
     set(k, v) { try { window.localStorage.setItem(k, v); } catch { /* private mode */ } },
+    remove(k) { try { window.localStorage.removeItem(k); } catch { /* private mode */ } },
 };
 export const raf = (fn) => {
     let queued = false;

@@ -32,6 +32,8 @@ class R007ApiClient
 {
     public const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 
+    private bool $serviceOnly = false;
+
     /**
      * @param  array<string, mixed>  $config  The "r007.api" config array.
      */
@@ -42,11 +44,12 @@ class R007ApiClient
 
     /**
      * @param  array<string, mixed>  $query
+     * @param  array<string, string>  $headers
      * @return array<mixed>
      */
-    public function get(string $path, array $query = []): array
+    public function get(string $path, array $query = [], array $headers = []): array
     {
-        return $this->send('GET', $path, ['query' => $query]);
+        return $this->send('GET', $path, ['query' => $query], null, $headers);
     }
 
     /**
@@ -110,6 +113,19 @@ class R007ApiClient
         return $items;
     }
 
+    /**
+     * A copy that always authenticates as the website's service credential, even when a customer is
+     * signed in. Guest checkout calls use this so a customer's bearer token can never leak into a
+     * guest order (and the reverse).
+     */
+    public function asService(): static
+    {
+        $copy = clone $this;
+        $copy->serviceOnly = true;
+
+        return $copy;
+    }
+
     public function baseUrl(): string
     {
         return rtrim((string) $this->config['base_url'], '/').'/'.trim((string) ($this->config['prefix'] ?? '/api/v1'), '/');
@@ -170,6 +186,9 @@ class R007ApiClient
 
     protected function token(): ?string
     {
+        if ($this->serviceOnly) {
+            return null;
+        }
         $key = (string) ($this->config['session_token_key'] ?? 'r007.api_token');
         $token = $this->session?->get($key);
 

@@ -62,4 +62,15 @@ return [
         'max_tickets_per_order' => 20,
     ],
 
+    // Guest checkout: no account is created; the visitor leaves name, email and phone.
+    'checkout' => [
+        // Version of the terms/privacy text the visitor consents to by paying (sent to the API with the order).
+        'consent_version' => env('R007_CONSENT_VERSION', '2026-09'),
+        // Cloudflare Turnstile on /find-booking. Off unless a site key is set.
+        'turnstile_site_key' => env('TURNSTILE_SITE_KEY'),
+        'turnstile_secret' => env('TURNSTILE_SECRET_KEY'),
+        // How many orders one browser session remembers access for.
+        'max_orders_in_session' => 20,
+    ],
+
 ];

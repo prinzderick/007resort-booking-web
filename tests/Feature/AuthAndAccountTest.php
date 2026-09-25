@@ -113,7 +113,6 @@ class AuthAndAccountTest extends ApiTestCase
         $this->get('/account/bookings')->assertRedirect(route('login'));
         $this->assertSame(url('/account/bookings'), session('url.intended'));
         $this->get('/tickets/'.self::ENT)->assertRedirect(route('login'));
-        $this->get('/checkout/'.self::BOOKING)->assertRedirect(route('login'));
         $this->assertSame([], Http::recorded()->all());
     }
 

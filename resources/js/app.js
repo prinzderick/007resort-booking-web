@@ -6,6 +6,8 @@ import { initParallax } from './modules/parallax.js';
 import { initRails } from './modules/rail.js';
 import { initHero } from './modules/hero.js';
 import { initGallery } from './modules/gallery.js';
+import { initCheckout } from './modules/checkout.js';
+import { initOrders } from './modules/orders.js';
 import { initForms } from './modules/forms.js';
 import { initBooking } from './modules/booking.js';
 import { initSubscribe } from './modules/subscribe.js';
@@ -20,7 +22,7 @@ const safe = (fn) => {
 };
 
 const boot = () => {
-    [initHeader, initReveal, initParallax, initRails, initHero, initGallery, initForms, initBooking, initSubscribe, initMisc].forEach(safe);
+    [initHeader, initReveal, initParallax, initRails, initHero, initGallery, initCheckout, initForms, initBooking, initSubscribe, initMisc, initOrders].forEach(safe);
     document.documentElement.dataset.ready = '1';
 };
 

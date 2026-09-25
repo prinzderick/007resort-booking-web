@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\HandlesGuestCheckout;
+use App\Services\Guest\GuestCheckoutApi;
+use App\Services\Guest\GuestSession;
 use App\Services\Online\ContentService;
 use App\Services\Online\CustomerService;
 use App\Services\Online\PaymentService;
@@ -9,19 +12,25 @@ use App\Services\Online\SiteService;
 use App\Services\Online\TicketService;
 use App\Services\R007Api\R007ApiException;
 use App\Support\ApiProblem;
+use App\Support\GuestDetails;
 use App\Support\IdempotentSubmit;
 use App\Support\Lagos;
+use App\Support\Money;
 use Illuminate\Http\Request;
 
 /** Pool day tickets: adult/child counts -> unpaid order -> Paystack -> individual QR tickets. */
 class TicketPurchaseController extends Controller
 {
+    use HandlesGuestCheckout;
+
     public function __construct(
         private readonly SiteService $site,
         private readonly TicketService $tickets,
         private readonly PaymentService $payments,
         private readonly CustomerService $customers,
         private readonly ContentService $content,
+        private readonly GuestCheckoutApi $guestApi,
+        private readonly GuestSession $guests,
     ) {}
 
     public function form()
@@ -81,6 +90,13 @@ class TicketPurchaseController extends Controller
             return back()->withInput()->withErrors(['date' => 'Please choose a valid visit date.']);
         }
 
+        if (! $this->accountMode()) {
+            // Guest: remember the choice and go to the "Your details" step (no login, no account).
+            $this->guests->putDraft('pool', ['date' => $data['date'], 'lines' => $lines]);
+
+            return redirect()->route('checkout.pool');
+        }
+
         $user = $this->customers->user() ?? [];
 
         return IdempotentSubmit::run($request, 'pool-order', function (string $key) use ($facility, $data, $lines, $user, $request) {
@@ -97,6 +113,89 @@ class TicketPurchaseController extends Controller
 
             return redirect()->away($init['authorizationUrl']);
         });
+    }
+
+    /** "Your details" step for pool day passes. */
+    public function checkout(Request $request)
+    {
+        if ($this->accountMode()) {
+            return redirect()->route('pool');
+        }
+        $summary = $this->draftSummary();
+        if ($summary === null) {
+            return redirect()->route('pool')->with('notice', 'Choose your date and tickets first.');
+        }
+
+        return view('tickets.checkout', $summary + ['prefill' => $this->prefill($request)]);
+    }
+
+    public function pay(Request $request)
+    {
+        if ($this->accountMode()) {
+            return redirect()->route('pool');
+        }
+        $summary = $this->draftSummary();
+        if ($summary === null) {
+            return redirect()->route('pool')->with('notice', 'Choose your date and tickets first.');
+        }
+        $guest = GuestDetails::validate($request);
+        $facility = $this->facility();
+
+        return IdempotentSubmit::run($request, 'pool-pay', function (string $key) use ($facility, $summary, $guest, $request) {
+            try {
+                $payment = $this->guestApi->payTickets($facility['id'], $summary['date'], $summary['lines'], $guest, route('payment.return'), $key);
+            } catch (R007ApiException $e) {
+                return redirect()->route('checkout.pool')->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
+            }
+
+            return $this->handOffToPaystack($request, $payment, $guest, ['flow' => 'tickets']);
+        });
+    }
+
+    /**
+     * The draft (date + lines) priced with the API's current catalogue, for display only: the API prices the order.
+     *
+     * @return array{date: string, lines: list<array{productId: string, quantity: int}>, rows: list<array{name: string, qty: int, unit: string, sum: string}>, total: string}|null
+     */
+    private function draftSummary(): ?array
+    {
+        $draft = $this->guests->draft('pool');
+        $facility = $this->facility();
+        if (! $draft || empty($facility['id'])) {
+            return null;
+        }
+        $visit = Lagos::dayStart($draft['date']);
+        if ($visit === null || $visit < Lagos::today()) {
+            $this->guests->forgetDraft('pool');
+
+            return null;
+        }
+        try {
+            $products = collect($this->tickets->ticketProducts($facility['id']))->keyBy('id');
+        } catch (R007ApiException $e) {
+            if ($e->isUnavailable()) {
+                return null;
+            }
+            throw $e;
+        }
+        $rows = [];
+        $lines = [];
+        $kobo = 0;
+        foreach ($draft['lines'] as $l) {
+            $p = $products->get($l['productId']);
+            if (! $p) {
+                continue;
+            }
+            $unit = (int) Money::minor($p['price']);
+            $kobo += $unit * $l['quantity'];
+            $lines[] = $l;
+            $rows[] = ['name' => $p['name'], 'qty' => $l['quantity'], 'unit' => Money::format($p['price']), 'sum' => Money::format(Money::fromMinor($unit * $l['quantity']))];
+        }
+        if ($lines === []) {
+            return null;
+        }
+
+        return ['date' => $draft['date'], 'visit' => $visit, 'lines' => $lines, 'rows' => $rows, 'total' => Money::fromMinor($kobo)];
     }
 
     /** @return array<string, mixed> */
