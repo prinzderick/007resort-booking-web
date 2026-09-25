@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Avatar;
 use App\Support\Turnstile;
 use Closure;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class SecurityHeaders
 
         if (! config('app.debug')) {
             $turnstile = Turnstile::enabled() ? ' https://challenges.cloudflare.com' : '';
-            $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins()])));
+            $img = implode(' ', array_unique(array_filter([...$this->mediaOrigins(), ...Avatar::cspOrigins()])));
             $frames = implode(' ', (array) config('cms.frame_hosts'));
             $response->headers->set('Content-Security-Policy',
                 "default-src 'self'; img-src 'self' data: {$img}; style-src 'self' 'unsafe-inline' https://fonts.bunny.net; ".

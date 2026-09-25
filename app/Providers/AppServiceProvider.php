@@ -12,6 +12,9 @@ use App\Services\Online\ContentService;
 use App\Services\Online\SiteContext;
 use App\Services\R007Api\MockR007ApiClient;
 use App\Services\R007Api\R007ApiClient;
+use App\Services\Social\HttpSocialAuthApi;
+use App\Services\Social\SocialAuthApi;
+use App\Services\Social\SocialProviders;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -52,6 +55,8 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->scoped(GuestCheckoutApi::class);
         $this->app->scoped(GuestSession::class, fn (Application $app) => new GuestSession($app['session.store']));
+        $this->app->scoped(SocialAuthApi::class, fn (Application $app) => new HttpSocialAuthApi($app->make(R007ApiClient::class)));
+        $this->app->scoped(SocialProviders::class);
         $this->app->scoped(SiteContext::class);
         $this->app->scoped(ContentService::class);
     }
@@ -82,6 +87,9 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(3)->by('lookup-ref|'.strtolower((string) $r->input('reference')).'|'.$r->ip()),
         ]);
         RateLimiter::for('order', fn (Request $r) => Limit::perMinute(60)->by('order|'.$r->ip()));
+        // OAuth start/callback + the multi-step consent/link/complete screens (per IP, generous because mobile carriers share NAT addresses, and tighter per session).
+        RateLimiter::for('social', fn (Request $r) => [Limit::perMinute(60)->by('social|'.$r->ip()), Limit::perMinute(20)->by('social-s|'.$r->session()->getId()), Limit::perHour(400)->by('social-h|'.$r->ip())]);
+        RateLimiter::for('social-code', fn (Request $r) => Limit::perMinute(6)->by('social-code|'.$r->session()->getId().'|'.$r->ip()));
         RateLimiter::for('public', fn (Request $r) => Limit::perMinute(120)->by('public|'.$r->ip()));
 
         View::composer('*', fn ($view) => $view->with('ctx', $this->app->make(SiteContext::class)));

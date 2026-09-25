@@ -114,11 +114,28 @@ class R007ApiClient
     }
 
     /**
-     * A copy that always authenticates as the website's service credential, even when a customer is
-     * signed in. Guest checkout calls use this so a customer's bearer token can never leak into a
-     * guest order (and the reverse).
+     * Run calls with the website's SERVICE token even when a customer is signed in (social endpoints are
+     * server-to-server and reject a customer bearer). Pass the customer's own token as an `X-Customer-Token`
+     * header where the contract asks for it.
+     *
+     * @template T
+     *
+     * @param  callable(self): T  $fn
+     * @return T
      */
-    public function asService(): static
+    public function asService(callable $fn): mixed
+    {
+        $previous = $this->serviceOnly;
+        $this->serviceOnly = true;
+        try {
+            return $fn($this);
+        } finally {
+            $this->serviceOnly = $previous;
+        }
+    }
+
+    /** A copy that always authenticates as the service credential (guest checkout: a customer token must never reach a guest order). */
+    public function forService(): static
     {
         $copy = clone $this;
         $copy->serviceOnly = true;

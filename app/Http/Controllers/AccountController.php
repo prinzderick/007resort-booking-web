@@ -8,6 +8,8 @@ use App\Services\Online\MembershipService;
 use App\Services\Online\SiteService;
 use App\Services\Online\TicketService;
 use App\Services\R007Api\R007ApiException;
+use App\Services\Social\SocialAuthApi;
+use App\Services\Social\SocialProviders;
 use App\Support\ApiProblem;
 use App\Support\IdempotentSubmit;
 use App\Support\Lagos;
@@ -22,6 +24,8 @@ class AccountController extends Controller
         private readonly MembershipService $memberships,
         private readonly TicketService $tickets,
         private readonly SiteService $site,
+        private readonly SocialAuthApi $social,
+        private readonly SocialProviders $socialProviders,
     ) {}
 
     public function dashboard()
@@ -33,7 +37,15 @@ class AccountController extends Controller
         $upcoming = array_values(array_filter($bookings, fn ($b) => in_array($b['status'], ['CONFIRMED', 'HELD', 'PENDING_PAYMENT', 'RESCHEDULED'], true)
             && CarbonImmutable::parse($b['end'])->gt($now)));
 
+        try {
+            $signin = $this->social->identities();
+        } catch (R007ApiException) {
+            $signin = null; // older API / temporarily unavailable: the section simply stays hidden
+        }
+
         return view('account.dashboard', [
+            'signin' => $signin,
+            'socialProviders' => $this->socialProviders->available(),
             'user' => $this->customers->user(),
             'upcoming' => array_slice($upcoming, 0, 5),
             'memberships' => $memberships,

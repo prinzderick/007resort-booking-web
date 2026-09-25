@@ -27,7 +27,7 @@ class GuestCheckoutApi
 
     private function svc(): R007ApiClient
     {
-        return $this->api->asService();
+        return $this->api->forService();
     }
 
     /** @return array<string, string> */

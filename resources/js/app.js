@@ -12,6 +12,7 @@ import { initForms } from './modules/forms.js';
 import { initBooking } from './modules/booking.js';
 import { initSubscribe } from './modules/subscribe.js';
 import { initMisc } from './modules/misc.js';
+import { initSocial } from './modules/social.js';
 
 const safe = (fn) => {
     try {
@@ -22,7 +23,7 @@ const safe = (fn) => {
 };
 
 const boot = () => {
-    [initHeader, initReveal, initParallax, initRails, initHero, initGallery, initCheckout, initForms, initBooking, initSubscribe, initMisc, initOrders].forEach(safe);
+    [initHeader, initReveal, initParallax, initRails, initHero, initGallery, initCheckout, initForms, initBooking, initSubscribe, initMisc, initSocial, initOrders].forEach(safe);
     document.documentElement.dataset.ready = '1';
 };
 
