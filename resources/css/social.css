@@ -54,3 +54,6 @@
 .pw[open] > summary { margin-bottom: 4px; }
 .plain { list-style: none; padding: 0; margin: 0; }
 @media (max-width: 520px) { .method .btn { width: 100%; } .method { align-items: stretch; } .method > form { width: 100%; } }
+
+.persona { flex-wrap: nowrap; }
+.persona > span { flex: none; }

@@ -402,7 +402,7 @@ class SocialLoginTest extends ApiTestCase
     public function test_callback_is_rate_limited(): void
     {
         $this->fakeApi($this->providersOk());
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 60; $i++) {
             $this->get('/auth/google/callback?error=access_denied');
         }
 

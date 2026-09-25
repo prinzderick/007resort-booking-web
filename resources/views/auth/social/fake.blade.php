@@ -9,14 +9,14 @@
     <ul class="stack plain" role="list">
         @foreach ($personas as $code => [$label, $desc])
             <li>
-                <a class="row-item" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['code' => $code, 'state' => $state]) }}">
+                <a class="row-item persona" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['code' => $code, 'state' => $state]) }}">
                     <div><p style="font-weight:600">{{ $label }}</p><p style="font-size:14px;color:var(--mute)">{{ $desc }}</p></div>
                     <span aria-hidden="true">&rarr;</span>
                 </a>
             </li>
         @endforeach
-        <li><a class="row-item" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['error' => 'access_denied', 'error_description' => 'The user denied access', 'state' => $state]) }}"><div><p style="font-weight:600">Press Cancel</p><p style="font-size:14px;color:var(--mute)">Returns error=access_denied like the real provider.</p></div><span aria-hidden="true">&rarr;</span></a></li>
-        <li><a class="row-item" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['code' => 'new', 'state' => 'tampered']) }}"><div><p style="font-weight:600">Tampered state</p><p style="font-size:14px;color:var(--mute)">Callback with a wrong state value (must be refused).</p></div><span aria-hidden="true">&rarr;</span></a></li>
+        <li><a class="row-item persona" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['error' => 'access_denied', 'error_description' => 'The user denied access', 'state' => $state]) }}"><div><p style="font-weight:600">Press Cancel</p><p style="font-size:14px;color:var(--mute)">Returns error=access_denied like the real provider.</p></div><span aria-hidden="true">&rarr;</span></a></li>
+        <li><a class="row-item persona" href="{{ url('/auth/'.$key.'/callback').'?'.http_build_query(['code' => 'new', 'state' => 'tampered']) }}"><div><p style="font-weight:600">Tampered state</p><p style="font-size:14px;color:var(--mute)">Callback with a wrong state value (must be refused).</p></div><span aria-hidden="true">&rarr;</span></a></li>
     </ul>
 </div></div></div>
 @endsection
