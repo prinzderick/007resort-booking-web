@@ -14,6 +14,7 @@ use App\Support\ApiProblem;
 use App\Support\GuestDetails;
 use App\Support\IdempotentSubmit;
 use App\Support\Lagos;
+use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -100,47 +101,110 @@ class BookingController extends Controller
         ]);
         [$start, $end] = explode('|', $data['slot']);
         $back = route('book.slots', [$slug, $resourceId, 'date' => Lagos::parse($start)?->format('Y-m-d')]);
-        // Signed-in customers with a complete profile hold under their account (as always); everyone
-        // else holds as a guest: no login, no account.
-        $account = $this->accountMode();
-        $user = $account ? ($this->customers->user() ?? []) : [];
 
-        return IdempotentSubmit::run($request, "hold:{$resourceId}", function (string $key) use ($resourceId, $start, $end, $data, $user, $back, $account) {
+        if (! $this->accountMode()) {
+            // Guest: no login. The slot is held when they continue to payment (the API creates the hold together
+            // with the guest's contact details), so remember the choice and ask for name, email and phone.
+            $this->guests->putDraft('booking', ['slug' => $slug, 'resourceId' => $resourceId, 'start' => $start, 'end' => $end, 'quantity' => (int) ($data['quantity'] ?? 1)]);
+
+            return redirect()->route('checkout.booking');
+        }
+
+        $user = $this->customers->user() ?? [];
+
+        return IdempotentSubmit::run($request, "hold:{$resourceId}", function (string $key) use ($resourceId, $start, $end, $data, $user, $back) {
             try {
                 $booking = $this->bookings->hold($resourceId, $start, $end, (int) ($data['quantity'] ?? 1), array_filter([
                     'name' => $user['name'] ?? null,
                     'email' => $user['email'] ?? null,
                     'phone' => $user['phone'] ?? null,
-                ]), $key, guest: ! $account);
+                ]), $key);
             } catch (R007ApiException $e) {
                 // 409 slot_unavailable: back to a freshly loaded grid.
                 return redirect()->to($back)->with('error', ApiProblem::message($e));
-            }
-            if (! $account) {
-                $this->guests->rememberHold($booking['id']);
             }
 
             return redirect()->route('checkout.show', $booking['id']);
         });
     }
 
+    /** Guest "Your details" step for a slot the visitor has picked (nothing is held yet). */
+    public function guestCheckout(Request $request)
+    {
+        if ($this->accountMode()) {
+            return redirect()->route('sports');
+        }
+        $draft = $this->guestDraft();
+        if ($draft instanceof RedirectResponse) {
+            return $draft;
+        }
+
+        return view('booking.checkout-guest', $draft + ['prefill' => $this->prefill($request)]);
+    }
+
+    public function guestPay(Request $request)
+    {
+        $draft = $this->guestDraft();
+        if ($draft instanceof RedirectResponse) {
+            return $draft;
+        }
+        $guest = GuestDetails::validate($request);
+        $back = route('book.slots', [$draft['slug'], $draft['resourceId'], 'date' => Lagos::parse($draft['start'])?->format('Y-m-d')]);
+
+        return IdempotentSubmit::run($request, 'guest-book:'.$draft['resourceId'], function (string $key) use ($draft, $guest, $request, $back) {
+            try {
+                $start = $this->guestApi->startBooking($draft['resourceId'], $draft['start'], $draft['end'], (int) $draft['quantity'], $guest, $key);
+            } catch (R007ApiException $e) {
+                if ($e->is('slot_unavailable')) {
+                    return redirect()->to($back)->with('error', ApiProblem::message($e));
+                }
+
+                return redirect()->route('checkout.booking')->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
+            }
+
+            return $this->beginGuestPayment($request, $start, $guest, $key, 'booking');
+        });
+    }
+
+    /** @return array<string, mixed>|RedirectResponse */
+    private function guestDraft()
+    {
+        $d = $this->guests->draft('booking');
+        if (! $d) {
+            return redirect()->route('sports')->with('notice', 'Choose a court or time first.');
+        }
+        $facility = $this->site->facility($d['slug']);
+        $resource = $facility ? $this->safeResource($facility, $d['resourceId']) : null;
+        $start = Lagos::parse($d['start']);
+        if (! $resource || ! $start || $start->isPast()) {
+            $this->guests->forgetDraft('booking');
+
+            return redirect()->route('sports')->with('notice', 'That time is no longer available. Please choose again.');
+        }
+        $qty = ($resource['mode'] ?? '') === 'INDIVIDUAL_CAPACITY' ? (int) $d['quantity'] : 1;
+
+        return $d + ['resource' => $resource, 'facility' => $facility, 'total' => Money::fromMinor((int) Money::minor($resource['price']) * $qty), 'qty' => $qty];
+    }
+
+    /** @param array<string, mixed> $facility @return array<string, mixed>|null */
+    private function safeResource(array $facility, string $resourceId): ?array
+    {
+        try {
+            return $this->bookings->resource($facility['ids'] ?? [$facility['id']], $resourceId);
+        } catch (R007ApiException $e) {
+            if ($e->isUnavailable()) {
+                return null;
+            }
+            throw $e;
+        }
+    }
+
     public function checkout(Request $request, string $bookingId)
     {
         abort_unless(Str::isUuid($bookingId), 404);
-
-        if ($this->guestPath($bookingId)) {
-            $hold = $this->loadHold($bookingId);
-            if ($hold instanceof RedirectResponse) {
-                return $hold;
-            }
-
-            return view('booking.checkout', [
-                'booking' => $hold,
-                'secondsLeft' => $this->secondsLeft($hold),
-                'slug' => $this->site->slugForFacilityId((string) ($hold['facilityId'] ?? '')),
-                'account' => null,
-                'prefill' => $this->prefill($request),
-            ]);
+        if (! $this->accountMode()) {
+            // Guests never have a numbered checkout link: their order lives at /booking/{reference}.
+            return redirect()->route('sports')->with('notice', 'That checkout link is no longer valid. Choose your time again.');
         }
 
         $booking = $this->loadBooking($bookingId);
@@ -160,28 +224,7 @@ class BookingController extends Controller
     public function pay(Request $request, string $bookingId)
     {
         abort_unless(Str::isUuid($bookingId), 404);
-
-        if ($this->guestPath($bookingId)) {
-            $guest = GuestDetails::validate($request);
-
-            return IdempotentSubmit::run($request, "pay:{$bookingId}", function (string $key) use ($bookingId, $guest, $request) {
-                $hold = $this->loadHold($bookingId);
-                if ($hold instanceof RedirectResponse) {
-                    return $hold;
-                }
-                if ($this->secondsLeft($hold) <= 0) {
-                    return redirect()->route('checkout.show', $bookingId);
-                }
-
-                try {
-                    $payment = $this->guestApi->payBooking($bookingId, $guest, route('payment.return'), $key);
-                } catch (R007ApiException $e) {
-                    return redirect()->route('checkout.show', $bookingId)->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
-                }
-
-                return $this->handOffToPaystack($request, $payment, $guest, ['flow' => 'booking']);
-            });
-        }
+        abort_unless($this->accountMode(), 404);
 
         return IdempotentSubmit::run($request, "pay:{$bookingId}", function (string $key) use ($bookingId, $request) {
             $booking = $this->loadBooking($bookingId);
@@ -211,23 +254,7 @@ class BookingController extends Controller
     public function release(Request $request, string $bookingId)
     {
         abort_unless(Str::isUuid($bookingId), 404);
-
-        if ($this->guestPath($bookingId)) {
-            abort_unless($this->guests->ownsHold($bookingId), 404);
-
-            return IdempotentSubmit::run($request, "release:{$bookingId}", function (string $key) use ($bookingId) {
-                $slug = null;
-                try {
-                    $hold = $this->guestApi->hold($bookingId);
-                    $slug = $this->site->slugForFacilityId((string) ($hold['facilityId'] ?? ''));
-                    $this->guestApi->releaseHold($bookingId, $key);
-                } catch (R007ApiException $e) {
-                    return redirect()->route('home')->with('error', ApiProblem::message($e));
-                }
-
-                return redirect()->to($slug ? route('book.resources', $slug) : route('home'))->with('status', 'The slot has been released.');
-            });
-        }
+        abort_unless($this->accountMode(), 404);
 
         return IdempotentSubmit::run($request, "release:{$bookingId}", function (string $key) use ($bookingId) {
             try {
@@ -238,32 +265,6 @@ class BookingController extends Controller
 
             return redirect()->route('account')->with('status', 'The slot has been released.');
         });
-    }
-
-    /** A hold made by (or opened as) a guest is paid as a guest; account holds stay on the account flow. */
-    private function guestPath(string $bookingId): bool
-    {
-        return ! $this->accountMode() || $this->guests->ownsHold($bookingId);
-    }
-
-    /** @return array<string, mixed>|RedirectResponse */
-    private function loadHold(string $bookingId)
-    {
-        try {
-            $hold = $this->guestApi->hold($bookingId);
-        } catch (R007ApiException $e) {
-            if (in_array($e->status, [403, 404], true)) {
-                abort(404);
-            }
-            throw $e;
-        }
-
-        $ref = (string) ($hold['orderReference'] ?? '');
-        if (in_array($hold['status'] ?? '', ['CONFIRMED', 'COMPLETED', 'RESCHEDULED'], true) && $ref !== '' && $this->guests->token($ref)) {
-            return redirect()->route('orders.show', $ref);
-        }
-
-        return $hold;
     }
 
     // ---- helpers ---------------------------------------------------------

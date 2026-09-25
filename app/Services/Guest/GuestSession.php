@@ -12,8 +12,6 @@ class GuestSession
 {
     private const TOKENS = 'guest.tokens';
 
-    private const HOLDS = 'guest.holds';
-
     private const DRAFT = 'guest.draft';
 
     public function __construct(private readonly Session $session) {}
@@ -55,18 +53,7 @@ class GuestSession
         return array_reverse(array_keys((array) $this->session->get(self::TOKENS, [])));
     }
 
-    public function rememberHold(string $bookingId): void
-    {
-        $holds = array_slice(array_unique([...(array) $this->session->get(self::HOLDS, []), $bookingId]), -10);
-        $this->session->put(self::HOLDS, array_values($holds));
-    }
-
-    public function ownsHold(string $bookingId): bool
-    {
-        return in_array($bookingId, (array) $this->session->get(self::HOLDS, []), true);
-    }
-
-    /** Ticket / membership choices made before the details step. @param array<string, mixed> $draft */
+    /** Slot / ticket / membership choices made before the details step. @param array<string, mixed> $draft */
     public function putDraft(string $kind, array $draft): void
     {
         $this->session->put(self::DRAFT.'.'.$kind, $draft);

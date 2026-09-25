@@ -69,6 +69,8 @@ return [
         // Cloudflare Turnstile on /find-booking. Off unless a site key is set.
         'turnstile_site_key' => env('TURNSTILE_SITE_KEY'),
         'turnstile_secret' => env('TURNSTILE_SECRET_KEY'),
+        // Whether the API can actually deliver the confirmation email (false while the demo server has mail=log).
+        'email_delivery' => (bool) env('GUEST_EMAIL_DELIVERY', false),
         // How many orders one browser session remembers access for.
         'max_orders_in_session' => 20,
     ],

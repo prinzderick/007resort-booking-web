@@ -143,12 +143,12 @@ class TicketPurchaseController extends Controller
 
         return IdempotentSubmit::run($request, 'pool-pay', function (string $key) use ($facility, $summary, $guest, $request) {
             try {
-                $payment = $this->guestApi->payTickets($facility['id'], $summary['date'], $summary['lines'], $guest, route('payment.return'), $key);
+                $start = $this->guestApi->startTickets($facility['id'], $summary['date'], $summary['lines'], $guest, $key);
             } catch (R007ApiException $e) {
                 return redirect()->route('checkout.pool')->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
             }
 
-            return $this->handOffToPaystack($request, $payment, $guest, ['flow' => 'tickets']);
+            return $this->beginGuestPayment($request, $start, $guest, $key, 'tickets');
         });
     }
 

@@ -64,10 +64,9 @@ class BookingService
      * @param  array<string, mixed>  $customer
      * @return array<string, mixed>
      */
-    public function hold(string $resourceId, string $start, string $end, int $quantity, array $customer, string $idempotencyKey, bool $guest = false): array
+    public function hold(string $resourceId, string $start, string $end, int $quantity, array $customer, string $idempotencyKey): array
     {
-        // Guest holds always use the website's service credential, never a customer token.
-        return ($guest ? $this->api->asService() : $this->api)->post('bookings/hold', array_filter([
+        return $this->api->post('bookings/hold', array_filter([
             'resourceId' => $resourceId,
             'start' => $start,
             'end' => $end,

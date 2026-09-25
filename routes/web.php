@@ -91,6 +91,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // ---- Checkout: open to everyone (guests pay with name, email, phone; signed-in customers skip the details card) ----
 Route::middleware(PrivateOrderPage::class)->group(function () {
     Route::post('/book/{slug}/{resourceId}/hold', [BookingController::class, 'hold'])->middleware('throttle:booking')->where('slug', '[a-z\-]+')->name('book.hold');
+    Route::get('/checkout/booking', [BookingController::class, 'guestCheckout'])->name('checkout.booking');
+    Route::post('/checkout/booking', [BookingController::class, 'guestPay'])->middleware('throttle:payment')->name('checkout.booking.pay');
     Route::get('/checkout/{bookingId}', [BookingController::class, 'checkout'])->whereUuid('bookingId')->name('checkout.show');
     Route::post('/checkout/{bookingId}/pay', [BookingController::class, 'pay'])->middleware('throttle:payment')->whereUuid('bookingId')->name('checkout.pay');
     Route::post('/checkout/{bookingId}/release', [BookingController::class, 'release'])->middleware('throttle:booking')->whereUuid('bookingId')->name('checkout.release');
@@ -108,6 +110,7 @@ Route::middleware(PrivateOrderPage::class)->group(function () {
     Route::post('/find-booking', [OrderController::class, 'lookup'])->middleware('throttle:lookup')->name('find.lookup');
     Route::middleware('throttle:order')->group(function () {
         Route::get('/booking/{reference}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/order/{reference}', [OrderController::class, 'show'])->name('orders.email-link'); // link used in the API's confirmation email (?token=)
         Route::get('/booking/{reference}/calendar.ics', [OrderController::class, 'ics'])->name('orders.ics');
         Route::post('/booking/{reference}/pay', [OrderController::class, 'pay'])->middleware('throttle:payment')->name('orders.pay');
         Route::post('/booking/{reference}/resend', [OrderController::class, 'resend'])->middleware('throttle:booking')->name('orders.resend');

@@ -54,14 +54,14 @@ class SportsBookingTest extends ApiTestCase
         $this->get('/book/sports-arena/'.self::COURT)->assertOk()->assertSee('temporarily unavailable');
     }
 
-    public function test_guest_can_hold_a_slot_without_signing_in_using_the_service_credential(): void
+    public function test_guest_picks_a_slot_without_signing_in_and_goes_to_the_details_step(): void
     {
-        $this->baseFakes(['bookings/hold' => Http::response($this->booking(), 201)]);
+        $this->baseFakes();
 
         $this->post('/book/sports-arena/'.self::COURT.'/hold', ['slot' => '2026-09-24T08:00:00Z|2026-09-24T09:00:00Z', '_submission' => (string) Str::uuid()])
-            ->assertRedirect(route('checkout.show', self::BOOKING));
+            ->assertRedirect(route('checkout.booking'));
 
-        Http::assertSent(fn ($r) => str_ends_with($r->url(), '/bookings/hold') && $r->hasHeader('Authorization', 'Bearer svc-test-token') && ! isset($r['customer']['email']));
+        $this->assertSame([], $this->sentTo('POST', 'bookings/hold'), 'the slot is held together with the guest details, at payment');
     }
 
     public function test_hold_posts_slot_customer_and_idempotency_key_then_goes_to_checkout(): void

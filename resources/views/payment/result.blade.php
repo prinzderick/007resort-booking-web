@@ -50,9 +50,14 @@
             <p class="lede" style="margin:0 auto">Your {{ $membership['planName'] ?? '' }} membership is active until {{ \App\Support\Lagos::parse($membership['validUntil'])->format('j F Y') }}.</p>
             <a class="btn btn--lg" style="margin-top:22px" href="{{ route('account') }}">Go to my account</a>
             @break
-        @case('paid_unlinked')
+        @case('paid_elsewhere')
             <h1>Payment received</h1>
-            <p class="lede" style="margin:0 auto">Thank you. To see your ticket, use <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a> with your reference and the email or phone you booked with (or open the link in your confirmation email).</p>
+            <p class="lede" style="margin:0 auto">Thank you. See your booking and QR ticket in <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a>.</p>
+            @break
+        @case('paid_unlinked')
+            <h1>Open your booking</h1>
+            <p class="lede" style="margin:0 auto">We can only show a booking on the device that made it. To see your ticket, use <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a> with your reference and the email or phone you booked with (or open the link in your confirmation email).</p>
+            <a class="btn btn--lg" style="margin-top:22px" href="{{ route('find.show') }}">Find my booking</a>
             @break
         @default
             <h1>We could not find that payment</h1>

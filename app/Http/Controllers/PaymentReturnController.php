@@ -74,7 +74,7 @@ class PaymentReturnController extends Controller
 
         if (! is_array($pending)) {
             // Verified elsewhere (other browser/session): nothing to finalise here.
-            return view('payment.result', ['state' => 'paid_unlinked']);
+            return view('payment.result', ['state' => 'paid_elsewhere']);
         }
 
         try {
@@ -170,14 +170,21 @@ class PaymentReturnController extends Controller
     private function guestReturn(Request $request, string $key0, string $key, ?array $pending)
     {
         $reference = $key0;
+        $order = $pending['order'] ?? null;
+        $token = $order ? $this->guests->token($order) : null;
+        if ($order === null || $token === null) {
+            // No order access in this browser (paid on another device, or the session ended): we cannot verify here.
+            return view('payment.result', ['state' => 'paid_unlinked']);
+        }
+
         try {
-            $payment = $this->guestApi->verifyPayment($reference);
+            $payment = $this->guestApi->verifyPayment($reference, $token);
         } catch (R007ApiException $e) {
-            if ($e->status === 404) {
-                return view('payment.result', ['state' => 'unknown']);
+            if (in_array($e->status, [401, 403, 404], true)) {
+                return view('payment.result', ['state' => 'paid_unlinked']);
             }
             if ($e->isUnavailable()) {
-                return view('payment.result', ['state' => 'unverified', 'reference' => $reference, 'order' => $pending['order'] ?? null]);
+                return view('payment.result', ['state' => 'unverified', 'reference' => $reference, 'order' => $order]);
             }
             throw $e;
         }
@@ -202,6 +209,8 @@ class PaymentReturnController extends Controller
         }
 
         $request->session()->forget($key);
+        $this->guests->forgetDraft('booking');
+        $this->guests->forgetDraft('pool');
 
         return redirect()->route('orders.show', $order)->with('just_paid', true);
     }

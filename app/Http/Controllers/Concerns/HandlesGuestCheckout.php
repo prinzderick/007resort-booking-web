@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Concerns;
 
 use App\Services\Cms\CmsClient;
-use App\Services\Guest\GuestPayment;
+use App\Services\Guest\GuestCheckoutApi;
 use App\Services\Guest\GuestSession;
+use App\Services\Guest\GuestStart;
 use App\Services\Online\CustomerService;
+use App\Services\R007Api\R007ApiException;
+use App\Support\ApiProblem;
 use App\Support\GuestDetails;
 use App\Support\Phone;
 use Illuminate\Http\RedirectResponse;
@@ -42,23 +45,27 @@ trait HandlesGuestCheckout
     }
 
     /**
-     * Remember the order in this browser only, note where the Paystack return should land, opt in to news
-     * if (and only if) the box was ticked, then hand off to Paystack.
+     * The order now exists at the API. Remember it in this browser only (so a failed payment never loses it),
+     * start Paystack, note where the return should land, opt in to news if (and only if) the box was ticked,
+     * then hand off to Paystack.
      *
      * @param  array<string, mixed>  $guest
-     * @param  array<string, mixed>  $context  e.g. ['flow' => 'booking', 'retry' => url]
      */
-    protected function handOffToPaystack(Request $request, GuestPayment $payment, array $guest, array $context = []): RedirectResponse
+    protected function beginGuestPayment(Request $request, GuestStart $start, array $guest, string $key, string $flow): RedirectResponse
     {
-        abort_if($payment->authorizationUrl === '' || $payment->orderReference === '', 502);
-
         $guests = app(GuestSession::class);
-        if ($payment->accessToken) {
-            $guests->remember($payment->orderReference, $payment->accessToken);
-        }
+        $guests->remember($start->reference, $start->accessToken);
         $request->session()->put('guest.details', ['name' => $guest['name'], 'email' => $guest['email'], 'phone' => $guest['phone']]);
-        $request->session()->put('checkout.pending.'.$payment->paymentReference, ['kind' => 'guest', 'order' => $payment->orderReference, 'attempts' => 0] + $context);
 
+        try {
+            $payment = app(GuestCheckoutApi::class)->pay($start, $start->accessToken, route('payment.return'), $key.':pay');
+        } catch (R007ApiException $e) {
+            // The order exists and is safe: the visitor can retry from its own page.
+            return redirect()->route('orders.show', $start->reference)->with('error', ApiProblem::message($e));
+        }
+        abort_if($payment->authorizationUrl === '', 502);
+
+        $request->session()->put('checkout.pending.'.$payment->paymentReference, ['kind' => 'guest', 'order' => $start->reference, 'attempts' => 0, 'flow' => $flow]);
         if (! empty($guest['marketingConsent'])) {
             $this->subscribeToNews($request, $guest['email']);
         }

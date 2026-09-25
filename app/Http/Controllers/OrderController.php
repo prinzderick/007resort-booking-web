@@ -97,7 +97,7 @@ class OrderController extends Controller
     {
         $reference = $this->ref($reference);
 
-        if ($request->query->has('t')) {
+        if ($request->query->has('t') || $request->query->has('token')) {
             return $this->exchange($request, $reference);
         }
 
@@ -141,7 +141,7 @@ class OrderController extends Controller
     /** ?t=<token>: move the token into this browser's session, then drop it from the URL. */
     private function exchange(Request $request, string $reference)
     {
-        $t = $request->query('t');
+        $t = $request->query('t', $request->query('token'));
         if (! is_string($t) || preg_match(self::TOKEN, $t) !== 1) {
             return redirect()->route('find.show', ['reference' => $reference]);
         }
@@ -181,12 +181,13 @@ class OrderController extends Controller
             } catch (R007ApiException $e) {
                 return redirect()->route('orders.show', $reference)->with('error', ApiProblem::message($e));
             }
-            // Truthful: only say "sent" when the API says it was.
-            $msg = ! empty($r['emailSent'])
-                ? 'We have sent your ticket again. Check your inbox and spam folder.'
+            // Truthful: only promise an email when the API accepted it AND mail is configured.
+            $ok = ! empty($r['queued']) && config('r007.checkout.email_delivery');
+            $msg = $ok
+                ? 'We are sending your ticket again. It can take a few minutes; check your inbox and spam folder.'
                 : 'We cannot send emails right now. Please keep this page or save your ticket using the buttons below.';
 
-            return redirect()->route('orders.show', $reference)->with(! empty($r['emailSent']) ? 'status' : 'notice', $msg);
+            return redirect()->route('orders.show', $reference)->with($ok ? 'status' : 'notice', $msg);
         });
     }
 
@@ -196,10 +197,15 @@ class OrderController extends Controller
         $token = $this->guests->token($reference);
         abort_if($token === null, 404);
         $data = $request->validate(['reason' => ['nullable', 'string', 'max:300']]);
+        $loaded = $this->load($reference);
+        if ($loaded instanceof Response) {
+            return $loaded;
+        }
+        [$order] = $loaded;
 
-        return IdempotentSubmit::run($request, "order-cancel:{$reference}", function (string $key) use ($reference, $token, $data) {
+        return IdempotentSubmit::run($request, "order-cancel:{$reference}", function (string $key) use ($reference, $token, $data, $order) {
             try {
-                $this->api->cancel($reference, $token, ($data['reason'] ?? null) ?: 'Cancelled by guest', $key);
+                $this->api->cancel($order, $token, ($data['reason'] ?? null) ?: 'Cancelled by guest', $key);
             } catch (R007ApiException $e) {
                 return redirect()->route('orders.show', $reference)->with('error', ApiProblem::message($e));
             }
@@ -216,25 +222,20 @@ class OrderController extends Controller
         if ($loaded instanceof Response) {
             return $loaded;
         }
-        [$order] = $loaded;
+        [$order, $token] = $loaded;
         $data = $request->validate(['password' => ['required', 'string', Password::min(10)]], [
             'password.required' => 'Choose a password to save your bookings.',
         ]);
-        $g = (array) $order['guest'];
+        $email = (string) ($order['guest']['email'] ?? '');
 
         try {
-            $this->customers->register([
-                'name' => (string) ($g['name'] ?? ''), 'email' => (string) ($g['email'] ?? ''), 'phone' => (string) ($g['phone'] ?? ''), 'password' => $data['password'],
-            ], 'guest-account:'.hash('sha256', $reference.$request->input('_submission', '')));
+            $this->api->createAccount($reference, $token, $data['password'], 'guest-account:'.hash('sha256', $reference.$request->input('_submission', '')));
         } catch (R007ApiException $e) {
-            $msg = $e->status === 422 || $e->status === 409
-                ? 'There is already an account with this email. You can sign in to see all your bookings.'
-                : ApiProblem::message($e);
-
-            return redirect()->route('orders.show', $reference)->withErrors(['password' => $msg], 'account');
+            return redirect()->route('orders.show', $reference)->withErrors(['password' => $e->status === 422 && $e->detail ? $e->detail : ApiProblem::message($e)], 'account');
         }
 
-        return redirect()->route('verify', ['email' => $g['email']])->with('notice', 'Almost done. Enter the code we sent to confirm your email, and your bookings will be in one place.');
+        // The API answers the same whether or not an account already exists; the email code settles it.
+        return redirect()->route('verify', ['email' => $email])->with('notice', 'Almost done. Enter the code we sent to confirm your email and your bookings will be in one place.');
     }
 
     /** Add-to-calendar file for bookings and pool visits. */

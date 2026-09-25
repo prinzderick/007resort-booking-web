@@ -74,14 +74,14 @@ class MembershipController extends Controller
             }
             $guest = GuestDetails::validate($request);
 
-            return IdempotentSubmit::run($request, "membership:{$planId}", function (string $key) use ($planId, $guest, $request) {
+            return IdempotentSubmit::run($request, "membership:{$planId}", function (string $key) use ($planId, $guest, $request, $plan) {
                 try {
-                    $payment = $this->guestApi->payMembership($planId, $guest, route('payment.return'), $key);
+                    $start = $this->guestApi->startMembership($planId, (string) $plan['price'], $guest, $key);
                 } catch (R007ApiException $e) {
                     return redirect()->route('checkout.membership', $planId)->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
                 }
 
-                return $this->handOffToPaystack($request, $payment, $guest, ['flow' => 'membership']);
+                return $this->beginGuestPayment($request, $start, $guest, $key, 'membership');
             });
         }
 
