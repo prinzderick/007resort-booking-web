@@ -69,6 +69,10 @@
             </div>
         </section>
 
+        @if (trim($page['bodyHtml'] ?? '') !== '')
+            <section class="section--tight" aria-labelledby="getting-here"><div class="wrap"><div class="narrow prose" id="getting-here">{!! $page['bodyHtml'] !!}</div></div></section>
+        @endif
+
         @if ($embed && $allowed)
             <section class="section--tight"><div class="wrap"><div class="map"><iframe src="{{ $embed }}" title="Map to {{ $s['brand']['name'] }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
                 @php $mapLink = $c['mapUrl'] ?? (! empty($c['lat']) ? 'https://www.openstreetmap.org/?mlat='.$c['lat'].'&mlon='.$c['lng'].'#map=15/'.$c['lat'].'/'.$c['lng'] : null); @endphp

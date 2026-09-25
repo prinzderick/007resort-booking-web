@@ -30,7 +30,7 @@ for m in manifest:
     h = round(m['height'] * variants[-1]['width'] / m['width'])
     result[key] = {
         'id': slug, 'url': variants[-1]['url'], 'alt': m['alt'], 'width': variants[-1]['width'], 'height': h, 'mimeType': 'image/webp',
-        'variants': variants, 'dominantColor': m.get('dominantColor'), 'credit': 'Photo: ' + m['credit'] + ' / Unsplash',
+        'variants': variants, 'dominantColor': m.get('dominantColor'), 'credit': 'Photo: ' + m['credit'] + ' / ' + m.get('provider', 'Unsplash'),
         'tags': m.get('tags', []), 'category': m['category'],
     }
     credits.append(f"- {slug}: {m['credit']} ({m['sourceUrl']}), {m['license']}")

@@ -78,6 +78,14 @@ class PublicSiteTest extends ApiTestCase
         $this->get('/contact')->assertOk()->assertSee('Otueke')->assertSee('Monday')->assertSee('7am to 11pm');
     }
 
+    public function test_location_copy_mentions_the_federal_university_otueke(): void
+    {
+        $this->fakeApi(['public/site' => Http::response($this->siteBody())]);
+        $this->get('/contact')->assertOk()->assertSee('Getting here')->assertSee('Federal University Otueke')->assertSee('Ask reception for directions');
+        $this->get('/')->assertOk()->assertSee('Near the Federal University Otueke, Bayelsa State');
+        $this->get('/faq')->assertOk()->assertSee('How do I get there?')->assertSee('Is the resort close to the university?');
+    }
+
     public function test_seo_endpoints(): void
     {
         $this->fakeApi(['public/site' => Http::response($this->siteBody())]);

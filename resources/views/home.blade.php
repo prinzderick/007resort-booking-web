@@ -31,7 +31,7 @@
             @foreach ($slides as $i => $s)
                 @php $tag = $i === 0 ? 'h1' : 'p'; @endphp
                 <div class="hero-slidecopy {{ $i === 0 ? 'is-active' : '' }}" data-slide-copy data-align="{{ strtolower($s['alignment'] ?? 'left') }}" @if ($i > 0) aria-hidden="true" @endif>
-                    @if ($i === 0 && $open['known'])<span class="eyebrow">{{ $open['label'] }}</span>@endif
+                    @if ($i === 0)<span class="eyebrow">{{ config('site.location_line') }}@if ($open['known']) &middot; {{ $open['label'] }}@endif</span>@endif
                     <{{ $tag }} class="ht">{{ Text::accent($s['headline']) }}</{{ $tag }}>
                     @if (! empty($s['subheadline']))<p class="sub">{{ $s['subheadline'] }}</p>@endif
                     <div class="row">
