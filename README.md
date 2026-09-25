@@ -151,6 +151,37 @@ python3 scripts/stock-variants.py <dir with manifest.json>   # regenerate dev st
 - **Privacy-conscious logging**: only request id, HTTP status and stable problem code are logged; never names,
   emails, phones, tokens or payloads.
 
+## Social sign-up / sign-in (Google, Facebook)
+
+Customers can sign up and sign in with Google or Facebook next to email + password: buttons on `/login`, `/register`
+and wherever a guest is sent to sign in (slot holds, pool tickets, memberships, checkout). This site runs the OAuth
+authorization-code flow (`laravel/socialite`; `state` on both providers, PKCE for Google), reads the profile once, and
+calls the API server-to-server with the service token (contract: `007resort-api` `docs/CUSTOMER_SOCIAL_LOGIN.md`).
+The session it gets back is stored exactly like a password login.
+
+| Route | Purpose |
+| --- | --- |
+| `GET /auth/{provider}/redirect` | Start (`?return_to=/relative/path`, `?from=register`, `?intent=connect` from the account page) |
+| `GET /auth/{provider}/callback` | Provider returns here (register `${APP_URL}/auth/google/callback` and `/auth/facebook/callback`) |
+| `GET/POST /auth/consent` | First-time sign-up: terms + privacy, optional newsletter opt-in |
+| `GET/POST /auth/complete` (+ `/verify`, `/resend`, `/skip`) | Fill a missing email / name, optional Nigerian phone, verify the emailed 6-digit code |
+| `GET/POST /auth/link` (+ `/resend`) | Existing unverified account: enter the code emailed to its owner, never a silent merge |
+| `POST /auth/cancel` | Abandon a pending consent / link |
+| `POST /account/sign-in/{id}/disconnect`, `POST /account/sign-in/password` | Account page "Sign-in methods" |
+
+* Buttons are shown only for providers that are in `SOCIAL_ENABLED_PROVIDERS`, have credentials, **and** are enabled in the API
+  (`GET /public/customers/social/providers`); if the API cannot answer, no buttons are shown (fail closed).
+* Owner set-up (Google Cloud Console, Meta for Developers, exact URLs): [docs/SOCIAL_LOGIN_SETUP.md](docs/SOCIAL_LOGIN_SETUP.md).
+* The API service token needs the `customer.social` scope (`r007:service-token create --scope=public.read,customer.social`).
+* **Try it without any Google/Facebook credentials**: `R007_MOCK=true SOCIAL_FAKE=true php artisan serve --port=8163`, open `/login`,
+  press *Continue with Google*, and pick a persona on the local fake consent screen (new customer, returning, no email shared,
+  existing account needing the emailed code, cancel, tampered state). Mock API codes are always `123456`. `SOCIAL_FAKE` is
+  **ignored when `APP_ENV=production`** (enforced in code and tested).
+* Facebook emails are sent as `emailVerified:false` (Facebook does not vouch for them) and the API never links or stores an
+  unverified email as a login: such customers add + verify an email by code (`/auth/complete`) before they can pay.
+* Apple: designed for later. Add `apple` to `config/social.php`, the Socialite Apple provider and a button mark; the flow, API contract
+  and screens are provider-agnostic.
+
 ## Requirements
 
 - PHP 8.4+ with `mbstring`, `intl`, `bcmath`, `curl`, `dom`, `fileinfo`, `openssl`, `xml`, `xmlwriter`, `zip`
@@ -233,6 +264,11 @@ All configuration comes from the environment (see `.env.example` - placeholders 
 | `R007_BOOKING_HORIZON_DAYS` | `30` | How far ahead the date pickers go |
 | `R007_DISPLAY_TIMEZONE` | `Africa/Lagos` | Timezone used when rendering dates |
 | `SITE_PHONE`, `SITE_EMAIL`, `SITE_ADDRESS`, `SITE_MAP_URL` | placeholders | Fallback contact details when the CMS has none |
+| `SOCIAL_ENABLED_PROVIDERS` | `google,facebook` | Providers this site may offer (each also needs credentials and API enablement) |
+| `SOCIAL_GOOGLE_CLIENT_ID` / `SOCIAL_GOOGLE_CLIENT_SECRET` | empty | Google OAuth web client (**secret**) |
+| `SOCIAL_FACEBOOK_CLIENT_ID` / `SOCIAL_FACEBOOK_CLIENT_SECRET` | empty | Meta app id / secret (**secret**) |
+| `SOCIAL_AVATAR_HOSTS` | empty | Extra https avatar hosts for the CSP `img-src` (Google/Facebook built in) |
+| `SOCIAL_FAKE` | `false` | Local fake provider screen; ignored in production |
 | `TRUSTED_PROXIES` | `127.0.0.1` | Reverse proxy addresses whose `X-Forwarded-*` are trusted |
 | `SESSION_DRIVER` | `file` | Session store (holds the customer's API token server-side; `SESSION_ENCRYPT=true`) |
 | `CACHE_STORE` | `file` | Cache store (also used for idempotency locks; must support locks: file/redis) |
