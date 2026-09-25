@@ -15,7 +15,7 @@
         $when = $from->format('j M Y').($until ? ' to '.$until->format('j M Y') : '');
     }
 @endphp
-<article class="tkt reveal" style="--i:{{ $i }}" aria-label="Ticket {{ $i + 1 }} of {{ $n }}">
+<article class="tkt" style="--i:{{ $i }}" aria-label="Ticket {{ $i + 1 }} of {{ $n }}">
     <div class="tkt-top">
         <span class="eyebrow">007 Resort &amp; Spa{{ $n > 1 ? ' - ticket '.($i + 1).' of '.$n : '' }}</span>
         <h2>{{ $t['name'] ?? ($order['title'] ?? 'Ticket') }}</h2>

@@ -72,6 +72,7 @@ template microcopy in `resources/views`.
 | Newsletter | `POST /newsletter`, `/newsletter/confirm?token=`, `/newsletter/unsubscribe?token=` (double opt-in, GET only previews) |
 | SEO | `/sitemap.xml` (CMS sitemap mapped to site URLs), `/robots.txt` |
 | Aliases | `/book` -> `/sports`, `/tickets` -> `/pool`, `/membership` -> `/memberships` (links editors use in the CMS) |
+| Guest checkout (no account) | `/checkout/booking`, `/checkout/pool`, `/checkout/membership/{plan}` (name, email, phone -> Paystack) -> `/payment/return` -> `/booking/{reference}` (QR tickets, calendar, cancel, resend; `?t=`/`?token=` links are exchanged into the session and redirected to the clean URL), `/order/{reference}?token=` (link from the API email), `/find-booking` |
 | Customer | `/register`, `/verify`, `/login`, `/account`, `/account/bookings[/{id}]` with cancel/reschedule, ticket pages with SVG download and print |
 
 Everything shown or decided (availability, holds, prices, cancel/reschedule eligibility, payment outcome)
@@ -271,3 +272,12 @@ extracted into a shared private Composer package once the API contract stabilise
 - Architecture, ADRs and domain docs: [prinzderick/007resort-docs](https://github.com/prinzderick/007resort-docs)
 - API: [prinzderick/007resort-api](https://github.com/prinzderick/007resort-api)
 - Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+
+
+## Guest checkout
+
+Visitors book or buy with just name, email and phone: no login wall, no password, no account. Contract:
+`docs/GUEST_CHECKOUT.md` in `007resort-api` (guest object on `bookings/hold`, `public/ticket-orders`, `memberships`; `X-Order-Token`
+afterwards; `public/orders/*`). All calls use the service token (scope `public.checkout`); the order access token lives only in the
+visitor's session. Env: `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` (find-booking CAPTCHA, off when unset), `R007_CONSENT_VERSION`,
+`GUEST_EMAIL_DELIVERY` (true only when the API can really send email; controls the "we have sent your ticket" copy).
