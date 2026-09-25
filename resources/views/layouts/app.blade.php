@@ -60,7 +60,7 @@
     <x-jsonld :data="[
         '@context' => 'https://schema.org', '@type' => ['Organization', 'SportsActivityLocation'], 'name' => $brand, 'url' => url('/'),
         'logo' => $site['brand']['logo']['url'] ?? null, 'image' => $ogImage, 'telephone' => $site['contact']['phone'] ?? null, 'email' => $site['contact']['email'] ?? null,
-        'address' => ! empty($site['contact']['address']) ? ['@type' => 'PostalAddress', 'streetAddress' => $site['contact']['address'], 'addressCountry' => 'NG'] : null,
+        'address' => ! empty($site['contact']['address']) ? ['@type' => 'PostalAddress', 'streetAddress' => $site['contact']['address'], 'addressLocality' => 'Otueke', 'addressRegion' => 'Bayelsa State', 'addressCountry' => 'NG'] : null,
         'geo' => ! empty($site['contact']['lat']) ? ['@type' => 'GeoCoordinates', 'latitude' => $site['contact']['lat'], 'longitude' => $site['contact']['lng']] : null,
         'openingHoursSpecification' => collect($site['open']['week'])->reject(fn ($w) => $w['closed'])->map(fn ($w) => ['@type' => 'OpeningHoursSpecification', 'dayOfWeek' => $w['name'], 'opens' => $w['open'], 'closes' => $w['close']])->values()->all(),
         'sameAs' => array_values($site['social']),

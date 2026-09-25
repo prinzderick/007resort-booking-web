@@ -33,41 +33,6 @@
   ],
   "category": "hero"
  },
- "hero-02": {
-  "id": "hero-02-sunset-infinity-pool-crowd",
-  "url": "/stock/hero-02-sunset-infinity-pool-crowd-1600.webp",
-  "alt": "Guests relaxing on a wooden deck beside an infinity pool under string lights as a pink and purple sunset fades over the sea",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/hero-02-sunset-infinity-pool-crowd-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/hero-02-sunset-infinity-pool-crowd-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/hero-02-sunset-infinity-pool-crowd-1600.webp"
-   }
-  ],
-  "dominantColor": "#836f81",
-  "credit": "Photo: Cassie Gallegos / Unsplash",
-  "tags": [
-   "pool",
-   "sunset",
-   "string lights",
-   "guests",
-   "evening"
-  ],
-  "category": "hero"
- },
  "hero-03": {
   "id": "hero-03-floodlit-tennis-night",
   "url": "/stock/hero-03-floodlit-tennis-night-1600.webp",
@@ -171,40 +136,6 @@
   ],
   "category": "hero"
  },
- "hero-06": {
-  "id": "hero-06-pool-party-energy",
-  "url": "/stock/hero-06-pool-party-energy-1600.webp",
-  "alt": "Crowd of people jumping and cheering at a lively pool party among palm trees at dusk",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/hero-06-pool-party-energy-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/hero-06-pool-party-energy-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/hero-06-pool-party-energy-1600.webp"
-   }
-  ],
-  "dominantColor": "#4f5b53",
-  "credit": "Photo: Jed Villejo / Unsplash",
-  "tags": [
-   "pool party",
-   "crowd",
-   "energy",
-   "palms"
-  ],
-  "category": "hero"
- },
  "tennis-01": {
   "id": "tennis-01-racket-and-ball-clay",
   "url": "/stock/tennis-01-racket-and-ball-clay-1600.webp",
@@ -270,74 +201,6 @@
    "clay",
    "aerial",
    "player"
-  ],
-  "category": "tennis"
- },
- "tennis-03": {
-  "id": "tennis-03-forehand-blue-court",
-  "url": "/stock/tennis-03-forehand-blue-court-1600.webp",
-  "alt": "Player mid-swing on a blue and green hard tennis court seen from behind",
-  "width": 1600,
-  "height": 1044,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/tennis-03-forehand-blue-court-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/tennis-03-forehand-blue-court-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/tennis-03-forehand-blue-court-1600.webp"
-   }
-  ],
-  "dominantColor": "#306e6f",
-  "credit": "Photo: Andrew Heald / Unsplash",
-  "tags": [
-   "tennis",
-   "player",
-   "action",
-   "hard court"
-  ],
-  "category": "tennis"
- },
- "tennis-04": {
-  "id": "tennis-04-clay-court-evening-player",
-  "url": "/stock/tennis-04-clay-court-evening-player-1600.webp",
-  "alt": "Woman holding a racquet on a dark orange clay court under evening light",
-  "width": 1600,
-  "height": 2000,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/tennis-04-clay-court-evening-player-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/tennis-04-clay-court-evening-player-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/tennis-04-clay-court-evening-player-1600.webp"
-   }
-  ],
-  "dominantColor": "#6d4027",
-  "credit": "Photo: Peyman Shojaei / Unsplash",
-  "tags": [
-   "tennis",
-   "evening",
-   "clay",
-   "woman"
   ],
   "category": "tennis"
  },
@@ -603,72 +466,6 @@
   ],
   "category": "football"
  },
- "padel-01": {
-  "id": "padel-01-badminton-smash",
-  "url": "/stock/padel-01-badminton-smash-1600.webp",
-  "alt": "Badminton player leaping to smash a shuttlecock on an indoor green court",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/padel-01-badminton-smash-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/padel-01-badminton-smash-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/padel-01-badminton-smash-1600.webp"
-   }
-  ],
-  "dominantColor": "#152f33",
-  "credit": "Photo: Muktasim Azlan / Unsplash",
-  "tags": [
-   "badminton",
-   "indoor",
-   "action"
-  ],
-  "category": "padel"
- },
- "padel-02": {
-  "id": "padel-02-table-tennis-rally",
-  "url": "/stock/padel-02-table-tennis-rally-1600.webp",
-  "alt": "Two men playing a friendly table tennis rally in a bright room",
-  "width": 1600,
-  "height": 1068,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/padel-02-table-tennis-rally-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/padel-02-table-tennis-rally-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/padel-02-table-tennis-rally-1600.webp"
-   }
-  ],
-  "dominantColor": "#a4928a",
-  "credit": "Photo: Ilya Pavlov / Unsplash",
-  "tags": [
-   "table tennis",
-   "indoor",
-   "friends"
-  ],
-  "category": "padel"
- },
  "pool-01": {
   "id": "pool-01-sunset-loungers-palms",
   "url": "/stock/pool-01-sunset-loungers-palms-960.webp",
@@ -695,40 +492,6 @@
    "sunset",
    "loungers",
    "palms"
-  ],
-  "category": "pool"
- },
- "pool-02": {
-  "id": "pool-02-kids-playing-in-pool",
-  "url": "/stock/pool-02-kids-playing-in-pool-1600.webp",
-  "alt": "Two young children playing together in sparkling shallow pool water",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/pool-02-kids-playing-in-pool-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/pool-02-kids-playing-in-pool-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/pool-02-kids-playing-in-pool-1600.webp"
-   }
-  ],
-  "dominantColor": "#95bfd8",
-  "credit": "Photo: Cor Dulce / Unsplash",
-  "tags": [
-   "pool",
-   "kids",
-   "family",
-   "splash"
   ],
   "category": "pool"
  },
@@ -766,40 +529,6 @@
   ],
   "category": "pool"
  },
- "pool-04": {
-  "id": "pool-04-swimmer-aerial",
-  "url": "/stock/pool-04-swimmer-aerial-1600.webp",
-  "alt": "Aerial view of a woman swimming in a turquoise pool beside a striped float",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/pool-04-swimmer-aerial-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/pool-04-swimmer-aerial-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/pool-04-swimmer-aerial-1600.webp"
-   }
-  ],
-  "dominantColor": "#92c0bb",
-  "credit": "Photo: Briana Tozour / Unsplash",
-  "tags": [
-   "pool",
-   "swimming",
-   "aerial",
-   "turquoise"
-  ],
-  "category": "pool"
- },
  "pool-05": {
   "id": "pool-05-resort-dusk-aerial",
   "url": "/stock/pool-05-resort-dusk-aerial-1600.webp",
@@ -833,137 +562,6 @@
    "aerial"
   ],
   "category": "pool"
- },
- "pool-06": {
-  "id": "pool-06-pool-party-dive",
-  "url": "/stock/pool-06-pool-party-dive-1600.webp",
-  "alt": "Man diving into a turquoise pool over a pink flamingo float at a lively pool party",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/pool-06-pool-party-dive-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/pool-06-pool-party-dive-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/pool-06-pool-party-dive-1600.webp"
-   }
-  ],
-  "dominantColor": "#4b826c",
-  "credit": "Photo: Jakob Owens / Unsplash",
-  "tags": [
-   "pool party",
-   "dive",
-   "summer",
-   "energy"
-  ],
-  "category": "pool"
- },
- "spa-01": {
-  "id": "spa-01-hot-stone-massage",
-  "url": "/stock/spa-01-hot-stone-massage-1600.webp",
-  "alt": "Person receiving a hot stone massage with smooth black stones along the spine and white orchids",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/spa-01-hot-stone-massage-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/spa-01-hot-stone-massage-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/spa-01-hot-stone-massage-1600.webp"
-   }
-  ],
-  "dominantColor": "#ad8668",
-  "credit": "Photo: engin akyurt / Unsplash",
-  "tags": [
-   "spa",
-   "hot stones",
-   "massage",
-   "flowers"
-  ],
-  "category": "spa"
- },
- "spa-02": {
-  "id": "spa-02-back-massage",
-  "url": "/stock/spa-02-back-massage-960.webp",
-  "alt": "Therapist's hands giving a firm back massage with warm oil",
-  "width": 960,
-  "height": 1440,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/spa-02-back-massage-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/spa-02-back-massage-960.webp"
-   }
-  ],
-  "dominantColor": "#9c664c",
-  "credit": "Photo: Massage a Domicile / Unsplash",
-  "tags": [
-   "spa",
-   "massage",
-   "hands",
-   "treatment"
-  ],
-  "category": "spa"
- },
- "spa-03": {
-  "id": "spa-03-facial-mask-treatment",
-  "url": "/stock/spa-03-facial-mask-treatment-1600.webp",
-  "alt": "Woman with a headband smiling while a beautician applies a clay facial mask",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/spa-03-facial-mask-treatment-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/spa-03-facial-mask-treatment-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/spa-03-facial-mask-treatment-1600.webp"
-   }
-  ],
-  "dominantColor": "#938674",
-  "credit": "Photo: Rosa Rafael / Unsplash",
-  "tags": [
-   "spa",
-   "facial",
-   "skincare",
-   "treatment"
-  ],
-  "category": "spa"
  },
  "spa-04": {
   "id": "spa-04-spa-candles",
@@ -1341,108 +939,6 @@
   ],
   "category": "dining"
  },
- "events-01": {
-  "id": "events-01-dj-light-show",
-  "url": "/stock/events-01-dj-light-show-1600.webp",
-  "alt": "DJ silhouetted behind beams of pink and white stage lights above a cheering crowd",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-01-dj-light-show-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-01-dj-light-show-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/events-01-dj-light-show-1600.webp"
-   }
-  ],
-  "dominantColor": "#a8335e",
-  "credit": "Photo: A J. / Unsplash",
-  "tags": [
-   "dj",
-   "party",
-   "lights",
-   "crowd"
-  ],
-  "category": "events"
- },
- "events-02": {
-  "id": "events-02-confetti-crowd",
-  "url": "/stock/events-02-confetti-crowd-1600.webp",
-  "alt": "Huge crowd with confetti falling in front of a bright stage",
-  "width": 1600,
-  "height": 1068,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-02-confetti-crowd-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-02-confetti-crowd-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/events-02-confetti-crowd-1600.webp"
-   }
-  ],
-  "dominantColor": "#4f4241",
-  "credit": "Photo: Danny Howe / Unsplash",
-  "tags": [
-   "crowd",
-   "confetti",
-   "concert",
-   "energy"
-  ],
-  "category": "events"
- },
- "events-03": {
-  "id": "events-03-match-night-big-screens",
-  "url": "/stock/events-03-match-night-big-screens-1600.webp",
-  "alt": "Guests at a bar counter watching sport on a wall of large screens",
-  "width": 1600,
-  "height": 1164,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-03-match-night-big-screens-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-03-match-night-big-screens-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/events-03-match-night-big-screens-1600.webp"
-   }
-  ],
-  "dominantColor": "#453c32",
-  "credit": "Photo: Amit Lahav / Unsplash",
-  "tags": [
-   "match night",
-   "big screen",
-   "bar",
-   "sport"
-  ],
-  "category": "events"
- },
  "events-04": {
   "id": "events-04-friends-watching-match",
   "url": "/stock/events-04-friends-watching-match-1600.webp",
@@ -1474,102 +970,6 @@
    "tv",
    "friends",
    "football"
-  ],
-  "category": "events"
- },
- "events-05": {
-  "id": "events-05-outdoor-yoga-sunset",
-  "url": "/stock/events-05-outdoor-yoga-sunset-960.webp",
-  "alt": "Group doing yoga on mats on a lawn as the low sun filters through trees",
-  "width": 960,
-  "height": 1440,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-05-outdoor-yoga-sunset-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-05-outdoor-yoga-sunset-960.webp"
-   }
-  ],
-  "dominantColor": "#a7a694",
-  "credit": "Photo: Amauri Mejia / Unsplash",
-  "tags": [
-   "yoga",
-   "wellness",
-   "outdoor",
-   "class"
-  ],
-  "category": "events"
- },
- "events-06": {
-  "id": "events-06-kids-circle-lawn",
-  "url": "/stock/events-06-kids-circle-lawn-1600.webp",
-  "alt": "Children holding hands in a circle playing on a sunny park lawn",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-06-kids-circle-lawn-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-06-kids-circle-lawn-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/events-06-kids-circle-lawn-1600.webp"
-   }
-  ],
-  "dominantColor": "#8a9e6a",
-  "credit": "Photo: Jay Chen / Unsplash",
-  "tags": [
-   "kids",
-   "play",
-   "lawn",
-   "family"
-  ],
-  "category": "events"
- },
- "events-07": {
-  "id": "events-07-festival-crowd-hands-up",
-  "url": "/stock/events-07-festival-crowd-hands-up-1600.webp",
-  "alt": "Festival crowd with hands raised and smiling faces in the sun",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/events-07-festival-crowd-hands-up-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/events-07-festival-crowd-hands-up-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/events-07-festival-crowd-hands-up-1600.webp"
-   }
-  ],
-  "dominantColor": "#7b7870",
-  "credit": "Photo: Tim Toomey / Unsplash",
-  "tags": [
-   "outdoor concert",
-   "crowd",
-   "festival"
   ],
   "category": "events"
  },
@@ -1701,74 +1101,6 @@
    "walking",
    "outdoor",
    "warm"
-  ],
-  "category": "lifestyle"
- },
- "lifestyle-05": {
-  "id": "lifestyle-05-personal-trainer-session",
-  "url": "/stock/lifestyle-05-personal-trainer-session-1600.webp",
-  "alt": "Personal trainer coaching a woman on a gym machine",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/lifestyle-05-personal-trainer-session-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/lifestyle-05-personal-trainer-session-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/lifestyle-05-personal-trainer-session-1600.webp"
-   }
-  ],
-  "dominantColor": "#333a39",
-  "credit": "Photo: Sergio Kian / Unsplash",
-  "tags": [
-   "coaching",
-   "gym",
-   "fitness",
-   "trainer"
-  ],
-  "category": "lifestyle"
- },
- "lifestyle-06": {
-  "id": "lifestyle-06-trainer-push-up-coaching",
-  "url": "/stock/lifestyle-06-trainer-push-up-coaching-1600.webp",
-  "alt": "Trainer guiding a man through push-ups on grips in a warm-toned gym",
-  "width": 1600,
-  "height": 1067,
-  "mimeType": "image/webp",
-  "variants": [
-   {
-    "width": 480,
-    "format": "webp",
-    "url": "/stock/lifestyle-06-trainer-push-up-coaching-480.webp"
-   },
-   {
-    "width": 960,
-    "format": "webp",
-    "url": "/stock/lifestyle-06-trainer-push-up-coaching-960.webp"
-   },
-   {
-    "width": 1600,
-    "format": "webp",
-    "url": "/stock/lifestyle-06-trainer-push-up-coaching-1600.webp"
-   }
-  ],
-  "dominantColor": "#55432d",
-  "credit": "Photo: Jonathan Borba / Unsplash",
-  "tags": [
-   "coaching",
-   "fitness",
-   "gym",
-   "push-ups"
   ],
   "category": "lifestyle"
  },
@@ -1993,5 +1325,659 @@
    "luxury"
   ],
   "category": "membership"
+ },
+ "hero-02": {
+  "id": "hero-02-friends-laughing-in-pool",
+  "url": "/stock/hero-02-friends-laughing-in-pool-1600.webp",
+  "alt": "Two friends laughing together in the sparkling water at the edge of a sunny swimming pool",
+  "width": 1600,
+  "height": 901,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-02-friends-laughing-in-pool-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-02-friends-laughing-in-pool-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-02-friends-laughing-in-pool-1600.webp"
+   }
+  ],
+  "dominantColor": "#756251",
+  "credit": "Photo: Kindel Media / Pexels",
+  "tags": [
+   "pool",
+   "friends",
+   "couple",
+   "summer"
+  ],
+  "category": "hero"
+ },
+ "hero-06": {
+  "id": "hero-06-night-dance-crowd",
+  "url": "/stock/hero-06-night-dance-crowd-1600.webp",
+  "alt": "A packed crowd dancing under a disco ball at a lively night party",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/hero-06-night-dance-crowd-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/hero-06-night-dance-crowd-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/hero-06-night-dance-crowd-1600.webp"
+   }
+  ],
+  "dominantColor": "#3b312c",
+  "credit": "Photo: basunga visual / Pexels",
+  "tags": [
+   "party",
+   "dance",
+   "night",
+   "crowd"
+  ],
+  "category": "hero"
+ },
+ "pool-02": {
+  "id": "pool-02-boy-in-swim-ring",
+  "url": "/stock/pool-02-boy-in-swim-ring-1600.webp",
+  "alt": "Smiling boy in a red swim ring splashing in the pool",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-02-boy-in-swim-ring-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-02-boy-in-swim-ring-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-02-boy-in-swim-ring-1600.webp"
+   }
+  ],
+  "dominantColor": "#8a6a5a",
+  "credit": "Photo: musonda / Pexels",
+  "tags": [
+   "pool",
+   "kids",
+   "family",
+   "swim"
+  ],
+  "category": "pool"
+ },
+ "pool-04": {
+  "id": "pool-04-child-swimming",
+  "url": "/stock/pool-04-child-swimming-1600.webp",
+  "alt": "Child swimming towards the camera in a bright outdoor pool",
+  "width": 1600,
+  "height": 1060,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-04-child-swimming-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-04-child-swimming-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-04-child-swimming-1600.webp"
+   }
+  ],
+  "dominantColor": "#a5c0c9",
+  "credit": "Photo: Steward Masweneng / Pexels",
+  "tags": [
+   "pool",
+   "kids",
+   "swim"
+  ],
+  "category": "pool"
+ },
+ "pool-06": {
+  "id": "pool-06-couple-on-pool-floats",
+  "url": "/stock/pool-06-couple-on-pool-floats-1600.webp",
+  "alt": "Two friends relaxing on colourful swim rings in a sunny pool",
+  "width": 1600,
+  "height": 901,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/pool-06-couple-on-pool-floats-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/pool-06-couple-on-pool-floats-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/pool-06-couple-on-pool-floats-1600.webp"
+   }
+  ],
+  "dominantColor": "#8eb7ac",
+  "credit": "Photo: Kindel Media / Pexels",
+  "tags": [
+   "pool",
+   "friends",
+   "floats",
+   "summer"
+  ],
+  "category": "pool"
+ },
+ "tennis-03": {
+  "id": "tennis-03-woman-on-blue-court",
+  "url": "/stock/tennis-03-woman-on-blue-court-1600.webp",
+  "alt": "Woman in a white top and pleated skirt posing with her racket on a blue hard court",
+  "width": 1600,
+  "height": 1068,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-03-woman-on-blue-court-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-03-woman-on-blue-court-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/tennis-03-woman-on-blue-court-1600.webp"
+   }
+  ],
+  "dominantColor": "#6b9a9e",
+  "credit": "Photo: Jermaine Lewis / Pexels",
+  "tags": [
+   "tennis",
+   "court",
+   "player"
+  ],
+  "category": "tennis"
+ },
+ "tennis-04": {
+  "id": "tennis-04-woman-clay-court-balls",
+  "url": "/stock/tennis-04-woman-clay-court-balls-960.webp",
+  "alt": "Woman in dark sportswear resting on a clay court among tennis balls",
+  "width": 960,
+  "height": 1344,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/tennis-04-woman-clay-court-balls-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/tennis-04-woman-clay-court-balls-960.webp"
+   }
+  ],
+  "dominantColor": "#604d39",
+  "credit": "Photo: LekePOV / Pexels",
+  "tags": [
+   "tennis",
+   "clay",
+   "court"
+  ],
+  "category": "tennis"
+ },
+ "padel-01": {
+  "id": "padel-01-woman-racket-palm-trees",
+  "url": "/stock/padel-01-woman-racket-palm-trees-960.webp",
+  "alt": "Woman with braids holding a racket over her shoulder in front of palm trees",
+  "width": 960,
+  "height": 1440,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/padel-01-woman-racket-palm-trees-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/padel-01-woman-racket-palm-trees-960.webp"
+   }
+  ],
+  "dominantColor": "#8c8878",
+  "credit": "Photo: Ismael Abdal Naby studio / Pexels",
+  "tags": [
+   "racket",
+   "tennis",
+   "padel"
+  ],
+  "category": "padel"
+ },
+ "padel-02": {
+  "id": "padel-02-woman-blue-court-tennis-balls",
+  "url": "/stock/padel-02-woman-blue-court-tennis-balls-960.webp",
+  "alt": "Woman kneeling at the net of a blue court surrounded by tennis balls",
+  "width": 960,
+  "height": 1200,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/padel-02-woman-blue-court-tennis-balls-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/padel-02-woman-blue-court-tennis-balls-960.webp"
+   }
+  ],
+  "dominantColor": "#7597ab",
+  "credit": "Photo: Critical Smith / Pexels",
+  "tags": [
+   "racket",
+   "court",
+   "tennis"
+  ],
+  "category": "padel"
+ },
+ "spa-01": {
+  "id": "spa-01-hot-stone-relaxation",
+  "url": "/stock/spa-01-hot-stone-relaxation-1600.webp",
+  "alt": "Smiling woman resting on a treatment bed among warm massage stones",
+  "width": 1600,
+  "height": 1064,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-relaxation-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-relaxation-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-01-hot-stone-relaxation-1600.webp"
+   }
+  ],
+  "dominantColor": "#755843",
+  "credit": "Photo: William Adams / Pexels",
+  "tags": [
+   "spa",
+   "hot stone",
+   "massage",
+   "relax"
+  ],
+  "category": "spa"
+ },
+ "spa-02": {
+  "id": "spa-02-back-massage-treatment",
+  "url": "/stock/spa-02-back-massage-treatment-1600.webp",
+  "alt": "Woman smiling with closed eyes while receiving a relaxing oiled back massage",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-02-back-massage-treatment-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-02-back-massage-treatment-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-02-back-massage-treatment-1600.webp"
+   }
+  ],
+  "dominantColor": "#a37a6a",
+  "credit": "Photo: Jonathan Borba / Pexels",
+  "tags": [
+   "spa",
+   "massage",
+   "back"
+  ],
+  "category": "spa"
+ },
+ "spa-03": {
+  "id": "spa-03-facial-massage",
+  "url": "/stock/spa-03-facial-massage-1600.webp",
+  "alt": "Woman receiving a relaxing facial massage at the spa",
+  "width": 1600,
+  "height": 1200,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-massage-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-massage-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/spa-03-facial-massage-1600.webp"
+   }
+  ],
+  "dominantColor": "#6f4060",
+  "credit": "Photo: KERO 97 / Pexels",
+  "tags": [
+   "spa",
+   "facial",
+   "massage"
+  ],
+  "category": "spa"
+ },
+ "events-01": {
+  "id": "events-01-dancing-at-the-bar",
+  "url": "/stock/events-01-dancing-at-the-bar-1600.webp",
+  "alt": "Guest in an ankara-print outfit dancing with raised arms at a lively bar night",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-01-dancing-at-the-bar-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-01-dancing-at-the-bar-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-01-dancing-at-the-bar-1600.webp"
+   }
+  ],
+  "dominantColor": "#4e3431",
+  "credit": "Photo: RDNE Stock project / Pexels",
+  "tags": [
+   "music",
+   "night",
+   "dance",
+   "bar"
+  ],
+  "category": "events"
+ },
+ "events-02": {
+  "id": "events-02-night-celebration-flame",
+  "url": "/stock/events-02-night-celebration-flame-1600.webp",
+  "alt": "Cheering crowd in football shirts at a night celebration as a flame burst lights up the room",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-02-night-celebration-flame-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-02-night-celebration-flame-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-02-night-celebration-flame-1600.webp"
+   }
+  ],
+  "dominantColor": "#54301c",
+  "credit": "Photo: Felipe Esono Nguema / Pexels",
+  "tags": [
+   "party",
+   "celebration",
+   "night",
+   "crowd"
+  ],
+  "category": "events"
+ },
+ "events-03": {
+  "id": "events-03-fans-cheering-match",
+  "url": "/stock/events-03-fans-cheering-match-1600.webp",
+  "alt": "Fans cheering and laughing while watching a live match at a sports bar",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-03-fans-cheering-match-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-03-fans-cheering-match-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-03-fans-cheering-match-1600.webp"
+   }
+  ],
+  "dominantColor": "#714f47",
+  "credit": "Photo: Karl Rayson / Pexels",
+  "tags": [
+   "match night",
+   "football",
+   "fans",
+   "bar"
+  ],
+  "category": "events"
+ },
+ "events-05": {
+  "id": "events-05-women-meditating-park",
+  "url": "/stock/events-05-women-meditating-park-1600.webp",
+  "alt": "Two women meditating on the lawn in a park at a wellness session",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-05-women-meditating-park-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-05-women-meditating-park-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-05-women-meditating-park-1600.webp"
+   }
+  ],
+  "dominantColor": "#918d79",
+  "credit": "Photo: Gustavo Fring / Pexels",
+  "tags": [
+   "yoga",
+   "wellness",
+   "outdoor"
+  ],
+  "category": "events"
+ },
+ "events-06": {
+  "id": "events-06-boy-playing-hide-and-seek",
+  "url": "/stock/events-06-boy-playing-hide-and-seek-1600.webp",
+  "alt": "Child laughing and playing hide and seek around a tree on the lawn",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-06-boy-playing-hide-and-seek-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-06-boy-playing-hide-and-seek-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-06-boy-playing-hide-and-seek-1600.webp"
+   }
+  ],
+  "dominantColor": "#7f8575",
+  "credit": "Photo: Barbara Olsen / Pexels",
+  "tags": [
+   "kids",
+   "family",
+   "play"
+  ],
+  "category": "events"
+ },
+ "events-07": {
+  "id": "events-07-aso-oke-celebration",
+  "url": "/stock/events-07-aso-oke-celebration-1600.webp",
+  "alt": "Guests in colourful aso-oke and gele head ties celebrating together at a party",
+  "width": 1600,
+  "height": 1068,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/events-07-aso-oke-celebration-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/events-07-aso-oke-celebration-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/events-07-aso-oke-celebration-1600.webp"
+   }
+  ],
+  "dominantColor": "#5e4154",
+  "credit": "Photo: Momento visuals / Pexels",
+  "tags": [
+   "celebration",
+   "fashion",
+   "aso-oke",
+   "party"
+  ],
+  "category": "events"
+ },
+ "lifestyle-05": {
+  "id": "lifestyle-05-trainer-portrait",
+  "url": "/stock/lifestyle-05-trainer-portrait-1600.webp",
+  "alt": "Smiling fitness trainer standing with arms crossed in a spacious gym",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-trainer-portrait-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-trainer-portrait-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-05-trainer-portrait-1600.webp"
+   }
+  ],
+  "dominantColor": "#9a8d84",
+  "credit": "Photo: RDNE Stock project / Pexels",
+  "tags": [
+   "fitness",
+   "trainer",
+   "gym"
+  ],
+  "category": "lifestyle"
+ },
+ "lifestyle-06": {
+  "id": "lifestyle-06-trainer-gym-portrait",
+  "url": "/stock/lifestyle-06-trainer-gym-portrait-1600.webp",
+  "alt": "Black-and-white portrait of a fit trainer standing in front of a rack of medicine balls",
+  "width": 1600,
+  "height": 1067,
+  "mimeType": "image/webp",
+  "variants": [
+   {
+    "width": 480,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-gym-portrait-480.webp"
+   },
+   {
+    "width": 960,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-gym-portrait-960.webp"
+   },
+   {
+    "width": 1600,
+    "format": "webp",
+    "url": "/stock/lifestyle-06-trainer-gym-portrait-1600.webp"
+   }
+  ],
+  "dominantColor": "#4f4f4f",
+  "credit": "Photo: Tima Miroshnichenko / Pexels",
+  "tags": [
+   "fitness",
+   "trainer",
+   "gym"
+  ],
+  "category": "lifestyle"
  }
 }

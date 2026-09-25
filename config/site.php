@@ -30,10 +30,13 @@ return [
         ['label' => 'Journal', 'href' => '/blog', 'hint' => 'Stories'],
     ],
 
+    // Shown in the home hero eyebrow.
+    'location_line' => env('SITE_LOCATION_LINE', 'Near the Federal University Otueke, Bayelsa State'),
+
     'contact' => [
         'phone' => env('SITE_PHONE', '+234 000 000 0000'),
         'email' => env('SITE_EMAIL', 'hello@example.com'),
-        'address' => env('SITE_ADDRESS', '007 Resort & Spa, Otueke, Bayelsa State, Nigeria'),
+        'address' => env('SITE_ADDRESS', '007 Resort & Spa, near the Federal University Otueke, Ogbia, Bayelsa State, Nigeria'),
         'map_url' => env('SITE_MAP_URL'),
         'whatsapp' => env('SITE_WHATSAPP'),
     ],

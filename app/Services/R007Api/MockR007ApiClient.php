@@ -102,7 +102,7 @@ class MockR007ApiClient extends R007ApiClient
         ];
 
         return [
-            'contact' => ['phone' => '+234 800 007 0007', 'email' => 'hello@007resort.example', 'address' => '007 Resort & Spa, Otueke, Bayelsa State', 'mapUrl' => null],
+            'contact' => ['phone' => '+234 800 007 0007', 'email' => 'hello@007resort.example', 'address' => '007 Resort & Spa, near the Federal University Otueke, Ogbia, Bayelsa State', 'mapUrl' => null],
             'openingHours' => 'Daily, 07:00 - 23:00',
             'facilities' => [
                 $mk('sports', 'SPORTS_ARENA', 'Sports Arena', 'Daily, 07:00 - 21:00'),
