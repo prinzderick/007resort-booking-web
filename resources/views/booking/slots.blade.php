@@ -6,7 +6,6 @@
 @section('no_cta', '1')
 
 @php
-    $customer = app(\App\Services\Online\CustomerService::class)->check();
     $withQty = ($resource['mode'] ?? '') === 'INDIVIDUAL_CAPACITY';
     $holdMin = max(1, (int) round(config('r007.booking.fallback_hold_seconds') / 60));
     $players = max(1, min((int) ($resource['capacity'] ?? 50), (int) request('players', 1)));
@@ -44,9 +43,6 @@
 
                 <h2 class="step-label"><b>{{ count($siblings) > 1 ? 3 : 2 }}</b> Time</h2>
                 <div aria-live="polite">
-                    @if (! $customer)
-                        <x-notice type="info">You will be asked to sign in or create an account before a slot is held. <a href="{{ route('login') }}">Sign in</a></x-notice>
-                    @endif
                     @include('partials.slot-grid', ['slots' => $slots, 'resource' => $resource])
                 </div>
             </div>

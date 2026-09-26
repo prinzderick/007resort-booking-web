@@ -86,7 +86,7 @@ taken from `APP_URL`, never from request headers.
 
 ## 4. API side (once)
 
-* The website's service token needs the `customer.social` scope: `php artisan r007:service-token create --name=booking-web --scope=public.read,customer.social`
+* The website's service token needs the `customer.social` scope: `php artisan r007:service-token create --name=booking-web --scope=public.read,public.checkout,customer.social`
   (or rotate the existing token, which keeps its scope; check the scope in the admin's service tokens screen).
 * API environment: `SOCIAL_PROVIDERS_ENABLED=google,facebook`, `SOCIAL_GOOGLE_CLIENT_ID=<same Google client id>`,
   `SOCIAL_TRUSTED_EMAIL_PROVIDERS=google`. See the API's `docs/CUSTOMER_SOCIAL_LOGIN.md`.

@@ -54,14 +54,14 @@ class SportsBookingTest extends ApiTestCase
         $this->get('/book/sports-arena/'.self::COURT)->assertOk()->assertSee('temporarily unavailable');
     }
 
-    public function test_guest_hold_redirects_to_login_without_calling_the_api(): void
+    public function test_guest_picks_a_slot_without_signing_in_and_goes_to_the_details_step(): void
     {
         $this->baseFakes();
 
         $this->post('/book/sports-arena/'.self::COURT.'/hold', ['slot' => '2026-09-24T08:00:00Z|2026-09-24T09:00:00Z', '_submission' => (string) Str::uuid()])
-            ->assertRedirect(route('login'));
+            ->assertRedirect(route('checkout.booking'));
 
-        $this->assertSame([], $this->sentTo('POST', 'bookings/hold'));
+        $this->assertSame([], $this->sentTo('POST', 'bookings/hold'), 'the slot is held together with the guest details, at payment');
     }
 
     public function test_hold_posts_slot_customer_and_idempotency_key_then_goes_to_checkout(): void
@@ -120,7 +120,7 @@ class SportsBookingTest extends ApiTestCase
     {
         $this->baseFakes(['bookings/'.self::BOOKING => Http::response($this->booking())]);
 
-        $res = $this->signIn()->get('/checkout/'.self::BOOKING)->assertOk()->assertSee('₦5,000')->assertSee('data-countdown', false)->assertSee('Pay ₦5,000 with Paystack');
+        $res = $this->signIn()->get('/checkout/'.self::BOOKING)->assertOk()->assertSee('₦5,000')->assertSee('data-countdown', false)->assertSee('Pay ₦5,000');
         $this->assertMatchesRegularExpression('/data-countdown="(59\d|600)"/', $res->getContent());
     }
 
@@ -128,7 +128,7 @@ class SportsBookingTest extends ApiTestCase
     {
         $this->baseFakes(['bookings/'.self::BOOKING => Http::response($this->booking(['status' => 'HELD', 'holdExpiresAt' => now()->subMinute()->utc()->format('Y-m-d\TH:i:s\Z')]))]);
 
-        $this->signIn()->get('/checkout/'.self::BOOKING)->assertOk()->assertSee('This hold has expired')->assertDontSee('with Paystack');
+        $this->signIn()->get('/checkout/'.self::BOOKING)->assertOk()->assertSee('Your hold has ended')->assertDontSee('Pay ₦5,000');
     }
 
     public function test_pay_initialises_paystack_with_the_api_total_and_redirects_to_the_provider(): void

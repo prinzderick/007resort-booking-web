@@ -19,18 +19,20 @@
             @break
         @case('delayed')
             <h1>Still confirming</h1>
-            <p class="lede" style="margin:0 auto">Your payment is taking longer than usual to confirm. You have not been charged twice. Check <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a> in a few minutes; your ticket will appear there. If it does not, contact us with reference <strong>{{ $reference ?? '' }}</strong>.</p>
+            <p class="lede" style="margin:0 auto">Your payment is taking longer than usual to confirm. You have not been charged twice. Give it a few minutes, then use <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a>. If your ticket does not appear, contact us with reference <strong>{{ $reference ?? '' }}</strong>.</p>
             @break
         @case('unverified')
             <h1>We could not check your payment yet</h1>
-            <p class="lede" style="margin:0 auto">Our booking system did not answer just now. If you were charged, your booking will still be honoured: check <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a> shortly, or refresh this page. Reference: <strong>{{ $reference ?? '' }}</strong></p>
+            <p class="lede" style="margin:0 auto">Our booking system did not answer just now. If you were charged, your booking will still be honoured: check <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a> shortly, or refresh this page. Reference: <strong>{{ $reference ?? '' }}</strong></p>
             <a href="{{ url()->full() }}" class="btn" style="margin-top:22px">Check again</a>
             @break
         @case('failed')
             <h1>Payment was not completed</h1>
-            <p class="lede" style="margin:0 auto">You have not been charged. @if (($pending['kind'] ?? '') === 'booking') Your slot may still be held for a few minutes. @endif</p>
+            <p class="lede" style="margin:0 auto">You have not been charged. @if (! empty($order)) Your order is saved, so you can try again in one tap. @elseif (($pending['kind'] ?? '') === 'booking') Your slot may still be held for a few minutes. @endif</p>
             <p style="margin-top:22px">
-                @if (($pending['kind'] ?? '') === 'booking')
+                @if (! empty($order))
+                    <a class="btn btn--lg" href="{{ route('orders.show', $order) }}">Try paying again</a>
+                @elseif (($pending['kind'] ?? '') === 'booking')
                     <a class="btn btn--lg" href="{{ route('checkout.show', $pending['id']) }}">Try paying again</a>
                 @else
                     <a class="btn btn--lg" href="{{ route('home') }}">Back to home</a>
@@ -48,13 +50,18 @@
             <p class="lede" style="margin:0 auto">Your {{ $membership['planName'] ?? '' }} membership is active until {{ \App\Support\Lagos::parse($membership['validUntil'])->format('j F Y') }}.</p>
             <a class="btn btn--lg" style="margin-top:22px" href="{{ route('account') }}">Go to my account</a>
             @break
-        @case('paid_unlinked')
+        @case('paid_elsewhere')
             <h1>Payment received</h1>
-            <p class="lede" style="margin:0 auto">Thank you. Sign in to see your booking and QR ticket in <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a>.</p>
+            <p class="lede" style="margin:0 auto">Thank you. See your booking and QR ticket in <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a>.</p>
+            @break
+        @case('paid_unlinked')
+            <h1>Open your booking</h1>
+            <p class="lede" style="margin:0 auto">We can only show a booking on the device that made it. To see your ticket, use <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a> with your reference and the email or phone you booked with (or open the link in your confirmation email).</p>
+            <a class="btn btn--lg" style="margin-top:22px" href="{{ route('find.show') }}">Find my booking</a>
             @break
         @default
             <h1>We could not find that payment</h1>
-            <p class="lede" style="margin:0 auto">If you were charged, your booking will appear in <a href="{{ route('account.bookings') }}" style="font-weight:600">My bookings</a>. Otherwise start again from the home page.</p>
+            <p class="lede" style="margin:0 auto">If you were charged, use <a href="{{ route('find.show') }}" style="font-weight:600">Find my booking</a> with your reference. Otherwise start again from the home page.</p>
     @endswitch
 </div></div></div>
 @endsection

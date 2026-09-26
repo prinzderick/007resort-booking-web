@@ -18,9 +18,6 @@
                     @if ($notice)
                         <x-notice type="warn">{{ $notice }} <a href="{{ route('contact') }}">Contact us</a></x-notice>
                     @else
-                        @if (! app(\App\Services\Online\CustomerService::class)->check())
-                            <x-notice type="info">You will sign in or create an account before paying, so your tickets are saved in your account. <a href="{{ route('login') }}">Sign in</a></x-notice>
-                        @endif
                         <form method="POST" action="{{ route('pool.order') }}" class="panel" data-once data-ticket-estimate>
                             @csrf
                             <x-idem />
@@ -53,7 +50,7 @@
                                 <span>Estimated total <small style="color:var(--mute)">(final price is confirmed at checkout)</small></span>
                                 <b data-estimate>{{ "\u{20A6}" }}0</b>
                             </p>
-                            <button type="submit" data-busy="Redirecting to Paystack..." class="btn btn--lg btn--block" style="margin-top:18px">Continue to payment <span class="arr" aria-hidden="true">&rarr;</span></button>
+                            <button type="submit" data-busy="One moment..." class="btn btn--lg btn--block" style="margin-top:18px">Continue <span class="arr" aria-hidden="true">&rarr;</span></button>
                         </form>
                     @endif
                 </div>
@@ -62,7 +59,7 @@
                         <h2>How it works</h2>
                         <ol class="stack" style="padding-left:20px;font-size:15px;color:var(--ink-2)">
                             <li>Pick your date and how many of you are coming.</li>
-                            <li>Pay securely with Paystack.</li>
+                            <li>Tell us your name, email and phone, then pay securely with Paystack. No account needed.</li>
                             <li>Everyone gets their own QR ticket to show at the gate.</li>
                         </ol>
                     </div>

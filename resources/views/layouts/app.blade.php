@@ -13,7 +13,7 @@
     $canonical = $sec('canonical') ?: url()->current();
     $hasHero = $__env->hasSection('hero');
     $noindex = $__env->hasSection('noindex');
-    $noCta = $__env->hasSection('no_cta') || request()->routeIs('checkout.*', 'payment.*', 'tickets.*', 'login', 'register', 'verify', 'account*');
+    $noCta = $__env->hasSection('no_cta') || request()->routeIs('checkout.*', 'payment.*', 'tickets.*', 'orders.*', 'find.*', 'login', 'register', 'verify', 'account*');
     $ann = $site['announcement'];
     $annOn = ! empty($ann['enabled']) && filled($ann['text']);
     $wa = $ctx->whatsappUrl($site['contact']['whatsappMessage'] ?? null);
@@ -95,7 +95,14 @@
             @if ($site['open']['known'])
                 <span class="open-pill {{ $site['open']['open'] ? '' : 'is-closed' }}" title="{{ $site['open']['label'] }}">{{ $site['open']['short'] }}</span>
             @endif
-            <a class="acct-link" href="{{ $customer ? route('account') : route('login') }}">{{ $customer ? 'My account' : 'Sign in' }}</a>
+            <details class="acct-menu" data-acct-menu>
+                <summary class="acct-link" aria-label="Account and bookings">{{ $customer ? 'My account' : 'Sign in' }}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg></summary>
+                <div class="acct-menu__panel">
+                    <a href="{{ $customer ? route('account') : route('login') }}">{{ $customer ? 'My account' : 'Sign in' }}</a>
+                    @if ($customer)<a href="{{ route('account.bookings') }}">My bookings</a>@endif
+                    <a href="{{ route('find.show') }}">Find my booking</a>
+                </div>
+            </details>
             <a class="btn btn--sm" href="{{ url('/sports') }}" data-magnetic>{{ $site['booking']['bookingCtaLabel'] ?: 'Book now' }}</a>
             <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Open menu" data-burger><span></span></button>
         </div>
@@ -111,6 +118,7 @@
                 <a href="{{ $n['href'] }}"><span>{{ $n['label'] }}</span><small>{{ $n['hint'] ?? '' }}</small></a>
             @endforeach
             <a href="{{ $customer ? route('account') : route('login') }}"><span>{{ $customer ? 'My account' : 'Sign in' }}</span><small>Bookings and tickets</small></a>
+            <a href="{{ route('find.show') }}"><span>Find my booking</span><small>Reference and email</small></a>
         </nav>
         <div class="drawer-foot">
             <a class="btn btn--block btn--lg" href="{{ url('/sports') }}">{{ $site['booking']['bookingCtaLabel'] ?: 'Book now' }}</a>
@@ -161,6 +169,7 @@
                     <li><a href="{{ route('pool') }}">Pool day passes</a></li>
                     <li><a href="{{ route('book.resources', 'beauty-spa') }}">Spa treatments</a></li>
                     <li><a href="{{ route('memberships.index') }}">Membership</a></li>
+                    <li><a href="{{ route('find.show') }}">Find my booking</a></li>
                 </ul>
             </div>
             <div>

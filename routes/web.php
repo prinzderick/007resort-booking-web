@@ -12,6 +12,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\MockPaystackController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentReturnController;
 use App\Http\Controllers\SeoController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\SocialProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TicketPurchaseController;
+use App\Http\Middleware\PrivateOrderPage;
 use App\Http\Middleware\PublicCache;
 use App\Http\Middleware\RequireCustomer;
 use App\Http\Middleware\SpamGuard;
@@ -104,18 +106,39 @@ Route::middleware('throttle:social')->prefix('auth')->group(function () {
     Route::post('/link/resend', [SocialAuthController::class, 'linkResend'])->middleware('throttle:social-code')->name('social.link.resend');
 });
 
-// ---- Signed-in customer: holds, payments, tickets, history ----
-Route::middleware(RequireCustomer::class)->group(function () {
+// ---- Checkout: open to everyone (guests pay with name, email, phone; signed-in customers skip the details card) ----
+Route::middleware(PrivateOrderPage::class)->group(function () {
     Route::post('/book/{slug}/{resourceId}/hold', [BookingController::class, 'hold'])->middleware('throttle:booking')->where('slug', '[a-z\-]+')->name('book.hold');
-    Route::get('/checkout/{bookingId}', [BookingController::class, 'checkout'])->name('checkout.show');
-    Route::post('/checkout/{bookingId}/pay', [BookingController::class, 'pay'])->middleware('throttle:payment')->name('checkout.pay');
-    Route::post('/checkout/{bookingId}/release', [BookingController::class, 'release'])->middleware('throttle:booking')->name('checkout.release');
+    Route::get('/checkout/booking', [BookingController::class, 'guestCheckout'])->name('checkout.booking');
+    Route::post('/checkout/booking', [BookingController::class, 'guestPay'])->middleware('throttle:payment')->name('checkout.booking.pay');
+    Route::get('/checkout/{bookingId}', [BookingController::class, 'checkout'])->whereUuid('bookingId')->name('checkout.show');
+    Route::post('/checkout/{bookingId}/pay', [BookingController::class, 'pay'])->middleware('throttle:payment')->whereUuid('bookingId')->name('checkout.pay');
+    Route::post('/checkout/{bookingId}/release', [BookingController::class, 'release'])->middleware('throttle:booking')->whereUuid('bookingId')->name('checkout.release');
 
     Route::post('/pool/order', [TicketPurchaseController::class, 'order'])->middleware('throttle:payment')->name('pool.order');
+    Route::get('/checkout/pool', [TicketPurchaseController::class, 'checkout'])->name('checkout.pool');
+    Route::post('/checkout/pool', [TicketPurchaseController::class, 'pay'])->middleware('throttle:payment')->name('checkout.pool.pay');
+    Route::get('/checkout/membership/{planId}', [MembershipController::class, 'checkout'])->where('planId', '[0-9a-fA-F\-]{36}')->name('checkout.membership');
     Route::post('/memberships/{planId}/buy', [MembershipController::class, 'buy'])->middleware('throttle:payment')->name('memberships.buy');
 
     Route::get('/payment/return', PaymentReturnController::class)->middleware('throttle:payment')->name('payment.return');
 
+    // Guest orders: find, view, tickets, manage. The order access token lives only in this browser's session.
+    Route::get('/find-booking', [OrderController::class, 'find'])->name('find.show');
+    Route::post('/find-booking', [OrderController::class, 'lookup'])->middleware('throttle:lookup')->name('find.lookup');
+    Route::middleware('throttle:order')->group(function () {
+        Route::get('/booking/{reference}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/order/{reference}', [OrderController::class, 'show'])->name('orders.email-link'); // link used in the API's confirmation email (?token=)
+        Route::get('/booking/{reference}/calendar.ics', [OrderController::class, 'ics'])->name('orders.ics');
+        Route::post('/booking/{reference}/pay', [OrderController::class, 'pay'])->middleware('throttle:payment')->name('orders.pay');
+        Route::post('/booking/{reference}/resend', [OrderController::class, 'resend'])->middleware('throttle:booking')->name('orders.resend');
+        Route::post('/booking/{reference}/cancel', [OrderController::class, 'cancel'])->middleware('throttle:booking')->name('orders.cancel');
+        Route::post('/booking/{reference}/account', [OrderController::class, 'account'])->middleware('throttle:register')->name('orders.account');
+    });
+});
+
+// ---- Signed-in customer: history, tickets, changes ----
+Route::middleware(RequireCustomer::class)->group(function () {
     Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
     Route::get('/tickets/{id}/qr.svg', [TicketController::class, 'qr'])->name('tickets.qr');
     Route::get('/tickets/{id}/download', [TicketController::class, 'download'])->name('tickets.download');

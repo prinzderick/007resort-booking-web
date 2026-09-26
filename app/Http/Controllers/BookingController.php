@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\HandlesGuestCheckout;
+use App\Services\Guest\GuestCheckoutApi;
+use App\Services\Guest\GuestSession;
 use App\Services\Online\BookingService;
 use App\Services\Online\CustomerService;
 use App\Services\Online\PaymentService;
 use App\Services\Online\SiteService;
 use App\Services\R007Api\R007ApiException;
 use App\Support\ApiProblem;
+use App\Support\GuestDetails;
 use App\Support\IdempotentSubmit;
 use App\Support\Lagos;
+use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * Court / spa / salon booking: resource -> date -> slot grid -> hold ->
@@ -20,11 +26,15 @@ use Illuminate\Http\Request;
  */
 class BookingController extends Controller
 {
+    use HandlesGuestCheckout;
+
     public function __construct(
         private readonly SiteService $site,
         private readonly BookingService $bookings,
         private readonly PaymentService $payments,
         private readonly CustomerService $customers,
+        private readonly GuestCheckoutApi $guestApi,
+        private readonly GuestSession $guests,
     ) {}
 
     public function resources(string $slug)
@@ -91,6 +101,15 @@ class BookingController extends Controller
         ]);
         [$start, $end] = explode('|', $data['slot']);
         $back = route('book.slots', [$slug, $resourceId, 'date' => Lagos::parse($start)?->format('Y-m-d')]);
+
+        if (! $this->accountMode()) {
+            // Guest: no login. The slot is held when they continue to payment (the API creates the hold together
+            // with the guest's contact details), so remember the choice and ask for name, email and phone.
+            $this->guests->putDraft('booking', ['slug' => $slug, 'resourceId' => $resourceId, 'start' => $start, 'end' => $end, 'quantity' => (int) ($data['quantity'] ?? 1)]);
+
+            return redirect()->route('checkout.booking');
+        }
+
         $user = $this->customers->user() ?? [];
 
         return IdempotentSubmit::run($request, "hold:{$resourceId}", function (string $key) use ($resourceId, $start, $end, $data, $user, $back) {
@@ -109,8 +128,85 @@ class BookingController extends Controller
         });
     }
 
-    public function checkout(string $bookingId)
+    /** Guest "Your details" step for a slot the visitor has picked (nothing is held yet). */
+    public function guestCheckout(Request $request)
     {
+        if ($this->accountMode()) {
+            return redirect()->route('sports');
+        }
+        $draft = $this->guestDraft();
+        if ($draft instanceof RedirectResponse) {
+            return $draft;
+        }
+
+        return view('booking.checkout-guest', $draft + ['prefill' => $this->prefill($request)]);
+    }
+
+    public function guestPay(Request $request)
+    {
+        $draft = $this->guestDraft();
+        if ($draft instanceof RedirectResponse) {
+            return $draft;
+        }
+        $guest = GuestDetails::validate($request);
+        $back = route('book.slots', [$draft['slug'], $draft['resourceId'], 'date' => Lagos::parse($draft['start'])?->format('Y-m-d')]);
+
+        return IdempotentSubmit::run($request, 'guest-book:'.$draft['resourceId'], function (string $key) use ($draft, $guest, $request, $back) {
+            try {
+                $start = $this->guestApi->startBooking($draft['resourceId'], $draft['start'], $draft['end'], (int) $draft['quantity'], $guest, $key);
+            } catch (R007ApiException $e) {
+                if ($e->is('slot_unavailable')) {
+                    return redirect()->to($back)->with('error', ApiProblem::message($e));
+                }
+
+                return redirect()->route('checkout.booking')->withInput($request->except('_token'))->with('error', ApiProblem::message($e));
+            }
+
+            return $this->beginGuestPayment($request, $start, $guest, $key, 'booking');
+        });
+    }
+
+    /** @return array<string, mixed>|RedirectResponse */
+    private function guestDraft()
+    {
+        $d = $this->guests->draft('booking');
+        if (! $d) {
+            return redirect()->route('sports')->with('notice', 'Choose a court or time first.');
+        }
+        $facility = $this->site->facility($d['slug']);
+        $resource = $facility ? $this->safeResource($facility, $d['resourceId']) : null;
+        $start = Lagos::parse($d['start']);
+        if (! $resource || ! $start || $start->isPast()) {
+            $this->guests->forgetDraft('booking');
+
+            return redirect()->route('sports')->with('notice', 'That time is no longer available. Please choose again.');
+        }
+        $qty = ($resource['mode'] ?? '') === 'INDIVIDUAL_CAPACITY' ? (int) $d['quantity'] : 1;
+
+        return $d + ['resource' => $resource, 'facility' => $facility, 'total' => Money::fromMinor((int) Money::minor($resource['price']) * $qty), 'qty' => $qty];
+    }
+
+    /** @param array<string, mixed> $facility @return array<string, mixed>|null */
+    private function safeResource(array $facility, string $resourceId): ?array
+    {
+        try {
+            return $this->bookings->resource($facility['ids'] ?? [$facility['id']], $resourceId);
+        } catch (R007ApiException $e) {
+            if ($e->isUnavailable()) {
+                return null;
+            }
+            throw $e;
+        }
+    }
+
+    public function checkout(Request $request, string $bookingId)
+    {
+        abort_unless(Str::isUuid($bookingId), 404);
+        if (! $this->accountMode()) {
+            // Guests never have a numbered checkout link: their order lives at /booking/{reference}.
+            return redirect()->route('sports')->with('notice', 'That checkout link is no longer valid. Choose your time again.');
+        }
+
         $booking = $this->loadBooking($bookingId);
         if ($booking instanceof RedirectResponse) {
             return $booking;
@@ -120,11 +216,16 @@ class BookingController extends Controller
             'booking' => $booking,
             'secondsLeft' => $this->secondsLeft($booking),
             'slug' => $this->site->slugForFacilityId((string) ($booking['facilityId'] ?? '')),
+            'account' => GuestDetails::completeProfile($this->customers->user()),
+            'prefill' => null,
         ]);
     }
 
     public function pay(Request $request, string $bookingId)
     {
+        abort_unless(Str::isUuid($bookingId), 404);
+        abort_unless($this->accountMode(), 404);
+
         return IdempotentSubmit::run($request, "pay:{$bookingId}", function (string $key) use ($bookingId, $request) {
             $booking = $this->loadBooking($bookingId);
             if ($booking instanceof RedirectResponse) {
@@ -152,6 +253,9 @@ class BookingController extends Controller
 
     public function release(Request $request, string $bookingId)
     {
+        abort_unless(Str::isUuid($bookingId), 404);
+        abort_unless($this->accountMode(), 404);
+
         return IdempotentSubmit::run($request, "release:{$bookingId}", function (string $key) use ($bookingId) {
             try {
                 $this->bookings->cancel($this->bookings->get($bookingId), 'Customer released the hold', $key);

@@ -6,6 +6,8 @@ use App\Services\Cms\CachedCmsClient;
 use App\Services\Cms\CmsClient;
 use App\Services\Cms\FixtureCmsClient;
 use App\Services\Cms\HttpCmsClient;
+use App\Services\Guest\GuestCheckoutApi;
+use App\Services\Guest\GuestSession;
 use App\Services\Online\ContentService;
 use App\Services\Online\SiteContext;
 use App\Services\R007Api\MockR007ApiClient;
@@ -51,6 +53,8 @@ class AppServiceProvider extends ServiceProvider
                 (int) $cfg['stale_ttl'],
             );
         });
+        $this->app->scoped(GuestCheckoutApi::class);
+        $this->app->scoped(GuestSession::class, fn (Application $app) => new GuestSession($app['session.store']));
         $this->app->scoped(SocialAuthApi::class, fn (Application $app) => new HttpSocialAuthApi($app->make(R007ApiClient::class)));
         $this->app->scoped(SocialProviders::class);
         $this->app->scoped(SiteContext::class);
@@ -77,6 +81,12 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('payment', fn (Request $r) => Limit::perMinute(10)->by('payment|'.$r->session()->getId().'|'.$r->ip()));
         RateLimiter::for('subscribe', fn (Request $r) => [Limit::perMinute(4)->by('sub|'.$r->ip()), Limit::perHour(20)->by('sub-h|'.$r->ip())]);
         RateLimiter::for('contact', fn (Request $r) => [Limit::perMinute(3)->by('contact|'.$r->ip()), Limit::perHour(12)->by('contact-h|'.$r->ip())]);
+        RateLimiter::for('lookup', fn (Request $r) => [
+            Limit::perMinute(5)->by('lookup|'.$r->ip()),
+            Limit::perHour(30)->by('lookup-h|'.$r->ip()),
+            Limit::perMinute(3)->by('lookup-ref|'.strtolower((string) $r->input('reference')).'|'.$r->ip()),
+        ]);
+        RateLimiter::for('order', fn (Request $r) => Limit::perMinute(60)->by('order|'.$r->ip()));
         // OAuth start/callback + the multi-step consent/link/complete screens (per IP, generous because mobile carriers share NAT addresses, and tighter per session).
         RateLimiter::for('social', fn (Request $r) => [Limit::perMinute(60)->by('social|'.$r->ip()), Limit::perMinute(20)->by('social-s|'.$r->session()->getId()), Limit::perHour(400)->by('social-h|'.$r->ip())]);
         RateLimiter::for('social-code', fn (Request $r) => Limit::perMinute(6)->by('social-code|'.$r->session()->getId().'|'.$r->ip()));

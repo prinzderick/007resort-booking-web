@@ -72,6 +72,7 @@ template microcopy in `resources/views`.
 | Newsletter | `POST /newsletter`, `/newsletter/confirm?token=`, `/newsletter/unsubscribe?token=` (double opt-in, GET only previews) |
 | SEO | `/sitemap.xml` (CMS sitemap mapped to site URLs), `/robots.txt` |
 | Aliases | `/book` -> `/sports`, `/tickets` -> `/pool`, `/membership` -> `/memberships` (links editors use in the CMS) |
+| Guest checkout (no account) | `/checkout/booking`, `/checkout/pool`, `/checkout/membership/{plan}` (name, email, phone -> Paystack) -> `/payment/return` -> `/booking/{reference}` (QR tickets, calendar, cancel, resend; `?t=`/`?token=` links are exchanged into the session and redirected to the clean URL), `/order/{reference}?token=` (link from the API email), `/find-booking` |
 | Customer | `/register`, `/verify`, `/login`, `/account`, `/account/bookings[/{id}]` with cancel/reschedule, ticket pages with SVG download and print |
 
 Everything shown or decided (availability, holds, prices, cancel/reschedule eligibility, payment outcome)
@@ -172,7 +173,7 @@ The session it gets back is stored exactly like a password login.
 * Buttons are shown only for providers that are in `SOCIAL_ENABLED_PROVIDERS`, have credentials, **and** are enabled in the API
   (`GET /public/customers/social/providers`); if the API cannot answer, no buttons are shown (fail closed).
 * Owner set-up (Google Cloud Console, Meta for Developers, exact URLs): [docs/SOCIAL_LOGIN_SETUP.md](docs/SOCIAL_LOGIN_SETUP.md).
-* The API service token needs the `customer.social` scope (`r007:service-token create --scope=public.read,customer.social`).
+* The API service token needs the `customer.social` scope (`r007:service-token create --scope=public.read,public.checkout,customer.social`).
 * **Try it without any Google/Facebook credentials**: `R007_MOCK=true SOCIAL_FAKE=true php artisan serve --port=8163`, open `/login`,
   press *Continue with Google*, and pick a persona on the local fake consent screen (new customer, returning, no email shared,
   existing account needing the emailed code, cancel, tampered state). Mock API codes are always `123456`. `SOCIAL_FAKE` is
@@ -307,3 +308,12 @@ extracted into a shared private Composer package once the API contract stabilise
 - Architecture, ADRs and domain docs: [prinzderick/007resort-docs](https://github.com/prinzderick/007resort-docs)
 - API: [prinzderick/007resort-api](https://github.com/prinzderick/007resort-api)
 - Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
+
+
+## Guest checkout
+
+Visitors book or buy with just name, email and phone: no login wall, no password, no account. Contract:
+`docs/GUEST_CHECKOUT.md` in `007resort-api` (guest object on `bookings/hold`, `public/ticket-orders`, `memberships`; `X-Order-Token`
+afterwards; `public/orders/*`). All calls use the service token (scopes `public.read`, `public.checkout`, `customer.social`); the order access token lives only in the
+visitor's session. Env: `TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` (find-booking CAPTCHA, off when unset), `R007_CONSENT_VERSION`,
+`GUEST_EMAIL_DELIVERY` (true only when the API can really send email; controls the "we have sent your ticket" copy).

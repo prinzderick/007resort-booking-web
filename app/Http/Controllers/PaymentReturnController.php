@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Guest\GuestCheckoutApi;
+use App\Services\Guest\GuestSession;
 use App\Services\Online\BookingService;
+use App\Services\Online\CustomerService;
 use App\Services\Online\MembershipService;
 use App\Services\Online\PaymentService;
 use App\Services\Online\TicketService;
@@ -25,6 +28,9 @@ class PaymentReturnController extends Controller
         private readonly BookingService $bookings,
         private readonly TicketService $tickets,
         private readonly MembershipService $memberships,
+        private readonly GuestCheckoutApi $guestApi,
+        private readonly GuestSession $guests,
+        private readonly CustomerService $customers,
     ) {}
 
     public function __invoke(Request $request)
@@ -36,6 +42,11 @@ class PaymentReturnController extends Controller
 
         $key = 'checkout.pending.'.$reference;
         $pending = $request->session()->get($key);
+
+        // Guests (and anyone whose payment started as a guest order) never need an account to land here.
+        if ((is_array($pending) && ($pending['kind'] ?? '') === 'guest') || ! $this->customers->check()) {
+            return $this->guestReturn($request, $reference, $key, is_array($pending) ? $pending : null);
+        }
 
         try {
             $payment = $this->payments->verify($reference);
@@ -63,7 +74,7 @@ class PaymentReturnController extends Controller
 
         if (! is_array($pending)) {
             // Verified elsewhere (other browser/session): nothing to finalise here.
-            return view('payment.result', ['state' => 'paid_unlinked']);
+            return view('payment.result', ['state' => 'paid_elsewhere']);
         }
 
         try {
@@ -148,5 +159,59 @@ class PaymentReturnController extends Controller
             'state' => $attempts > self::MAX_POLLS ? 'delayed' : 'processing',
             'reference' => $reference,
         ]);
+    }
+
+    /**
+     * Guest return: same rule as everywhere - the query string is only a lookup key, the API's verify decides.
+     * On success the visitor goes to their order page (their access token is already in this browser's session).
+     *
+     * @param  array<string, mixed>|null  $pending
+     */
+    private function guestReturn(Request $request, string $key0, string $key, ?array $pending)
+    {
+        $reference = $key0;
+        $order = $pending['order'] ?? null;
+        $token = $order ? $this->guests->token($order) : null;
+        if ($order === null || $token === null) {
+            // No order access in this browser (paid on another device, or the session ended): we cannot verify here.
+            return view('payment.result', ['state' => 'paid_unlinked']);
+        }
+
+        try {
+            $payment = $this->guestApi->verifyPayment($reference, $token);
+        } catch (R007ApiException $e) {
+            if (in_array($e->status, [401, 403, 404], true)) {
+                return view('payment.result', ['state' => 'paid_unlinked']);
+            }
+            if ($e->isUnavailable()) {
+                return view('payment.result', ['state' => 'unverified', 'reference' => $reference, 'order' => $order]);
+            }
+            throw $e;
+        }
+
+        $status = (string) ($payment['status'] ?? '');
+        $order = $pending['order'] ?? null;
+
+        if (in_array($status, ['FAILED', 'CANCELLED'], true)) {
+            // The order is NOT lost: it stays in this browser and can be paid again from its own page.
+            $request->session()->forget($key);
+
+            return view('payment.result', ['state' => 'failed', 'pending' => $pending, 'order' => $order]);
+        }
+
+        if ($status !== 'CAPTURED') {
+            return $this->processing($request, $key, $pending, $reference);
+        }
+
+        if ($order === null) {
+            // Paid from another browser or the session was lost: nothing to open here.
+            return view('payment.result', ['state' => 'paid_unlinked']);
+        }
+
+        $request->session()->forget($key);
+        $this->guests->forgetDraft('booking');
+        $this->guests->forgetDraft('pool');
+
+        return redirect()->route('orders.show', $order)->with('just_paid', true);
     }
 }

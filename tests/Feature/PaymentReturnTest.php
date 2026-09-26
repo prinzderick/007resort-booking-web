@@ -125,11 +125,11 @@ class PaymentReturnTest extends ApiTestCase
         $this->assertSame([], $this->sentTo('POST', '/confirm'));
     }
 
-    public function test_return_requires_sign_in(): void
+    public function test_return_without_a_session_shows_a_helpful_page_not_a_login_wall(): void
     {
-        $this->fakeApi([]);
-        $this->get('/payment/return?reference='.self::REF)->assertRedirect(route('login'));
-        $this->assertSame([], Http::recorded()->all());
+        $this->fakeApi(['payments/paystack/verify/*' => Http::response($this->payment('CAPTURED'))]);
+
+        $this->get('/payment/return?reference='.self::REF)->assertOk()->assertSee('Find my booking')->assertDontSee('Sign in to');
     }
 
     public function test_the_app_exposes_no_payment_webhook_endpoint(): void

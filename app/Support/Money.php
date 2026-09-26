@@ -31,4 +31,10 @@ final class Money
 
         return ltrim($m[1].substr(($m[2] ?? '').'00', 0, 2), '0') ?: '0';
     }
+
+    /** Integer kobo -> decimal string ("3000.0000") for Money::format(). */
+    public static function fromMinor(int $kobo): string
+    {
+        return intdiv($kobo, 100).'.'.str_pad((string) ($kobo % 100), 2, '0', STR_PAD_LEFT).'00';
+    }
 }

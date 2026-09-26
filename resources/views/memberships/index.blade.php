@@ -10,7 +10,7 @@
     <div class="slide-over" style="margin-top:0;border-radius:0">
         <section class="section" id="plans" style="padding-top:clamp(40px,6vw,80px)">
             <div class="wrap">
-                <div class="sec-head"><div><span class="eyebrow">Plans</span><h2 class="h-1">Pick a <i>plan.</i></h2></div><p class="lede">Pay securely online. Your membership QR is available in your account as soon as payment is confirmed.</p></div>
+                <div class="sec-head"><div><span class="eyebrow">Plans</span><h2 class="h-1">Pick a <i>plan.</i></h2></div><p class="lede">Pay securely online with just your name, email and phone. Your membership QR appears as soon as payment is confirmed.</p></div>
                 @if ($notice)<x-notice type="warn">{{ $notice }}</x-notice>@endif
                 <div class="grid">
                     @foreach ($plans as $p)
@@ -21,11 +21,15 @@
                                 <li>Valid for {{ $p['durationDays'] }} days</li>
                                 <li>{{ ($p['visitLimit'] ?? null) ? $p['visitLimit'].' visits' : 'Unlimited visits' }}</li>
                             </ul>
-                            <form method="POST" action="{{ route('memberships.buy', $p['id']) }}" data-once>
-                                @csrf
-                                <x-idem />
-                                <button type="submit" data-busy="Redirecting to Paystack..." class="btn btn--block {{ $loop->index === 0 && count($plans) > 1 ? 'btn--light' : '' }}">Buy this plan</button>
-                            </form>
+                            @if ($accountMode)
+                                <form method="POST" action="{{ route('memberships.buy', $p['id']) }}" data-once>
+                                    @csrf
+                                    <x-idem />
+                                    <button type="submit" data-busy="Redirecting to Paystack..." class="btn btn--block {{ $loop->index === 0 && count($plans) > 1 ? 'btn--light' : '' }}">Buy this plan</button>
+                                </form>
+                            @else
+                                <a class="btn btn--block {{ $loop->index === 0 && count($plans) > 1 ? 'btn--light' : '' }}" href="{{ route('checkout.membership', $p['id']) }}">Choose this plan</a>
+                            @endif
                         </article>
                     @endforeach
                 </div>

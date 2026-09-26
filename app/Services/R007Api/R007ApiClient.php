@@ -32,6 +32,8 @@ class R007ApiClient
 {
     public const IDEMPOTENCY_HEADER = 'Idempotency-Key';
 
+    private bool $serviceOnly = false;
+
     /**
      * @param  array<string, mixed>  $config  The "r007.api" config array.
      */
@@ -42,11 +44,12 @@ class R007ApiClient
 
     /**
      * @param  array<string, mixed>  $query
+     * @param  array<string, string>  $headers
      * @return array<mixed>
      */
-    public function get(string $path, array $query = []): array
+    public function get(string $path, array $query = [], array $headers = []): array
     {
-        return $this->send('GET', $path, ['query' => $query]);
+        return $this->send('GET', $path, ['query' => $query], null, $headers);
     }
 
     /**
@@ -110,8 +113,6 @@ class R007ApiClient
         return $items;
     }
 
-    private bool $serviceOnly = false;
-
     /**
      * Run calls with the website's SERVICE token even when a customer is signed in (social endpoints are
      * server-to-server and reject a customer bearer). Pass the customer's own token as an `X-Customer-Token`
@@ -131,6 +132,15 @@ class R007ApiClient
         } finally {
             $this->serviceOnly = $previous;
         }
+    }
+
+    /** A copy that always authenticates as the service credential (guest checkout: a customer token must never reach a guest order). */
+    public function forService(): static
+    {
+        $copy = clone $this;
+        $copy->serviceOnly = true;
+
+        return $copy;
     }
 
     public function baseUrl(): string

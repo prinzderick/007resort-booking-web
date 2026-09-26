@@ -1,0 +1,85 @@
+/* ---------- guest checkout: "Your details", sticky pay bar, order / ticket page ---------- */
+.co { padding-bottom: clamp(56px, 8vw, 110px); }
+.co-layout { align-items: start; }
+.co-details__head { margin-bottom: 18px; }
+.co-details__head .hint { color: var(--mute); font-size: 14.5px; margin-top: 4px; }
+.co-as p { font-size: 16px; } .co-as .hint { color: var(--mute); font-size: 14px; }
+
+/* phone: +234 chip joined to the input, 48px+ tap targets */
+.phone { display: flex; align-items: stretch; }
+.phone__pre { display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; font-weight: 600; font-size: 16px; background: var(--paper-2); border: 1.5px solid rgb(20 17 15 / 0.22); border-right: 0; border-radius: 12px 0 0 12px; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.flag { width: 20px; height: 14px; border-radius: 2px; background: linear-gradient(90deg, #008751 0 33.3%, #fff 33.3% 66.6%, #008751 66.6%); box-shadow: inset 0 0 0 1px rgb(20 17 15 / 0.2); }
+.field .phone input { border-radius: 0 12px 12px 0; min-width: 0; }
+.phone.has-own-prefix .phone__pre { display: none; }
+.phone.has-own-prefix input { border-radius: 12px; }
+.phone:focus-within .phone__pre { border-color: var(--ink); }
+.field .hint [data-phone-preview]:not(:empty) { color: var(--leaf); font-weight: 600; margin-left: 4px; }
+
+.check { display: flex; gap: 12px; align-items: flex-start; min-height: 44px; padding: 6px 0; cursor: pointer; font-size: 15px; }
+.check input { flex: none; width: 24px; height: 24px; margin: 1px 0 0; accent-color: var(--leaf); }
+.check small { color: var(--mute); font-size: 13.5px; }
+.co-fine { margin-top: 18px; font-size: 13.5px; color: var(--mute); line-height: 1.55; }
+.co-fine a { color: var(--ink); }
+.linklike { border: 0; background: none; padding: 6px 0; color: var(--ink); text-decoration: underline; font: inherit; font-size: 13.5px; cursor: pointer; min-height: 32px; }
+.linklike[hidden] { display: none; }
+.co-signin { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 14px; color: var(--mute); }
+.co-signin a { color: var(--ink); font-weight: 600; }
+.co-errors { margin-bottom: 20px; } .co-errors ul { margin: 6px 0 0; padding-left: 18px; } .co-errors a { color: inherit; }
+.co-errors:focus { outline: 3px solid var(--sun-btn); outline-offset: 3px; }
+.co-aside { gap: 16px; }
+.co-pay { background: var(--white); border-radius: var(--r-lg); padding: 22px; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.co-secure { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--mute); margin-top: 12px; line-height: 1.45; }
+.co-secure svg { flex: none; width: 16px; height: 16px; margin-top: 1px; fill: none; stroke: currentColor; stroke-width: 2; }
+.co-gone { max-width: 620px; }
+
+/* sticky pay bar (mobile): the total and the button stay in thumb reach */
+.paybar { display: none; }
+@media (max-width: 960px) {
+    .co-pay .btn:not(.btn--sm):not(.btn--line) { display: none; }
+    .co-pay { padding: 16px 18px; }
+    .paybar { display: flex; align-items: center; justify-content: space-between; gap: 14px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom)); background: var(--white); border-top: 1px solid var(--line); box-shadow: 0 -8px 30px rgb(20 17 15 / 0.12); }
+    .paybar__sum { display: grid; line-height: 1.1; } .paybar__sum small { font-size: 12px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.1em; }
+    .paybar__sum b { font: 600 24px var(--serif); font-variant-numeric: tabular-nums; }
+    .paybar .btn { flex: 1; justify-content: center; max-width: 260px; min-height: 52px; }
+    .co { padding-bottom: 110px; }
+}
+
+/* order / ticket page */
+.done-hero .delivery { margin: 18px auto 0; max-width: 520px; font-size: 16px; padding: 12px 16px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; }
+.done-hero .actions { margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.done-hero .actions .btn[hidden], .tkt-actions .btn[hidden], .copyrow .btn[hidden] { display: none; }
+.tkt-top { background: var(--leaf); }
+.tkt-actions { margin-top: 14px; }
+.order-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; max-width: 900px; margin: 40px auto 0; align-items: start; }
+.copyrow { display: flex; gap: 8px; }
+.copyrow input { flex: 1; min-width: 0; border: 1.5px solid rgb(20 17 15 / 0.22); border-radius: 12px; padding: 11px 12px; font-size: 14px; background: var(--paper); min-height: 44px; }
+.policy { margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--line); font-size: 15px; display: grid; gap: 6px; }
+.acct-prompt { position: relative; max-width: 900px; margin: 20px auto 0; background: var(--white); border: 1px solid var(--line); }
+.acct-prompt p { margin-top: 6px; color: var(--ink-2); font-size: 15.5px; }
+.acct-prompt__form { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 16px; }
+.acct-prompt__form .field { flex: 1 1 240px; }
+.acct-prompt__x { position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent; font-size: 22px; cursor: pointer; }
+.acct-prompt__x[hidden] { display: none; }
+.recent .row-item { min-height: 48px; }
+
+/* header account menu */
+.acct-menu { position: relative; }
+.acct-menu summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.acct-menu summary::-webkit-details-marker { display: none; }
+.acct-menu summary svg { width: 10px; height: 7px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.2s; }
+.acct-menu[open] summary svg { transform: rotate(180deg); }
+.acct-menu__panel { position: absolute; right: 0; top: calc(100% + 6px); min-width: 190px; background: var(--white); color: var(--ink); border-radius: 14px; box-shadow: var(--shadow); border: 1px solid var(--line); padding: 6px; display: grid; z-index: 70; }
+.acct-menu__panel a { padding: 11px 12px; border-radius: 10px; font-size: 15px; text-decoration: none; }
+.acct-menu__panel a:hover, .acct-menu__panel a:focus-visible { background: var(--paper-2); }
+@media (max-width: 1080px) { .acct-menu { display: none; } }
+
+/* save as PDF / print: tickets only */
+@media print {
+    .tickets { max-width: none; gap: 16px; }
+    .tkt { break-inside: avoid; page-break-inside: avoid; box-shadow: none; border: 1px solid #999; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tkt-mid img { width: 300px; }
+    .done-hero .check, .done-hero .actions, .order-grid, .acct-prompt, .paybar, .acct-menu { display: none !important; }
+    .done-hero { margin-bottom: 12px; } .done-hero .delivery { border: 0; background: none; padding: 0; }
+    .js .reveal { opacity: 1 !important; transform: none !important; }
+}
+h1[tabindex='-1']:focus, h1[data-focus-me]:focus { outline: none; }
